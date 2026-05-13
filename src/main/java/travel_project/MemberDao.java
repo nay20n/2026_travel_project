@@ -201,11 +201,119 @@ public class MemberDao {
 		conn.close();
 	}
 	
+	/** HA-10 닉네임 수정 (p.6 / 정보수정2)
+		input : 회원아이디(memberId), 새닉네임(nickName)
+		output : - */
+	void modifyNickName(int memberId, String nickName) throws Exception {
+		String driver = "oracle.jdbc.driver.OracleDriver";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String dbId = "ab";
+		String dbPw = "12345";
+				
+		Class.forName(driver);
+		Connection conn = DriverManager.getConnection(url, dbId, dbPw);
+				
+		String sql = "UPDATE members SET nick_name = ? WHERE member_id = ?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, nickName);
+		pstmt.setInt(2, memberId);
+				
+		pstmt.executeUpdate();
+				
+		pstmt.close();
+		conn.close();
+	}
+	
+	/** HA-11 이메일 수정 (p.6 / 정보수정2)
+		input : 회원아이디(memberId), 새닉네임(email)  
+		output : - */
+	void modifyEmail(int memberId, String email) throws Exception {
+		String driver = "oracle.jdbc.driver.OracleDriver";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String dbId = "ab";
+		String dbPw = "12345";
+
+		Class.forName(driver);
+		Connection conn = DriverManager.getConnection(url, dbId, dbPw);
+
+		String sql = "UPDATE members SET email = ? WHERE member_id = ?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, email);
+		pstmt.setInt(2, memberId);
+
+		pstmt.executeUpdate();
+
+		pstmt.close();
+		conn.close();
+	}
+	
+	/** HA-12 비밀번호 수정 (p.6 / 정보수정2)
+		input : 회원아이디(memberId), 새비밀번호(pw)  
+		output : - */
+	void modifyPw(int memberId, String pw) throws Exception {
+		String driver = "oracle.jdbc.driver.OracleDriver";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String dbId = "ab";
+		String dbPw = "12345";
+
+		Class.forName(driver);
+		Connection conn = DriverManager.getConnection(url, dbId, dbPw);
+
+		String sql = "UPDATE members SET pw = ? WHERE member_id = ?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, pw);
+		pstmt.setInt(2, memberId);
+
+		pstmt.executeUpdate();
+
+		pstmt.close();
+		conn.close();
+	}
+	
+//	/** HA-34 회원탈퇴 (p.6 / 정보수정2)
+//		1. 공유한 사용자명에 있다면 공유사용자, 인증코드를 null로
+//		2. 찜, 게시물, 블록, 댓글이 있다면 삭제
+//		3. 회원 삭제
+//		input : 탈퇴회원아이디  
+//		output : - */
+//	void delMember(int memberId) throws Exception {
+//		String driver = "oracle.jdbc.driver.OracleDriver";
+//		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+//		String dbId = "ab";
+//		String dbPw = "12345";
+//
+//		Class.forName(driver);
+//		Connection conn = DriverManager.getConnection(url, dbId, dbPw);
+//
+//		String sql = "UPDATE boards SET share_user_id = '', key = '' WHERE share_user_id = ?"
+//				
+//				+ " DELETE FROM like_boards WHERE member_id = ?"
+//				+ " DELETE FROM like_places WHERE  member_id = ?"
+//				+ " DELETE FROM reviews WHERE user_id = ?"
+//				+ " DELETE FROM comments WHERE writer_id = ?"
+//				+ " DELETE FROM blocks"
+//				+ " WHERE block_idx =" 
+//				+ " (SELECT block_idx FROM boards bo INNER JOIN blocks bl ON bo.bno = bl.bno"
+//				+ " WHERE writer_id = ?)"
+//				+ " DELETE FROM boards WHERE writer_id = ?"
+//
+//				+ " DELETE FROM members WHERE member_id = ?";
+//		
+//		PreparedStatement pstmt = conn.prepareStatement(sql);
+//		for(int i=1;i<9;i++) {			
+//			pstmt.setInt(i, memberId);
+//		}
+//
+//		pstmt.executeUpdate();
+//
+//		pstmt.close();
+//		conn.close();
+//	}
 	
 	public static void main(String[] args) throws Exception {
 		MemberDao a = new MemberDao();
 		System.out.println();
-		a.modifyProfileImg("100","새로운이미지로변경");
+//		a.delMember(100);
 		System.out.println("정상종료");
 	}
 
