@@ -7,4 +7,13 @@ public class MypageDto {
 	String writerNick; //작성자 
 	boolean isLiked; //찜 여부 
 	int likeBoardCnt; //찜 개수
+	
+	MypageDto(int bno, String dDay, String title, String writerNick, boolean isLiked, int likeBoardCnt){
+		this.bno = bno;
+		this.dDay = dDay;
+		this.title = title;
+		this.writerNick = writerNick;
+		this.isLiked = isLiked;
+		this.likeBoardCnt = likeBoardCnt;
+	}
 }

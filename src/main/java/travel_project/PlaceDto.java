@@ -5,10 +5,26 @@ public class PlaceDto {
 	String name; //장소이름
 	String category; //카테고리
 	String address; //주소
-	String bussinessHour; //요일별영업시간
 	double lat; //위도
 	double lng; //경도
-	String webUrl; //공식사이트
 	String img; //장소 사진 
+	double avgRating; //평균 별점 
+	int reviewCnt; //리뷰수 
 	boolean isLikedPlace; //장소 찜 유무
+	
+	PlaceDto(String placeId, String name, String category, String address, double lat, double lng, String img, double avgRating, int reviewCnt, boolean isLikedPlace) {
+		this.placeId = placeId;
+		this.name = name;
+		this.category = category;
+		this.address = address;
+		this.lat = lat;
+		this.lng = lng;
+		this.img = img;
+		this.avgRating = avgRating;
+		this.reviewCnt = reviewCnt;
+		this.isLikedPlace = isLikedPlace;
+	}
+
 }
+
+
