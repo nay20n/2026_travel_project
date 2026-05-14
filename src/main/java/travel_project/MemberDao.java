@@ -7,9 +7,9 @@ import java.sql.ResultSet;
 
 public class MemberDao {
 	
-	/** HA-1. ÇÁ·ÎÇÊ ÀÌ¹ÌÁö Á¶È¸ (p.2 / ¸ŞÀÎÆäÀÌÁö)
-		input : member_id (È¸¿ø ¾ÆÀÌµğ)
-		output : profileImg(ÇÁ·ÎÇÊ ÀÌ¹ÌÁö) */
+	/** HA-1. í”„ë¡œí•„ ì´ë¯¸ì§€ ì¡°íšŒ (p.2 / ë©”ì¸í˜ì´ì§€)
+		input : member_id (íšŒì› ì•„ì´ë””)
+		output : profile_img(í”„ë¡œí•„ ì´ë¯¸ì§€) íŒŒì¼ëª… */
 	String getProfileImage(int memberId) throws Exception {
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
@@ -38,9 +38,9 @@ public class MemberDao {
 		}	
 	}
 	
-	/** HA-4 ÀÌ¸ŞÀÏ Á¶È¸ (p.3 / ·Î±×ÀÎ+°£Æí°¡ÀÔ ÆË¾÷, p.5 / Á¤º¸¼öÁ¤1)
-	 	input : ÀÌ¸ŞÀÏ(email)
-	 	output : false(°á°ú¾øÀ½), true(ÀÖÀ½)*/
+	/** HA-4 ì´ë©”ì¼ ì¡°íšŒ (p.3 / ë¡œê·¸ì¸+ê°„í¸ê°€ì… íŒì—…, p.5 / ì •ë³´ìˆ˜ì •1)
+	 	input : ì´ë©”ì¼(email)
+	 	output : false(ê²°ê³¼ì—†ìŒ), true(ìˆìŒ)*/
 	boolean isExistEmail(String email) throws Exception {
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
@@ -66,9 +66,9 @@ public class MemberDao {
 		return false;
 	}
 	
-	/** HA-5 ÀÌ¸ŞÀÏ, ºñ¹Ğ¹øÈ£ Á¶È¸ (p.3 / ·Î±×ÀÎ+°£Æí°¡ÀÔ ÆË¾÷, p.5 / Á¤º¸¼öÁ¤1)
-		input : ÀÌ¸ŞÀÏ(email), ºñ¹Ğ¹øÈ£(pw)  
-		output : false(½ÇÆĞ), true(¼º°ø)*/
+	/** ì´ë©”ì¼, ë¹„ë°€ë²ˆí˜¸ ì¡°íšŒ (p.3 / ë¡œê·¸ì¸+ê°„í¸ê°€ì… íŒì—…, p.5 / ì •ë³´ìˆ˜ì •1)
+		input : ì´ë©”ì¼(email), ë¹„ë°€ë²ˆí˜¸(pw)  
+		output : false(ì‹¤íŒ¨), true(ì„±ê³µ)*/
 	boolean canLogin(String email, String pw) throws Exception {
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
@@ -96,11 +96,11 @@ public class MemberDao {
 		return false;
 	}
 
-	/** HA-6 ºñ¹Ğ¹øÈ£ Àç¼³Á¤ ÀÎÁõÄÚµå ¼öÁ¤ (p.5 / Á¤º¸¼öÁ¤1)
-		input : ÀÌ¸ŞÀÏ(email)
+	/** HA-6 ë¹„ë°€ë²ˆí˜¸ ì¬ì„¤ì • ì¸ì¦ì½”ë“œ ìˆ˜ì • (p.5 / ì •ë³´ìˆ˜ì •1)
+		input : ì´ë©”ì¼(email)
 		output : - */
 	void updateKey(String email) throws Exception {
-		// 6ÀÚ¸® ´ë¹®ÀÚ, ¼Ò¹®ÀÚ, ¼ıÀÚ·Î ÀÌ·ç¾îÁø ·£´ı key
+		// 6ìë¦¬ ì†Œë¬¸ì, ëŒ€ë¬¸ì, ìˆ«ì ëœë¤ key ìƒì„±
 		StringBuilder sb = new StringBuilder();
 		while(sb.length()<6) {
 			int temp = (int)(Math.random()*75) + 48;
@@ -126,9 +126,9 @@ public class MemberDao {
 		conn.close();
 	}
 	
-	/** HA-7 ÀÎÁõÄÚµå, ¸¸·áÀÏ½Ã Á¶È¸ (p.5 / Á¤º¸¼öÁ¤1)
-		input : ÀÎÁõÅ°(key)  
-		output : false(½ÇÆĞ), true(¼º°ø)*/
+	/** HA-7  ì¸ì¦ì½”ë“œ, ë§Œë£Œì¼ì‹œ ì¡°íšŒ (p.5 / ì •ë³´ìˆ˜ì •1)
+		input : ì¸ì¦í‚¤(key)  
+		output : false(ì‹¤íŒ¨), true(ì„±ê³µ)*/
 	boolean isValidCode(String key) throws Exception {
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
@@ -154,10 +154,17 @@ public class MemberDao {
 		return false;
 	}
 	
-	/** HA-8 È¸¿ø »ğÀÔ (p.3 / ·Î±×ÀÎ+°£Æí°¡ÀÔ ÆË¾÷)
-		input : ÀÌ¸ŞÀÏ(email), ºñ¹Ğ¹øÈ£(pw)  
+	/** HA-8 íšŒì› ì‚½ì… (p.3 / ë¡œê·¸ì¸+ê°„í¸ê°€ì… íŒì—…)
+		input : ì´ë©”ì¼(email)  
 		output : - */
-	void addMember(String email, String pw) throws Exception {
+	void addMember(String email) throws Exception {
+		// 16ìë¦¬ ì†Œë¬¸ì, ëŒ€ë¬¸ì, ìˆ«ì ëœë¤ key ìƒì„±
+		StringBuilder sb = new StringBuilder();
+		while (sb.length() < 16) {
+			int temp = (int) (Math.random() * 75) + 48;
+			if (temp < 58 || (temp > 64 && temp < 91) || (temp > 96))
+				sb.append((char) temp);
+		}
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
 		String dbId = "ab";
@@ -167,10 +174,10 @@ public class MemberDao {
 		Connection conn = DriverManager.getConnection(url, dbId, dbPw);
 		
 		String sql = "INSERT INTO members(member_id, email, nick_name, pw)"
-				+ " VALUES(seq_member.nextval, ?, 'ÀÍ¸í »ç¿ëÀÚ', ?)";
+				+ " VALUES(seq_member.nextval, ?, 'ìµëª…ì˜ ì‚¬ìš©ì', ?)";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, email);
-		pstmt.setString(2, pw);
+		pstmt.setString(2, sb.toString());
 		
 		pstmt.executeUpdate();
 		
@@ -178,8 +185,8 @@ public class MemberDao {
 		conn.close();
 	}
 	
-	/** HA-9 ÇÁ·ÎÇÊÀÌ¹ÌÁö ¼öÁ¤ (p.6 / Á¤º¸¼öÁ¤2)
-		input : È¸¿ø¾ÆÀÌµğ(memberId), »õÀÌ¹ÌÁöÆÄÀÏ(profileImg)  
+	/** HA-9 í”„ë¡œí•„ì´ë¯¸ì§€ ìˆ˜ì • (p.6 / ì •ë³´ìˆ˜ì •2)
+		input : ì•„ì´ë””(memberId), ìƒˆí”„ë¡œí•„ì´ë¯¸ì§€(profileImg)  
 		output : - */
 	void modifyProfileImg(String memberId, String profileImg) throws Exception {
 		String driver = "oracle.jdbc.driver.OracleDriver";
@@ -201,8 +208,8 @@ public class MemberDao {
 		conn.close();
 	}
 	
-	/** HA-10 ´Ğ³×ÀÓ ¼öÁ¤ (p.6 / Á¤º¸¼öÁ¤2)
-		input : È¸¿ø¾ÆÀÌµğ(memberId), »õ´Ğ³×ÀÓ(nickName)
+	/** HA-10ë‹‰ë„¤ì„ ìˆ˜ì • (p.6 / ì •ë³´ìˆ˜ì •2)
+		input : íšŒì›ì•„ì´ë””(memberId), ìƒˆë‹‰ë„¤ì„(nickName)
 		output : - */
 	void modifyNickName(int memberId, String nickName) throws Exception {
 		String driver = "oracle.jdbc.driver.OracleDriver";
@@ -224,8 +231,8 @@ public class MemberDao {
 		conn.close();
 	}
 	
-	/** HA-11 ÀÌ¸ŞÀÏ ¼öÁ¤ (p.6 / Á¤º¸¼öÁ¤2)
-		input : È¸¿ø¾ÆÀÌµğ(memberId), »õ´Ğ³×ÀÓ(email)  
+	/** HA-11 ì´ë©”ì¼ ìˆ˜ì • (p.6 / ì •ë³´ìˆ˜ì •2)
+		input : ì•„ì´ë””(memberId), ìƒˆì´ë©”ì¼(email)  
 		output : - */
 	void modifyEmail(int memberId, String email) throws Exception {
 		String driver = "oracle.jdbc.driver.OracleDriver";
@@ -247,8 +254,8 @@ public class MemberDao {
 		conn.close();
 	}
 	
-	/** HA-12 ºñ¹Ğ¹øÈ£ ¼öÁ¤ (p.6 / Á¤º¸¼öÁ¤2)
-		input : È¸¿ø¾ÆÀÌµğ(memberId), »õºñ¹Ğ¹øÈ£(pw)  
+	/** HA-12 ë¹„ë°€ë²ˆí˜¸ ìˆ˜ì • (p.6 / ì •ë³´ìˆ˜ì •2)
+		input : ì•„ì´ë””(memberId), ìƒˆë¹„ë°€ë²ˆí˜¸(pw)  
 		output : - */
 	void modifyPw(int memberId, String pw) throws Exception {
 		String driver = "oracle.jdbc.driver.OracleDriver";
@@ -269,52 +276,11 @@ public class MemberDao {
 		pstmt.close();
 		conn.close();
 	}
-	
-//	/** HA-34 È¸¿øÅ»Åğ (p.6 / Á¤º¸¼öÁ¤2)
-//		1. °øÀ¯ÇÑ »ç¿ëÀÚ¸í¿¡ ÀÖ´Ù¸é °øÀ¯»ç¿ëÀÚ, ÀÎÁõÄÚµå¸¦ null·Î
-//		2. Âò, °Ô½Ã¹°, ºí·Ï, ´ñ±ÛÀÌ ÀÖ´Ù¸é »èÁ¦
-//		3. È¸¿ø »èÁ¦
-//		input : Å»ÅğÈ¸¿ø¾ÆÀÌµğ  
-//		output : - */
-//	void delMember(int memberId) throws Exception {
-//		String driver = "oracle.jdbc.driver.OracleDriver";
-//		String url = "jdbc:oracle:thin:@localhost:1521:xe";
-//		String dbId = "ab";
-//		String dbPw = "12345";
-//
-//		Class.forName(driver);
-//		Connection conn = DriverManager.getConnection(url, dbId, dbPw);
-//
-//		String sql = "UPDATE boards SET share_user_id = '', key = '' WHERE share_user_id = ?"
-//				
-//				+ " DELETE FROM like_boards WHERE member_id = ?"
-//				+ " DELETE FROM like_places WHERE  member_id = ?"
-//				+ " DELETE FROM reviews WHERE user_id = ?"
-//				+ " DELETE FROM comments WHERE writer_id = ?"
-//				+ " DELETE FROM blocks"
-//				+ " WHERE block_idx =" 
-//				+ " (SELECT block_idx FROM boards bo INNER JOIN blocks bl ON bo.bno = bl.bno"
-//				+ " WHERE writer_id = ?)"
-//				+ " DELETE FROM boards WHERE writer_id = ?"
-//
-//				+ " DELETE FROM members WHERE member_id = ?";
-//		
-//		PreparedStatement pstmt = conn.prepareStatement(sql);
-//		for(int i=1;i<9;i++) {			
-//			pstmt.setInt(i, memberId);
-//		}
-//
-//		pstmt.executeUpdate();
-//
-//		pstmt.close();
-//		conn.close();
-//	}
-	
+
 	public static void main(String[] args) throws Exception {
 		MemberDao a = new MemberDao();
 		System.out.println();
-//		a.delMember(100);
-		System.out.println("Á¤»óÁ¾·á");
+		System.out.println("ì •ìƒì¢…ë£Œ");
 	}
 
 }
