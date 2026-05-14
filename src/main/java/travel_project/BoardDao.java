@@ -18,7 +18,7 @@ public class BoardDao {
 		String dbId = "ab";
 		String dbPw = "12345";
 		
-		//1. 연결 : “Connectionc 객체”
+		//1. 연결 : “Connection 객체”
 		Class.forName(driver);
 		Connection conn = DriverManager.getConnection(url,dbId,dbPw);
 		
@@ -43,7 +43,7 @@ public class BoardDao {
 			String dbId = "ab";
 			String dbPw = "12345";
 			
-			//1. 연결 : “Connectionc 객체”
+			//1. 연결 : “Connection 객체”
 			Class.forName(driver);
 			Connection conn = DriverManager.getConnection(url,dbId,dbPw);
 			
@@ -76,7 +76,7 @@ public class BoardDao {
 		String dbId = "ab";
 		String dbPw = "12345";
 		
-		//1. 연결 : “Connectionc 객체”
+		//1. 연결 : “Connection 객체”
 		Class.forName(driver);
 		Connection conn = DriverManager.getConnection(url,dbId,dbPw);
 		
@@ -101,7 +101,7 @@ public class BoardDao {
 		String dbId = "ab";
 		String dbPw = "12345";
 		
-		//1. 연결 : “Connectionc 객체”
+		//1. 연결 : “Connection 객체”
 		Class.forName(driver);
 		Connection conn = DriverManager.getConnection(url,dbId,dbPw);
 		
@@ -126,7 +126,7 @@ public class BoardDao {
 		String dbId = "ab";
 		String dbPw = "12345";
 		
-		//1. 연결 : “Connectionc 객체”
+		//1. 연결 : “Connection 객체”
 		Class.forName(driver);
 		Connection conn = DriverManager.getConnection(url,dbId,dbPw);
 		
