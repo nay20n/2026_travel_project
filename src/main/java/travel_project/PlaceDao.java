@@ -48,7 +48,7 @@ public class PlaceDao {
 			String img = rs.getString("이미지");
 			int likedCnt = rs.getInt("찜한유무");
 			PlaceInfoDto p = new PlaceInfoDto(name, avgRating, reviewCnt, category, address, businessHours, webUrl, img,
-					likedCnt == 1 ? true : false);
+					likedCnt==1);
 			list.add(p);
 		}
 
