@@ -343,6 +343,68 @@ public class BlockDao {
 		conn.close();
 	}
 	
+	/**NY-23. 블록 색깔 변경 팔레트 조회 (p. 11 / 일정표 - 메인(주단위)) - block
+	input: -
+	output: List<String> 색깔 코드들  */
+	List<String> getColors() throws Exception{
+		String driver = "oracle.jdbc.driver.OracleDriver";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String dbId = "ab";
+		String dbPw = "12345";
+				
+		Class.forName(driver);
+		Connection conn = DriverManager.getConnection(url, dbId, dbPw);
+				
+		String sql = "SELECT color_idx \"색깔순서\", color_name \"색깔이름\", color_code \"색깔코드\" FROM colors ORDER BY color_idx";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		
+		ResultSet rs = pstmt.executeQuery();
+		List<String> colorCodes = new ArrayList<>();
+		while(rs.next()) {
+			String colorCode = rs.getString("색깔코드");
+			colorCodes.add(colorCode);
+		}
+		rs.close();
+		pstmt.close();
+		conn.close();
+		
+		return colorCodes;
+	}
+	/** NY–24-b. 게시글 전체 블럭 복사, 복제할 게시글 블럭 마다 반복
+		input : 복제 완료한 게시글(bno), 복제하고 싶은 번호(bno)
+		ouput: - */
+	void copyBlock(int newBno, int bno) throws Exception{
+		String driver = "oracle.jdbc.driver.OracleDriver";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String dbId = "ab";
+		String dbPw = "12345";
+				
+		Class.forName(driver);
+		Connection conn = DriverManager.getConnection(url, dbId, dbPw);
+				
+		String sql = "INSERT INTO blocks(block_idx, bno, start_time, end_time, checked_ai, color_idx) "
+				+ "SELECT "
+				+ "	SEQ_BLOCK.NEXTVAL, "
+				+ "?, "
+				+ "start_time + (TO_DATE(?, 'YYYY-MM-DD') - TRUNC(start_time)), "
+				+ "end_time + (TO_DATE(?, 'YYYY-MM-DD')  - TRUNC(end_time)), "
+				+ "0, "
+				+ "color_idx) "
+				+ "FROM block "
+				+ "WHERE bno = ? ";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setInt(1,newBno);
+		pstmt.setInt(2,bno);
+		
+		pstmt.executeUpdate();
+		
+		pstmt.close();
+		conn.close();
+	}
+	
+	
+	
+	
 	public static void main(String[] args) throws Exception {
 		BlockDao b = new BlockDao();
 		Scanner sc = new Scanner(System.in);
@@ -449,6 +511,15 @@ public class BlockDao {
 		// HA-38
 //		String date = "2026-03-21";
 //		b.delBlockInDate(bno, date);
+		
+		//NY-23.
+//		List<String> list = b.getColors();
+//		for(int i=0; i<list.size(); i++) {
+//			System.out.println("색깔 코드 : " + list.get(i));
+//		}
+		
+		//NY-24b.
+		b.copyBlock(105, 1);
 		
 		// 정상종료
 		sc.close();
