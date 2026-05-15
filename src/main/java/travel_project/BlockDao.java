@@ -246,6 +246,103 @@ public class BlockDao {
 		conn.close();
 		return list;
 	}
+	
+	/** HA-28 게시글의 블록 정보 특정 시간 사이 조회 (p.11 / 일정표-메인(주 단위))
+		input : 게시글번호(bno), 시작시간(inputStartTime), 끝시간(inputEndTime)  
+		output : ArrayList<BlockDto> 
+		주의 : 장소가 없는 경우 위도, 경도에 0이 들어감*/
+	List<BlockDto> showBlocksBetween(int bno, String inputStartTime, String inputEndTime) throws Exception {
+		List<BlockDto> list = new ArrayList<>();
+		
+		String driver = "oracle.jdbc.driver.OracleDriver";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String dbId = "ab";
+		String dbPw = "12345";
+
+		Class.forName(driver);
+		Connection conn = DriverManager.getConnection(url, dbId, dbPw);
+
+		String sql = "SELECT block_idx, start_time, end_time, checked_ai, travel_time,"
+				+ " b.color_idx, c.color_code, p.name, lat, lng"
+				+ "	FROM blocks b LEFT OUTER JOIN places p"
+				+ "	ON b.place_id = p.place_id"
+				+ "	INNER JOIN colors c ON b.color_idx = c.color_idx"
+				+ "	WHERE b.bno = ?"
+				+ "	AND start_time BETWEEN TO_DATE(?, 'YYYY-MM-DD HH24:MI:SS') AND TO_DATE(?, 'YYYY-MM-DD HH24:MI:SS')"
+				+ "	ORDER BY start_time";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setInt(1, bno);
+		pstmt.setString(2, inputStartTime);
+		pstmt.setString(3, inputEndTime);
+
+		ResultSet rs = pstmt.executeQuery();
+		while(rs.next()) {
+			int blockIdx = rs.getInt("block_idx");
+			String startTime = rs.getString("start_time");
+			String endTime = rs.getString("end_time");
+			boolean isCheckedAi = rs.getInt("checked_ai")==1;
+			int travelTime = rs.getInt("travel_time");
+			int colorIdx = rs.getInt("color_idx");
+			String colorCode = rs.getString("color_code");
+			String name = rs.getString("name");
+			double lat = rs.getDouble("lat");
+			double lng = rs.getDouble("lng");
+			BlockDto b = new BlockDto(blockIdx, startTime, endTime, isCheckedAi, colorIdx, travelTime, colorCode, name, colorCode, name, lat, lng);
+			list.add(b);
+		}
+				
+		rs.close();
+		pstmt.close();
+		conn.close();
+		return list;
+	}
+	
+	/** HA-29 블록 이동시간 수정 (p.11 / 일정표-메인(주 단위))
+		input : 블록인덱스(blockIdx), 이동시간(travelTime) (분number) 
+		output : - */
+	void modifyBlockTravelTime(int blockIdx, int travelTime) throws Exception {
+		String driver = "oracle.jdbc.driver.OracleDriver";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String dbId = "ab";
+		String dbPw = "12345";
+				
+		Class.forName(driver);
+		Connection conn = DriverManager.getConnection(url, dbId, dbPw);
+				
+		String sql = "UPDATE blocks SET travel_time = ? WHERE block_idx = ?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setInt(1, travelTime);
+		pstmt.setInt(2, blockIdx);
+				
+		pstmt.executeUpdate();
+				
+		pstmt.close();
+		conn.close();
+	}
+	
+	/** HA-38 하루 치 기존 일정 삭제 (p.16 일정표-메인(일 단위/AI확장))
+		input : bno(수정하려는 글번호), date(지우려는 날짜 "YYYY-MM-DD")
+		output : - */
+	void delBlockInDate(int bno, String date) throws Exception {
+		String driver = "oracle.jdbc.driver.OracleDriver";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String dbId = "ab";
+		String dbPw = "12345";
+				
+		Class.forName(driver);
+		Connection conn = DriverManager.getConnection(url, dbId, dbPw);
+				
+		String sql = "DELETE FROM blocks WHERE bno = ? AND trunc(start_time) = TO_DATE(?, 'YYYY-MM-DD HH24:MI:SS')";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setInt(1, bno);
+		pstmt.setString(2, date);
+				
+		pstmt.executeUpdate();
+				
+		pstmt.close();
+		conn.close();
+	}
+	
 	public static void main(String[] args) throws Exception {
 		BlockDao b = new BlockDao();
 		Scanner sc = new Scanner(System.in);
@@ -323,6 +420,35 @@ public class BlockDao {
 //			System.out.println("장소이름: " + bl.name);
 //			System.out.println("위도, 경도: " + bl.lat + ", " + bl.lng);
 //		}
+		
+		// HA-28
+//		String startTime = "2022-02-02";
+//		String endTime = "2027-02-02";
+//		List<BlockDto> bd = b.showBlocksBetween(bno, startTime, endTime);
+//		for(int i=0;i<bd.size();i++) {
+//			BlockDto bl = bd.get(i);
+//			System.out.println("색 인덱스: " + bl.colorIdx);
+//			System.out.println("색상 코드: " + bl.colorCode);
+//			System.out.println("블럭 인덱스: " + bl.blockIdx);
+//			System.out.println("블럭 시간: " + bl.startTime + "~" + bl.endTime);
+//			System.out.println("ai 반영여부: " + bl.isCheckedAi);
+//			System.out.println("이동시간: " + bl.travelTime);
+//			System.out.println("장소이름: " + bl.name);
+//			System.out.println("위도, 경도: " + bl.lat + ", " + bl.lng);
+//		}
+		
+//		// HA-29
+//		System.out.print("변경할 블록 인덱스: ");
+//		int blockIdx = sc.nextInt();
+//		sc.nextLine();
+//		System.out.print("이동 시간: ");
+//		int travelTime = sc.nextInt();
+//		sc.nextLine();
+//		b.modifyBlockTravelTime(blockIdx, travelTime);
+		
+		// HA-38
+//		String date = "2026-03-21";
+//		b.delBlockInDate(bno, date);
 		
 		// 정상종료
 		sc.close();

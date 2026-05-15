@@ -539,7 +539,6 @@ public class BoardDao {
 	/** *NY-22.  게시글 정보 조회 (p.18 / 내 일정 게시글1)
 		input : 로그인 한 사람의 id(member.id), 게시글 번호(bno)
 		output : 해당 게시글의 BoardInfoDto, */
-
 	List <BoardInfoDto> getBoardInfo(int memberId, int bno) throws Exception {
 		//DB 접속 
 		String driver = "oracle.jdbc.driver.OracleDriver";
@@ -612,6 +611,7 @@ public class BoardDao {
 	    
 	    return boardInfoDtos;
 	}
+	
 	/** NY-24. -a. 타인의 일정 게시글 복제 (p.20 / 타인의 게시글)
 		input : 복제하려는 게시글 번호(bno), 복제하려는 회원 id(member_id), 출발지(start_place_id), 도착지(arr_place_id) ,여행기간(start_date), 복제된 게시글의 bno
 		output : - 
@@ -660,7 +660,452 @@ public class BoardDao {
 		pstmt.close();
 		conn.close();
 	}
+	
+	/** HA-2. 최신 게시글 조회 (p.2 / 메인페이지)
+	 	a.로그인 버전
+		input : memberId(로그인아이디), page(페이지번호)
+		output : List<BoardDto>
+		주의: 장소가 들어간 블록이 있는 게시글만 - 지도 그려야해서. */
+	List<BoardDto> showBoardsLatestOrder(int memberId, int page) throws Exception {
+		List<BoardDto> list = new ArrayList<>();
+		
+		String driver = "oracle.jdbc.driver.OracleDriver";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String dbId = "ab";
+		String dbPw = "12345";
 
+		Class.forName(driver);
+		Connection conn = DriverManager.getConnection(url, dbId, dbPw);
+
+		String sql = "SELECT bo.bno, bo.title,"
+				+ " EXTRACT(YEAR FROM bo.start_date) 여행년도,"
+				+ " EXTRACT(MONTH FROM bo.start_date) 여행월,"
+				+ " SYSDATE - bo.final_date 수정경과시간,"
+				+ " (SELECT COUNT(*) FROM like_boards lb WHERE lb.bno=bo.bno) 찜수,"
+				+ " (SELECT COUNT(*) FROM like_boards lb WHERE lb.member_id = ? AND lb.bno = bo.bno) \"찜 유무\","
+				+ " p.lat, p.lng"
+				+ " FROM boards bo INNER JOIN blocks bl"
+				+ " ON bo.bno = bl.bno"
+				+ " INNER JOIN places p"
+				+ " ON bl.place_id = p.place_id"
+				+ " ORDER BY bo.final_date DESC, bl.start_time ASC";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setInt(1, memberId);
+
+		ResultSet rs = pstmt.executeQuery();
+		while(rs.next()) {
+			int bno = rs.getInt("bno");
+			String title = rs.getString("title");
+			int year = rs.getInt("여행년도");
+			int month = rs.getInt("여행월");
+			
+			// 수정 경과시간을 문자열 형태로 바꾸기
+			double temp = rs.getDouble("수정경과시간");
+			StringBuilder sb = new StringBuilder();
+			if(temp>14) sb.append("오래");
+			else if(temp>1) sb.append((int)temp + "일");
+			else if(temp/24>1) sb.append((int)(temp/24) + "시간");
+			else sb.append((int)(temp/24/60) + "분");
+			sb.append("전");
+			String elapsedTime = sb.toString();
+			
+			int likedBoardCnt = rs.getInt("찜수");
+			boolean isLikedBoard = rs.getString("찜 유무").equals("1");
+			double lat = rs.getDouble("lat");
+			double lng = rs.getDouble("lng");
+			BoardDto b = new BoardDto(bno, title, year, month, elapsedTime, likedBoardCnt, isLikedBoard, lat, lng);
+			list.add(b);
+		}
+				
+		rs.close();
+		pstmt.close();
+		conn.close();
+		return list;
+	}
+	
+	/** HA-2. 최신 게시글 조회 (p.2 / 메인페이지)
+ 		b.로그아웃 버전 (찜수 표시x)
+		input : page(페이지번호)
+		output : List<BoardDto>
+		주의: 장소가 들어간 블록이 있는 게시글만 - 지도 그려야해서. */
+	List<BoardDto> showBoardsLatestOrder(int page) throws Exception {
+		List<BoardDto> list = new ArrayList<>();
+
+		String driver = "oracle.jdbc.driver.OracleDriver";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String dbId = "ab";
+		String dbPw = "12345";
+
+		Class.forName(driver);
+		Connection conn = DriverManager.getConnection(url, dbId, dbPw);
+
+		String sql = "SELECT bo.bno, bo.title," 
+				+ " EXTRACT(YEAR FROM bo.start_date) 여행년도,"
+				+ " EXTRACT(MONTH FROM bo.start_date) 여행월," 
+				+ " SYSDATE - bo.final_date 수정경과시간,"
+				+ " (SELECT COUNT(*) FROM like_boards lb WHERE lb.bno=bo.bno) 찜수,"
+				+ " p.lat, p.lng" 
+				+ " FROM boards bo INNER JOIN blocks bl" 
+				+ " ON bo.bno = bl.bno"
+				+ " INNER JOIN places p" 
+				+ " ON bl.place_id = p.place_id"
+				+ " ORDER BY bo.final_date DESC, bl.start_time ASC";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+
+		ResultSet rs = pstmt.executeQuery();
+		while (rs.next()) {
+			int bno = rs.getInt("bno");
+			String title = rs.getString("title");
+			int year = rs.getInt("여행년도");
+			int month = rs.getInt("여행월");
+
+			// 수정 경과시간을 문자열 형태로 바꾸기
+			double temp = rs.getDouble("수정경과시간");
+			StringBuilder sb = new StringBuilder();
+			if (temp > 14)
+				sb.append("오래");
+			else if (temp > 1)
+				sb.append((int) temp + "일");
+			else if (temp / 24 > 1)
+				sb.append((int) (temp / 24) + "시간");
+			else
+				sb.append((int) (temp / 24 / 60) + "분");
+			sb.append("전");
+			String elapsedTime = sb.toString();
+
+			int likedBoardCnt = rs.getInt("찜수");
+			double lat = rs.getDouble("lat");
+			double lng = rs.getDouble("lng");
+			BoardDto b = new BoardDto(bno, title, year, month, elapsedTime, likedBoardCnt, false, lat, lng);
+			list.add(b);
+		}
+
+		rs.close();
+		pstmt.close();
+		conn.close();
+		return list;
+	}
+	
+	/** HA-3. 검색으로 게시글 조회 (p.2 / 메인페이지)
+	  	a. 로그인버전
+		input : input(검색키워드), memberId(로그인아이디), page(페이지번호)
+		output : List<BoardDto>
+		주의: 장소가 들어간 블록이 있는 게시글만 - 지도 그려야해서. */
+	List<BoardDto> showBoardsKeyOrder(String input, int memberId, int page) throws Exception {
+		List<BoardDto> list = new ArrayList<>();
+
+		String driver = "oracle.jdbc.driver.OracleDriver";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String dbId = "ab";
+		String dbPw = "12345";
+
+		Class.forName(driver);
+		Connection conn = DriverManager.getConnection(url, dbId, dbPw);
+
+		String sql = "SELECT bo.bno, bo.title,"
+				+ " EXTRACT(YEAR FROM bo.start_date) 여행년도,"
+				+ " EXTRACT(MONTH FROM bo.start_date) 여행월,"
+				+ " SYSDATE - bo.final_date 수정경과시간,"
+				+ " (SELECT COUNT(*) FROM like_boards lb WHERE lb.bno = bo.bno) 찜수,"
+				+ " (SELECT COUNT(*) FROM like_boards lb WHERE lb.member_id = ? AND lb.bno = bo.bno) \"찜 유무\","
+				+ " p.lat, p.lng"
+				+ " FROM boards bo INNER JOIN blocks bl"
+				+ " ON bo.bno = bl.bno"
+				+ " INNER JOIN places p"
+				+ " ON bl.place_id = p.place_id"
+				+ " AND ((bo.title LIKE ? )"
+				+ " OR (p.address LIKE ? ))"
+				+ " ORDER BY 찜수 DESC";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setInt(1, memberId);
+		pstmt.setString(2, "%" + input + "%");
+		pstmt.setString(3, "%" + input + "%");
+
+		ResultSet rs = pstmt.executeQuery();
+		while (rs.next()) {
+			int bno = rs.getInt("bno");
+			String title = rs.getString("title");
+			int year = rs.getInt("여행년도");
+			int month = rs.getInt("여행월");
+
+			// 수정 경과시간을 문자열 형태로 바꾸기
+			double temp = rs.getDouble("수정경과시간");
+			StringBuilder sb = new StringBuilder();
+			if (temp > 14)
+				sb.append("오래");
+			else if (temp > 1)
+				sb.append((int) temp + "일");
+			else if (temp / 24 > 1)
+				sb.append((int) (temp / 24) + "시간");
+			else
+				sb.append((int) (temp / 24 / 60) + "분");
+			sb.append("전");
+			String elapsedTime = sb.toString();
+
+			int likedBoardCnt = rs.getInt("찜수");
+			boolean isLikedBoard = rs.getString("찜 유무").equals("1");
+			double lat = rs.getDouble("lat");
+			double lng = rs.getDouble("lng");
+			BoardDto b = new BoardDto(bno, title, year, month, elapsedTime, likedBoardCnt, isLikedBoard, lat, lng);
+			list.add(b);
+		}
+
+		rs.close();
+		pstmt.close();
+		conn.close();
+		return list;
+	}
+	
+	/** HA-3. 검색으로 게시글 조회 (p.2 / 메인페이지) 
+	 	b. 로그아웃 버전 (찜수 제외)
+	 	input : input(검색키워드),page(페이지번호) 
+		output : List<BoardDto> 
+		주의: 장소가 들어간 블록이 있는 게시글만 - 지도 그려야해서. */
+	List<BoardDto> showBoardsKeyOrder(String input, int page) throws Exception {
+		List<BoardDto> list = new ArrayList<>();
+
+		String driver = "oracle.jdbc.driver.OracleDriver";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String dbId = "ab";
+		String dbPw = "12345";
+
+		Class.forName(driver);
+		Connection conn = DriverManager.getConnection(url, dbId, dbPw);
+
+		String sql = "SELECT bo.bno, bo.title,"
+				+ " EXTRACT(YEAR FROM bo.start_date) 여행년도,"
+				+ " EXTRACT(MONTH FROM bo.start_date) 여행월,"
+				+ " SYSDATE - bo.final_date 수정경과시간,"
+				+ "(SELECT COUNT(*) FROM like_boards lb WHERE lb.bno = bo.bno) 찜수,"
+				+ " p.lat, p.lng"
+				+ " FROM boards bo INNER JOIN blocks bl" 
+				+ " ON bo.bno = bl.bno"
+				+ " INNER JOIN places p" 
+				+ " ON bl.place_id = p.place_id" 
+				+ " AND ((bo.title LIKE ? )"
+				+ " OR (p.address LIKE ? ))" 
+				+ " ORDER BY 찜수 DESC";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, "%" + input + "%");
+		pstmt.setString(2, "%" + input + "%");
+
+		ResultSet rs = pstmt.executeQuery();
+		while (rs.next()) {
+			int bno = rs.getInt("bno");
+			String title = rs.getString("title");
+			int year = rs.getInt("여행년도");
+			int month = rs.getInt("여행월");
+
+			// 수정 경과시간을 문자열 형태로 바꾸기
+			double temp = rs.getDouble("수정경과시간");
+			StringBuilder sb = new StringBuilder();
+			if (temp > 14)
+				sb.append("오래");
+			else if (temp > 1)
+				sb.append((int) temp + "일");
+			else if (temp / 24 > 1)
+				sb.append((int) (temp / 24) + "시간");
+			else
+				sb.append((int) (temp / 24 / 60) + "분");
+			sb.append("전");
+			String elapsedTime = sb.toString();
+
+			int likedBoardCnt = rs.getInt("찜수");
+			double lat = rs.getDouble("lat");
+			double lng = rs.getDouble("lng");
+			BoardDto b = new BoardDto(bno, title, year, month, elapsedTime, likedBoardCnt, false, lat, lng);
+			list.add(b);
+		}
+
+		rs.close();
+		pstmt.close();
+		conn.close();
+		return list;
+	}
+	
+	/** HA-31 여행경비 수정 (p.18 / 내 일정 게시글1)
+		a. AI 업데이트 시
+		input : bno(게시글번호), maxCost(새AI예상최대비용), transportCost(새교통비), foodCost(새식비), roomCost(새숙소비), etcCost(새기타경비)  
+		output : - */
+	void modifyCostAi(int bno, int maxCost, int transportCost, int foodCost, int roomCost, int etcCost) throws Exception {
+		String driver = "oracle.jdbc.driver.OracleDriver";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String dbId = "ab";
+		String dbPw = "12345";
+				
+		Class.forName(driver);
+		Connection conn = DriverManager.getConnection(url, dbId, dbPw);
+				
+		String sql = "UPDATE boards SET max_cost = ?, transport_cost = ?, food_cost = ?, room_cost = ?, etc_cost = ?, final_date = SYSDATE WHERE bno = ?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setInt(1, maxCost);
+		pstmt.setInt(2, transportCost);
+		pstmt.setInt(3, foodCost);
+		pstmt.setInt(4, roomCost);
+		pstmt.setInt(5, etcCost);
+		pstmt.setInt(6, bno);
+				
+		pstmt.executeUpdate();
+				
+		pstmt.close();
+		conn.close();
+	}
+	
+	/** HA-31 여행경비 수정 (p.18 / 내 일정 게시글1)
+		b. 교통비
+		input : bno(게시글번호), transportCost(새교통비)
+		output : - */
+	void modifyTransportCost(int bno, int transportCost) throws Exception {
+		String driver = "oracle.jdbc.driver.OracleDriver";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String dbId = "ab";
+		String dbPw = "12345";
+
+		Class.forName(driver);
+		Connection conn = DriverManager.getConnection(url, dbId, dbPw);
+
+		String sql = "UPDATE  boards SET transport_cost = ?, final_date = SYSDATE WHERE bno = ?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setInt(1, transportCost);
+		pstmt.setInt(2, bno);
+
+		pstmt.executeUpdate();
+
+		pstmt.close();
+		conn.close();
+	}
+	
+	/** HA-31 여행경비 수정 (p.18 / 내 일정 게시글1)
+		c. 식비
+		input : bno(게시글번호), foodCost(새교통비)
+		output : - */
+	void modifyFoodCost(int bno, int foodCost) throws Exception {
+		String driver = "oracle.jdbc.driver.OracleDriver";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String dbId = "ab";
+		String dbPw = "12345";
+
+		Class.forName(driver);
+		Connection conn = DriverManager.getConnection(url, dbId, dbPw);
+
+		String sql = "UPDATE  boards SET food_cost = ?, final_date = SYSDATE WHERE bno = ?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setInt(1, foodCost);
+		pstmt.setInt(2, bno);
+
+		pstmt.executeUpdate();
+
+		pstmt.close();
+		conn.close();
+	}
+	
+	/** HA-31 여행경비 수정 (p.18 / 내 일정 게시글1)
+		d. 숙소비
+		input : bno(게시글번호), roomCost(새교통비)
+		output : - */
+	void modifyRoomCost(int bno, int roomCost) throws Exception {
+		String driver = "oracle.jdbc.driver.OracleDriver";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String dbId = "ab";
+		String dbPw = "12345";
+
+		Class.forName(driver);
+		Connection conn = DriverManager.getConnection(url, dbId, dbPw);
+
+		String sql = "UPDATE  boards SET room_cost = ?, final_date = SYSDATE WHERE bno = ?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setInt(1, roomCost);
+		pstmt.setInt(2, bno);
+
+		pstmt.executeUpdate();
+
+		pstmt.close();
+		conn.close();
+	}
+	
+	/** HA-31 여행경비 수정 (p.18 / 내 일정 게시글1)
+		e. 기타경비
+		input : bno(게시글번호), etcCost(새교통비)
+		output : - */
+	void modifyetcCost(int bno, int etcCost) throws Exception {
+		String driver = "oracle.jdbc.driver.OracleDriver";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String dbId = "ab";
+		String dbPw = "12345";
+
+		Class.forName(driver);
+		Connection conn = DriverManager.getConnection(url, dbId, dbPw);
+
+		String sql = "UPDATE  boards SET etc_cost = ?, final_date = SYSDATE WHERE bno = ?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setInt(1, etcCost);
+		pstmt.setInt(2, bno);
+
+		pstmt.executeUpdate();
+
+		pstmt.close();
+		conn.close();
+	}
+	
+	/** HA-35 추천여행지 조회 (p.8 / 일정표 만들기-떠나고 싶은 도시는? -1)
+		input : -
+		output : List<RecommendedPlacesDto> */
+	List<RecommendedPlacesDto> viewRecommendedPlace() throws Exception {
+		List<RecommendedPlacesDto> list = new ArrayList<RecommendedPlacesDto>();
+		
+		String driver = "oracle.jdbc.driver.OracleDriver";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String dbId = "ab";
+		String dbPw = "12345";
+
+		Class.forName(driver);
+		Connection conn = DriverManager.getConnection(url, dbId, dbPw);
+
+		String sql = "SELECT r.place_id, r.spot, p.lat, p.lng"
+				+ " FROM recommended_places r INNER JOIN places p"
+				+ "	ON r.place_id = p.place_id"
+				+ " ORDER BY num";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+
+		ResultSet rs = pstmt.executeQuery();
+		while (rs.next()) {
+			String rcPlaceId = rs.getString("place_id");
+			String name = rs.getString("spot");
+			double lat = rs.getDouble("lat");
+			double lng = rs.getDouble("lng");
+			RecommendedPlacesDto r = new RecommendedPlacesDto(rcPlaceId, name, lat, lng);
+			list.add(r);
+		}
+				
+		rs.close();
+		pstmt.close();
+		conn.close();
+		return list;
+	}
+	
+	/** HA-36 게시글 삭제 (p.18 / 내 일정 게시글 1)
+		input : bno(게시글번호)
+		output : - 
+		주의: 블럭이 있다면 삭제할 수 없음 */
+	void delBoard(int bno) throws Exception {
+		String driver = "oracle.jdbc.driver.OracleDriver";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String dbId = "ab";
+		String dbPw = "12345";
+
+		Class.forName(driver);
+		Connection conn = DriverManager.getConnection(url, dbId, dbPw);
+
+		String sql = "DELETE FROM boards WHERE bno = ?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setInt(1, bno);
+
+		pstmt.executeUpdate();
+
+		pstmt.close();
+		conn.close();
+	}
+	
 	public static void main(String[] args) throws Exception {
 		
 		BoardDao boardDao = new BoardDao();
@@ -828,6 +1273,56 @@ public class BoardDao {
 //		String startDate = "20270404";
 //		boardDao.copyBoard(bno, memberId, startPlaceId, startDate);
 		
+		// HA-2 a,b HA-3 a,b
+//		int memberId = 1;
+//		// HA-2 a
+//		List<BoardDto> list = boardDao.showBoardsLatestOrder(memberId, 0);
+//		// HA-2 b
+//		List<BoardDto> list = boardDao.showBoardsLatestOrder(0);
+		// HA-3 a
+//		String key = "부산";
+//		List<BoardDto> list = boardDao.showBoardsKeyOrder(key, memberId, 0);
+		// HA-3 b
+//		String key = "부산";
+//		List<BoardDto> list = boardDao.showBoardsKeyOrder(key, 0);
+//		int tempBno = -1;
+//		for(int i=0;i<list.size();i++) {
+//			BoardDto temp = list.get(i);
+//			if(temp.bno == tempBno) {
+//				System.out.println("위도, 경도: " + temp.lat + ", " + temp.lng);
+//			}else {
+//				System.out.println();
+//				System.out.println("게시글 제목: " + temp.title);
+//				System.out.println("여행년도, 월: " + temp.year + "년 " + temp.month + "월");
+//				System.out.println("수정 후 경과: " + temp.elapsedTime);
+//				System.out.println("찜수: " + temp.likedBoardCnt);
+//				System.out.println("찜유무: " + (temp.isLikedBoard ? "❤️" : "🤍"));
+//				System.out.println("위도, 경도: " + temp.lat + ", " + temp.lng);
+//			}
+//			tempBno = temp.bno;
+//		}
+		
+		// HA-31 a b c d e
+//		int bno = 100;
+//		boardDao.modifyCostAi(bno, 1, 1, 1, 1, 1);
+//		boardDao.modifyTransportCost(bno, 2);
+//		boardDao.modifyFoodCost(bno, 2);
+//		boardDao.modifyRoomCost(bno, 2);
+//		boardDao.modifyetcCost(bno, 2);
+		
+		// HA-35
+//		List<RecommendedPlacesDto> list = boardDao.viewRecommendedPlace();
+//		for(int i=0;i<list.size();i++) {
+//			RecommendedPlacesDto r = list.get(i);
+//			System.out.println("추천장소ID: " + r.rcPlaceId);
+//			System.out.println("이름: " + r.name);
+//			System.out.println("위도, 경도: " + r.lat + ", " + r.lng);
+//			System.out.println();
+//		}
+		
+		// HA-36
+//		int bno = 100;
+//		boardDao.delBoard(bno);
 	}
 
 }
