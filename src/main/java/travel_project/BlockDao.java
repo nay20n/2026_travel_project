@@ -65,6 +65,7 @@ public class BlockDao {
 	}
 	
 	/** HA-22 블록 삭제 (p.11 / 일정표-메인(주 단위))
+		a. 인덱스번호로 삭제
 		input : 블록인덱스(block_idx)
 		output : - */
 	void delBlock(int blockIdx) throws Exception {
@@ -82,6 +83,30 @@ public class BlockDao {
 				
 		pstmt.executeUpdate();
 				
+		pstmt.close();
+		conn.close();
+	}
+	
+	/** HA-22 블록 삭제 (p.11 / 일정표-메인(주 단위))
+		b. 해당 게시글 전체 블록 삭제
+		input : 글번호(bno), 작성자(memberId)
+		output : - */
+	void delBlock(int bno, int memberId) throws Exception {
+		String driver = "oracle.jdbc.driver.OracleDriver";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String dbId = "ab";
+		String dbPw = "12345";
+
+		Class.forName(driver);
+		Connection conn = DriverManager.getConnection(url, dbId, dbPw);
+
+		String sql = "DELETE FROM (SELECT * FROM blocks bl INNER JOIN boards bo ON bl.bno = bo.bno WHERE bo.bno = ? AND writer_id = ?)";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setInt(1, bno);
+		pstmt.setInt(2, memberId);
+
+		pstmt.executeUpdate();
+
 		pstmt.close();
 		conn.close();
 	}
@@ -363,10 +388,13 @@ public class BlockDao {
 //		b.addBlockPlace(blockIdx, placeId);
 		
 		// HA-22
+		// a
 //		System.out.print("변경할 블록 인덱스: ");
 //		int blockIdx = sc.nextInt();
 //		sc.nextLine();
 //		b.delBlock(blockIdx);
+		// b
+//		b.delBlock(bno, 100);
 		
 		// HA-23
 //		System.out.print("변경할 블록 인덱스: ");
