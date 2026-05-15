@@ -219,12 +219,69 @@ public class PlaceDao {
 		conn.close();
 	}
 	
+	/** NY-6. 우리의 DB에 없는 장소 삽입  (p7 / 일정표만들기-출발지는?,p.8 일정표만들기-떠나고 싶은도시는?, p.11 / 일정표 - 메인(주)) 
+		input : API에서 가져온 장소 정보들, 정보 사진들, 사진출력순서
+		output: - */
+	void addPlace(String placeId, String name, String category, String address, double lat, double lng, String website_url) throws Exception {
+		String driver = "oracle.jdbc.driver.OracleDriver";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String dbId = "ab";
+		String dbPw = "12345";
+				
+		Class.forName(driver);
+		Connection conn = DriverManager.getConnection(url, dbId, dbPw);
+				
+		String sql = "INSERT INTO places (place_id, name, category, address,lat,lng,website_url) "
+				+ "VALUES (?,?,?,?,?,?,?) ";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, placeId);
+		pstmt.setString(2, name);
+		pstmt.setString(3, category);
+		pstmt.setString(4, address);
+		pstmt.setDouble(5, lat);
+		pstmt.setDouble(6, lng);
+		pstmt.setString(7, website_url);
+				
+		pstmt.executeUpdate();
+				
+		pstmt.close();
+		conn.close();
+	}
+	
+	/** NY-7. 우리의 DB에 있는지 확인(p7 / 일정표만들기-출발지는?,p.8 일정표만들기-떠나고 싶은도시는?, p.11 / 일정표 - 메인(주))
+	input : 장소 (place_id)
+	output : true 존재 O, false 존재 X */
+	boolean isPlaceExists(String placeId) throws Exception {
+		String driver = "oracle.jdbc.driver.OracleDriver";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String dbId = "ab";
+		String dbPw = "12345";
+	
+		Class.forName(driver);
+		Connection conn = DriverManager.getConnection(url, dbId, dbPw);
+	
+		String sql = "SELECT COUNT(*) \"장소 DB 존재\" FROM places WHERE place_id = ?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, placeId);
+	
+		ResultSet rs = pstmt.executeQuery();
+		boolean isExisted = false;
+		if (rs.next()) {
+			isExisted = rs.getInt("장소 DB 존재") == 1 ? true : false;
+		}
+				
+		rs.close();
+		pstmt.close();
+		conn.close();
+		return isExisted;
+	}
+	
 	public static void main(String[] args) throws Exception {
 		Scanner sc = new Scanner(System.in);
 		PlaceDao p = new PlaceDao();
 		
 		// 기본 설정값
-		String placeId = "ChIJe1QMOBvraDUR9__2s01MxDE";
+		//String placeId = "ChIJe1QMOBvraDUR9__2s01MxDE";
 		int memberId = 100;
 		String image = "im.png";
 		
@@ -283,6 +340,20 @@ public class PlaceDao {
 //		System.out.print("댓글 내용: ");
 //		String content = sc.nextLine();
 //		p.modifyPlaceReview(reviewIdx, memberId, content);
+		
+		// NY-6.
+//		String placeId = "test";
+//		String name = "테스트";
+//		String categort = "테스트";
+//		String address = "주소";
+//		double lat = 3.0;
+//		double lng = 3.4909;
+//		String website_url = "http: ";
+//		p.addPlace(placeId, name, categort, address, lat, lng, website_url);
+		
+		// NY-7.
+		String placeId = "ChIJe1QMOBvraDUR9__2s01MxDE";
+		System.out.println("DB 존재 : " + p.isPlaceExists(placeId));
 		
 		// 정상종료
 		sc.close();
