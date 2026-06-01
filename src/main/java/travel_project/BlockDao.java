@@ -229,7 +229,7 @@ public class BlockDao {
 	/** HA-27 게시글의 블록 정보 전체 조회 (p.11 / 일정표-메인(주 단위))
 		input : 게시글번호
 		output : List<BlockDto> 
-		주의 : 장소가 없는 경우 위도, 경도에 0이 들어감 */
+		주의 : 장소가 없는 경우 위도, 경도에 -1이 들어감 */
 	List<BlockDto> showAllBlocks(int bno) throws Exception {
 		List<BlockDto> list = new ArrayList<>();
 		
@@ -262,6 +262,10 @@ public class BlockDao {
 			String name = rs.getString("name");
 			double lat = rs.getDouble("lat");
 			double lng = rs.getDouble("lng");
+			if(lat==0&&lng==0) {
+				lat = -1;
+				lng = -1;
+			}
 			BlockDto b = new BlockDto(blockIdx, startTime, endTime, isCheckedAi, colorIdx, travelTime, colorCode, name, colorCode, name, lat, lng);
 			list.add(b);
 		}
@@ -275,7 +279,7 @@ public class BlockDao {
 	/** HA-28 게시글의 블록 정보 특정 시간 사이 조회 (p.11 / 일정표-메인(주 단위))
 		input : 게시글번호(bno), 시작시간(inputStartTime), 끝시간(inputEndTime)  
 		output : ArrayList<BlockDto> 
-		주의 : 장소가 없는 경우 위도, 경도에 0이 들어감*/
+		주의 : 장소가 없는 경우 위도, 경도에 -1이 들어감*/
 	List<BlockDto> showBlocksBetween(int bno, String inputStartTime, String inputEndTime) throws Exception {
 		List<BlockDto> list = new ArrayList<>();
 		
@@ -312,6 +316,10 @@ public class BlockDao {
 			String name = rs.getString("name");
 			double lat = rs.getDouble("lat");
 			double lng = rs.getDouble("lng");
+			if(lat==0&&lng==0) {
+				lat = -1;
+				lng = -1;
+			}
 			BlockDto b = new BlockDto(blockIdx, startTime, endTime, isCheckedAi, colorIdx, travelTime, colorCode, name, colorCode, name, lat, lng);
 			list.add(b);
 		}
