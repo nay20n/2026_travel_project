@@ -404,9 +404,10 @@ public class BlockDao {
 		return colorCodes;
 	}
 	/** NY–24-b. 게시글 전체 블럭 복사, 복제할 게시글 블럭 마다 반복
-		input : 복제 완료한 게시글(bno), 복제하고 싶은 번호(bno)
-		ouput: - */
-	void copyBlock(int newBno, int bno) throws Exception{
+		input : 새 게시글 번호(newBno), 복제하고 싶은 게시글 번호(bno)
+		ouput: - 
+		주의: startDate 형식 2026-06-02*/
+	void copyBlock(int newBno, int bno, String startDate) throws Exception{
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
 		String dbId = "ab";
@@ -415,28 +416,24 @@ public class BlockDao {
 		Class.forName(driver);
 		Connection conn = DriverManager.getConnection(url, dbId, dbPw);
 				
-		String sql = "INSERT INTO blocks(block_idx, bno, start_time, end_time, checked_ai, color_idx) "
-				+ "SELECT "
-				+ "	SEQ_BLOCK.NEXTVAL, "
-				+ "?, "
-				+ "start_time + (TO_DATE(?, 'YYYY-MM-DD') - TRUNC(start_time)), "
-				+ "end_time + (TO_DATE(?, 'YYYY-MM-DD')  - TRUNC(end_time)), "
-				+ "0, "
-				+ "color_idx) "
-				+ "FROM block "
-				+ "WHERE bno = ? ";
+		String sql = "INSERT INTO blocks(block_idx, bno, start_time, end_time, checked_ai, color_idx)"
+				+ " SELECT SEQ_BLOCK.NEXTVAL, ?,"
+				+ " start_time + (TO_DATE(?, 'YYYY-MM-DD') - TRUNC(start_time)),"
+				+ " end_time + (TO_DATE(?, 'YYYY-MM-DD')  - TRUNC(end_time)),"
+				+ " 0, color_idx)"
+				+ " FROM blocks"
+				+ " WHERE bno = ? ";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setInt(1,newBno);
-		pstmt.setInt(2,bno);
+		pstmt.setString(2,startDate);
+		pstmt.setString(3,startDate);
+		pstmt.setInt(4, bno);
 		
 		pstmt.executeUpdate();
 		
 		pstmt.close();
 		conn.close();
 	}
-	
-	
-	
 	
 	public static void main(String[] args) throws Exception {
 		BlockDao b = new BlockDao();
