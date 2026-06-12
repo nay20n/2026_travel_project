@@ -5,7 +5,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MemberDao {
 	
@@ -282,7 +284,7 @@ public class MemberDao {
 	/** NY-1. 내 게시글들 조회, 공동작업자부분도 띄어줘야함 (p.4 / 마이페이지)
 		input : 로그인한 사람의 member_id, 페이지번호
 		output : 내 일정들 나열 (List<MypageDto>) */
-	List<MypageDto> getMyBoard(int memberId, int page) throws Exception {
+	List<Map<String,Object>> getMyBoard(int memberId, int page) throws Exception {
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
 		String dbId = "ab";
@@ -303,11 +305,12 @@ public class MemberDao {
 		pstmt.setInt(2, memberId);
 		pstmt.setInt(3, memberId);
 	
-		//3. 결과테이블 : “ResultSet객체”
 		ResultSet rs = pstmt.executeQuery();
-		List<MypageDto> mypageDtos = new ArrayList<>();
-	    while (rs.next()) { // 결과 행으로 이동 (필수!)
-	    	int bno = rs.getInt("게시글 번호");
+		List<Map<String,Object>> mypageDtos = new ArrayList<>();
+	    while (rs.next()) { 
+	    	Map<String,Object> tempMap = new HashMap<>();
+	    	tempMap.put("bno", rs.getInt("게시글 번호"));
+	    	tempMap.put("dDayInt", rs.getInt("디데이"));
 	    	int dDayInt = rs.getInt("디데이");
 	    	String dDay = "";
 	    	if(dDayInt > 0) {
@@ -315,12 +318,12 @@ public class MemberDao {
 	    	} else if (dDayInt < 0 ) {
 	    		dDay = "D-" + Math.abs(dDayInt);
 	    	} else { dDay = "D-day"; }
-	    	String title = rs.getString("일정 이름");
-	    	String nickname = rs.getString("작성자");
-	    	boolean isLiked = (rs.getInt("찜 유무")==1 ? true : false);
-	    	int likeCnt = rs.getInt("찜 개수");
-	    	MypageDto mypageDto = new MypageDto(bno, dDay, title, nickname, isLiked, likeCnt);
-	    	mypageDtos.add(mypageDto);
+	    	tempMap.put("dDay", dDay);
+	    	tempMap.put("title", rs.getString("일정 이름"));
+	    	tempMap.put("nickname", rs.getString("작성자"));
+	    	tempMap.put("isLiked", rs.getInt("찜 유무")==1);
+	    	tempMap.put("likeCnt", rs.getInt("찜 개수"));
+	    	mypageDtos.add(tempMap);
 	    }
 	
 	    rs.close();
@@ -333,7 +336,7 @@ public class MemberDao {
 	/** NY-2. 내가 찜한 일정들 조회 (p.4 / 마이페이지)
 		input : 로그인한 사람의 member_id, 페이지 번호 
 		output : 로그인한 사람이 찜한 게시물 조회 (List<MyPageDto>) */
-	List<MypageDto> getLikedBoard(int memberId, int page) throws Exception {
+	List<Map<String,Object>> getLikedBoard(int memberId, int page) throws Exception {
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
 		String dbId = "ab";
@@ -355,16 +358,15 @@ public class MemberDao {
 		pstmt.setInt(2, memberId);
 	
 		ResultSet rs = pstmt.executeQuery();
-		List<MypageDto> mypageDtos = new ArrayList<>();
-	    while (rs.next()) { 
-	    	int bno = rs.getInt("찜한 게시글 번호");
-	    	String dDay = null;
-	    	String title = rs.getString("일정이름");
-	    	String nickname = rs.getString("작성자");
-	    	boolean isLiked = (rs.getInt("찜 유무")==1 ? true : false);
-	    	int likeCnt = rs.getInt("찜 개수");
-	    	MypageDto mypageDto = new MypageDto(bno, dDay, title, nickname, isLiked, likeCnt);
-	    	mypageDtos.add(mypageDto);
+		List<Map<String,Object>> mypageDtos = new ArrayList<>();
+	    while (rs.next()) {
+	    	Map<String,Object> tempMap = new HashMap<>();
+	    	tempMap.put("bno", rs.getInt("찜한 게시글 번호"));
+	    	tempMap.put("title", rs.getString("일정이름"));
+	    	tempMap.put("nickname", rs.getString("작성자"));
+	    	tempMap.put("isLiked", rs.getInt("찜 유무")==1);
+	    	tempMap.put("likeCnt", rs.getInt("찜 개수"));
+	    	mypageDtos.add(tempMap);
 	    }
 	
 	    rs.close();
@@ -377,7 +379,7 @@ public class MemberDao {
 	/** NY-3. 내가 댓글 단 일정 조회 (p.4 / 마이페이지) 
 		input : 로그인한 사람의 member_id, 페이지 번호
 		output : 로그인한 사람이 댓글을 단 게시물 조회  (List<MyPageDto>) */
-	List<MypageDto> getCommentBoard(int memberId, int page) throws Exception {
+	List<Map<String,Object>> getCommentBoard(int memberId, int page) throws Exception {
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
 		String dbId = "ab";
@@ -400,19 +402,16 @@ public class MemberDao {
 		pstmt.setInt(2, memberId);
 		pstmt.setInt(3, memberId);
 	
-		//3. 결과테이블 : “ResultSet객체”
 		ResultSet rs = pstmt.executeQuery();
-		List<MypageDto> mypageDtos = new ArrayList<>();
-	    while (rs.next()) { // 결과 행으로 이동 (필수!)
-	    	int bno = rs.getInt("댓글을 단 게시글 번호");
-	    	String dDay = null;
-	    	String title = rs.getString("일정이름");
-	    	String nickname = rs.getString("작성자");
-	    	boolean isLiked = (rs.getInt("찜 유무")==1 ? true : false);
-	    	int likeCnt = rs.getInt("찜 개수");
-	    	
-	    	MypageDto mypageDto = new MypageDto(bno, dDay, title, nickname, isLiked, likeCnt);
-	    	mypageDtos.add(mypageDto);
+		List<Map<String,Object>> mypageDtos = new ArrayList<>();
+	    while (rs.next()) {
+	    	Map<String,Object> tempMap = new HashMap<>();
+	    	tempMap.put("bno", rs.getInt("댓글을 단 게시글 번호"));
+	    	tempMap.put("title", rs.getString("일정이름"));
+	    	tempMap.put("nickname", rs.getString("작성자"));
+	    	tempMap.put("isLiked", rs.getInt("찜 유무")==1);
+	    	tempMap.put("likeCnt", rs.getInt("찜 개수"));
+	    	mypageDtos.add(tempMap);
 	    }
 	
 	    rs.close();
