@@ -5,7 +5,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class CommentDao {
@@ -42,7 +44,7 @@ public class CommentDao {
 	/** NY-20. 댓글 목록 조회 (p.19 / 내 일정 게시글) 
 		input : 현재 보고 있는 게시글의 번호(bno), 페이지 번호
 		output : List<CommentDto> */
-	List<CommentDto> getComment(int bno, int page) throws Exception {
+	List<Map<String, Object>> getComment(int bno, int page) throws Exception {
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
 		String dbId = "ab";
@@ -57,21 +59,22 @@ public class CommentDao {
 		pstmt.setInt(1, bno);
 
 		ResultSet rs = pstmt.executeQuery();
-		List<CommentDto> commentDtos = new ArrayList<>();
+//		List<CommentDto> commentDtos = new ArrayList<>();
+		List<Map<String,Object>> mapList = new ArrayList<>();
 		while (rs.next()) {
-			String profile = rs.getString("프로필 사진");
-			int memberId = rs.getInt("멤버ID");
-			String nickname = rs.getString("닉네임");
-			String content = rs.getString("내용");
-			String finalDate = rs.getString("작성일");
-			CommentDto commentDto = new CommentDto(profile, memberId, nickname, content, finalDate);
-			commentDtos.add(commentDto);
+			Map<String, Object> tempMap= new HashMap<String,Object>();
+			tempMap.put("profileImg",rs.getString("프로필 사진"));
+			tempMap.put("memberId",rs.getInt("멤버ID"));
+			tempMap.put("writerNick",rs.getString("닉네임"));
+			tempMap.put("content",rs.getString("내용"));
+			tempMap.put("date",rs.getString("작성일"));
+			mapList.add(tempMap);
 		}
 		rs.close();
 		pstmt.close();
 		conn.close();
 
-		return commentDtos;
+		return mapList;
 	}
 
 	/** HA-32 게시글 댓글 삭제 (p.19 / 내 일정 게시글2) 해당사용자가 게시글 작성자 또는 댓글 작성자인지 확인 필요
@@ -128,6 +131,31 @@ public class CommentDao {
 		conn.close();
 	}
 	
+	/** HA-34 게시글 댓글 수정 (p.19 / 내 일정 게시글2)
+	input : 댓글번호(cno), 수정 할 내용(content)  
+	output : - */
+	void modifyComment(int cno, String content) throws Exception {
+		// DB 접속
+		String driver = "oracle.jdbc.driver.OracleDriver";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String dbId = "ab";
+		String dbPw = "12345";
+	
+		Class.forName(driver);
+		Connection conn = DriverManager.getConnection(url, dbId, dbPw);
+	
+		String sql = "UPDATE comments SET content=? WHERE cno=?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, content);
+		pstmt.setInt(2, cno);
+		
+	
+		pstmt.executeUpdate();
+	
+		pstmt.close();
+		conn.close();
+	}
+	
 	public static void main(String[] args) throws Exception{
 		Scanner sc = new Scanner(System.in);
 		CommentDao commentDto = new CommentDao();
@@ -139,14 +167,10 @@ public class CommentDao {
 		 //NY-20.
 //		 int bno = 2;
 //		 int page = 1;
-//		 List<CommentDto> list = commentDto.getComment(bno, page);
+//		 List<Map<String,Object>> list = commentDto.getComment(bno, page);
 //		 for(int i=0; i<list.size(); i++) {
-//			 System.out.println("프로필 사진 : " + list.get(i).profileImg);
-//			 System.out.println("작성자Id : " + list.get(i).memberId);
-//			 System.out.println("닉네임 : " + list.get(i).writerNick);
-//			 System.out.println("내용 : " + list.get(i).content);
-//			 System.out.println("작성일 : " + list.get(i).date);
-//			 System.out.println();
+//			 System.out.println(list.get(i));
+////			 System.out.println(list.get(i).get("memberId").getClass());
 //		 }
 		 
 		 //HA-32.
@@ -165,6 +189,12 @@ public class CommentDao {
 //		String content  = sc.next();
 //		commentDto.insertComment(bno, id, content);
 		 
+		 //HA-34.
+		System.out.print("수정할 댓글 번호:");
+		int cno = sc.nextInt();
+		System.out.print("바꿀 내용:");
+		String content = sc.next();
+		commentDto.modifyComment(cno, content);
 	}
 
 }

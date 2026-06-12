@@ -5,7 +5,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class AiBlockDao {
@@ -86,7 +88,7 @@ public class AiBlockDao {
 		input : 글번호(bno)
 		output : ArrayList<AiBlocksDto> 
 		이동시간이 만약 null일 경우 -1 리턴*/
-	List <AiBlocksDto> getAiBlock(int bno) throws Exception {
+	List <Map<String,Object>> getAiBlock(int bno) throws Exception {
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
 		String dbId = "ab";
@@ -114,26 +116,26 @@ public class AiBlockDao {
 		
 		// 3. 결과테이블 : “ResultSet객체”
 		ResultSet rs = pstmt.executeQuery();
-		List<AiBlocksDto> aiBlocksDtos = new ArrayList<>();
+//		List<AiBlocksDto> aiBlocksDtos = new ArrayList<>();
+		List<Map<String,Object>> mapList = new ArrayList<>();
 		while (rs.next()) {
-			int aiBlockIdx = rs.getInt("블럭 인덱스");
-			int bno1 = rs.getInt("게시글 번호");
-			String placeId = rs.getString("장소id");
-			String aiStartTime = rs.getString("시작 시간");
-			String aiEndTime = rs.getString("끝 시간");
-			//int aiTravelTime = rs.getInt("이동 시간");
-			int aiTravelTime = (rs.getString("이동 시간")==null?-1:rs.getInt("이동 시간"));
-			String name = rs.getString("장소 이름");
-			double lat = rs.getDouble("위도");
-			double lng = rs.getDouble("경도");
-			AiBlocksDto aiBlocksDto = new AiBlocksDto(aiBlockIdx, bno1, placeId, aiStartTime, aiEndTime, aiTravelTime, name, lat, lng);
-			aiBlocksDtos.add(aiBlocksDto);
+			Map<String,Object> tempsMap  = new HashMap<>();
+			tempsMap.put("aiBlockIdx", rs.getInt("블럭 인덱스"));
+			tempsMap.put("bno", rs.getInt("게시글 번호"));
+			tempsMap.put("placeId", rs.getString("장소id"));
+			tempsMap.put("aiStartTime", rs.getString("시작 시간"));
+			tempsMap.put("aiEndTime", rs.getString("끝 시간"));
+			tempsMap.put("aiTravelTime", rs.getInt("이동 시간"));
+			tempsMap.put("name", rs.getString("장소 이름"));
+			tempsMap.put("lat", rs.getDouble("위도"));
+			tempsMap.put("lng", rs.getDouble("경도"));
+			mapList.add(tempsMap);
 		}
 		rs.close();
 		pstmt.close();
 		conn.close();
 		
-		return aiBlocksDtos;
+		return mapList;
 	}
 
 	public static void main(String[] args) throws Exception {
@@ -158,18 +160,9 @@ public class AiBlockDao {
 		//HA-37.
 		System.out.print("ai 블럭 조회할 게시글 번호 : ");
 		int bno = sc.nextInt();
-		List<AiBlocksDto> list = a.getAiBlock(bno);
+		List<Map<String,Object>> list = a.getAiBlock(bno);
 		for(int i=0; i<list.size(); i++) {
-			System.out.println();
-			System.out.println("블럭 인덱스 : " + list.get(i).aiBlockIdx);
-			System.out.println("게시글 번호 : " + list.get(i).bno);
-			System.out.println("장소 id : " + list.get(i).placeId);
-			System.out.println("시작 시간 : " + list.get(i).aiStartTime);
-			System.out.println("끝 시간 : " + list.get(i).aiEndTime);
-			System.out.println("이동 시간 : " + list.get(i).aiTravelTime);
-			System.out.println("장소 이름 : " + list.get(i).name);
-			System.out.println("위도 : " + list.get(i).lat);
-			System.out.println("경도 : " + list.get(i).lng);
+			System.out.println(list.get(i));
 		}
 		
 	}

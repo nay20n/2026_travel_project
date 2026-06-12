@@ -5,7 +5,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class BlockDao {
@@ -185,8 +187,7 @@ public class BlockDao {
 	/** HA-26 블록 팝업창 정보 조회 (p.11 / 일정표-메인(주 단위))
 		input : 블록인덱스(blockIdx) 
 		output : 해당 블록의 BlockDto */
-	BlockInfoDto viewBlockDetails(int blockIdx) throws Exception {
-		BlockInfoDto b = null;
+	Map<String,Object> viewBlockDetails(int blockIdx) throws Exception {
 		
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
@@ -204,35 +205,33 @@ public class BlockDao {
 				+ "	WHERE block_idx = ?";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setInt(1, blockIdx);
-
+		
+		Map<String, Object> map = new HashMap();
 		ResultSet rs = pstmt.executeQuery();
 		if(rs.next()) {
-			String startTime = rs.getString("start_time");
-			String endTime = rs.getString("end_time");
-			boolean isCheckedAi = rs.getInt("checked_ai")==1;
-			int colorIdx = rs.getInt("color_idx");
-			String colorCode = rs.getString("color_code");
-			String name = rs.getString("name");
-			String category = rs.getString("category");
-			String address = rs.getString("address");
-			double lat = rs.getDouble("lat");
-			double lng = rs.getDouble("lng");
-			b = new BlockInfoDto(startTime, endTime, isCheckedAi, colorIdx, colorCode, name, category, address, lat, lng);
+			map.put("startTime", rs.getString("start_time"));
+			map.put("endTime", rs.getString("end_time"));
+			map.put("isCheckedAi", rs.getInt("checked_ai")==1);
+			map.put("colorIdx", rs.getInt("color_idx"));
+			map.put("colorCode",rs.getString("color_code") );
+			map.put("name", rs.getString("name"));
+			map.put("category", rs.getString("category"));
+			map.put("address", rs.getString("address"));
+			map.put("lat", rs.getDouble("lat"));
+			map.put("lng", rs.getDouble("lng"));
 		}
 				
 		rs.close();
 		pstmt.close();
 		conn.close();
-		return b;
+		return map;
 	}
 	
 	/** HA-27 게시글의 블록 정보 전체 조회 (p.11 / 일정표-메인(주 단위))
 		input : 게시글번호
-		output : List<BlockDto> 
+		output : List Map<String, Object> 
 		주의 : 장소가 없는 경우 위도, 경도에 0이 들어감 */
-	List<BlockDto> showAllBlocks(int bno) throws Exception {
-		List<BlockDto> list = new ArrayList<>();
-		
+	List<Map<String, Object>> showAllBlocks(int bno) throws Exception {
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
 		String dbId = "ab";
@@ -250,26 +249,28 @@ public class BlockDao {
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setInt(1, bno);
 
+		List<Map<String,Object>> mapList = new ArrayList<>();
 		ResultSet rs = pstmt.executeQuery();
 		while(rs.next()) {
-			int blockIdx = rs.getInt("block_idx");
-			String startTime = rs.getString("start_time");
-			String endTime = rs.getString("end_time");
-			boolean isCheckedAi = rs.getInt("checked_ai")==1;
-			int travelTime = rs.getInt("travel_time");
-			int colorIdx = rs.getInt("color_idx");
-			String colorCode = rs.getString("color_code");
-			String name = rs.getString("name");
-			double lat = rs.getDouble("lat");
-			double lng = rs.getDouble("lng");
-			BlockDto b = new BlockDto(blockIdx, startTime, endTime, isCheckedAi, colorIdx, travelTime, colorCode, name, colorCode, name, lat, lng);
-			list.add(b);
+			Map<String,Object> tempMap = new HashMap();
+			tempMap.put("blockIdx", rs.getInt("block_idx"));
+			tempMap.put("startTime", rs.getString("start_time"));
+			tempMap.put("endTime", rs.getString("end_time"));
+			tempMap.put("isCheckedAi", rs.getInt("checked_ai")==1);
+			tempMap.put("travelTime", (rs.getInt("travel_time")==0));
+			tempMap.put("colorIdx", rs.getInt("color_idx"));
+			tempMap.put("colorCode", rs.getString("color_code"));
+			tempMap.put("name", rs.getString("name"));
+			tempMap.put("lat", rs.getDouble("lat"));
+			tempMap.put("lng", rs.getDouble("lng"));
+			
+			mapList.add(tempMap);
 		}
-				
 		rs.close();
 		pstmt.close();
 		conn.close();
-		return list;
+
+		return mapList;
 	}
 	
 	/** HA-28 게시글의 블록 정보 특정 시간 사이 조회 (p.11 / 일정표-메인(주 단위))
@@ -487,31 +488,19 @@ public class BlockDao {
 //		System.out.print("조회할 블록 인덱스: ");
 //		int blockIdx = sc.nextInt();
 //		sc.nextLine();
-//		BlockInfoDto bl = b.viewBlockDetails(blockIdx);
-//		System.out.println("색상인덱스: " + bl.colorIdx);
-//		System.out.println("색상 코드: " + bl.colorCode);
-//		System.out.println("시작 시간: " + bl.startTime);
-//		System.out.println("끝 시간: " + bl.endTime);
-//		System.out.println("위도: " + bl.lat);
-//		System.out.println("경도: " + bl.lng);
-//		System.out.println("ai 반영 여부: " + bl.isCheckedAi);
-//		System.out.println("장소: " + bl.name);
-//		System.out.println("카테고리: " + bl.category);
-//		System.out.println("주소: " + bl.address);
+//		Map<String, Object> bl = b.viewBlockDetails(blockIdx);
+////		System.out.println(bl.get("isCheckedAi").getClass());
+//		System.out.println(bl);
 		
 		// HA-27
-//		List<BlockDto> bd = b.showAllBlocks(bno);
-//		for(int i=0;i<bd.size();i++) {
-//			BlockDto bl = bd.get(i);
-//			System.out.println("색 인덱스: " + bl.colorIdx);
-//			System.out.println("색상 코드: " + bl.colorCode);
-//			System.out.println("블럭 인덱스: " + bl.blockIdx);
-//			System.out.println("블럭 시간: " + bl.startTime + "~" + bl.endTime);
-//			System.out.println("ai 반영여부: " + bl.isCheckedAi);
-//			System.out.println("이동시간: " + bl.travelTime);
-//			System.out.println("장소이름: " + bl.name);
-//			System.out.println("위도, 경도: " + bl.lat + ", " + bl.lng);
-//		}
+		////////////////////////////////////String.......////////////////////////
+		System.out.print("블럭을 조회할 게시글 번호: ");
+		bno = sc.nextInt();
+		List<Map<String,Object>> bd = b.showAllBlocks(bno);
+		for(int i=0;i<bd.size();i++) {
+			System.out.println(bd.get(i));
+//			System.out.println(bd.get(i).get("travelTime").getClass());
+		}
 		
 		// HA-28
 //		String startTime = "2022-02-02";
