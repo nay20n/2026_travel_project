@@ -5,16 +5,18 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class PlaceDao {
 	
 	/** HA-13 장소정보 조회 (p.12 / 정보창팝업1)
 		input : 장소아이디(placeId) , 회원아이디(memberId) 
-		output : List<PlaceInfoDto> */
-	List<PlaceInfoDto> viewPlaceDetails(String placeId, int memberId) throws Exception {
-		List<PlaceInfoDto> list = new ArrayList<>();
+		output : List<Map<String,Object>> */
+	List<Map<String,Object>> viewPlaceDetails(String placeId, int memberId) throws Exception {
+		List<Map<String,Object>> list = new ArrayList<>();
 
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
@@ -26,10 +28,11 @@ public class PlaceDao {
 
 		String sql = "SELECT p.name 장소이름,"
 				+ " (SELECT NVL(AVG(rating),0) FROM reviews r WHERE p.place_id = r.place_id) 평균별점,"
-				+ " p.category 분류, (SELECT COUNT(*) FROM reviews r WHERE p.place_id = r.place_id) 리뷰수, pi.image 이미지,"
-				+ " p.address 주소, p.business_hours 영업시간, p.website_url 공식사이트, (SELECT COUNT(*) FROM like_places WHERE member_id = ? AND place_id = ?) 찜한유무"
-				+ " FROM places p LEFT OUTER JOIN places_images pi" + " ON p.place_id = pi.place_id"
-				+ " WHERE p.place_id = ?" 
+				+ " p.category 분류, (SELECT COUNT(*) FROM reviews r WHERE p.place_id = r.place_id) 리뷰수,"
+				+ " p.address 주소, p.business_hours 영업시간, p.website_url 공식사이트, (SELECT COUNT(*) FROM like_places WHERE member_id = ? AND place_id = ?) 찜한유무, pi.image 이미지, (SELECT count(*) FROM reviews r WHERE p.place_id = r.place_id AND rating=0) \"0점\", (SELECT count(*) FROM reviews r WHERE p.place_id = r.place_id AND rating=1) \"1점\", (SELECT count(*) FROM reviews r WHERE p.place_id = r.place_id AND rating=2) \"2점\", (SELECT count(*) FROM reviews r WHERE p.place_id = r.place_id AND rating=3) \"3점\", (SELECT count(*) FROM reviews r WHERE p.place_id = r.place_id AND rating=4) \"4점\", (SELECT count(*) FROM reviews r WHERE p.place_id = r.place_id AND rating=5) \"5점\""
+				+ " FROM places p LEFT OUTER JOIN places_images pi"
+				+ " ON p.place_id = pi.place_id"
+				+ " WHERE p.place_id = ?"
 				+ " ORDER BY pi.image_num";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setInt(1, memberId);
@@ -38,18 +41,23 @@ public class PlaceDao {
 
 		ResultSet rs = pstmt.executeQuery();
 		while (rs.next()) {
-			String name = rs.getString("장소이름");
-			double avgRating = rs.getDouble("평균별점");
-			String category = rs.getString("분류");
-			int reviewCnt = rs.getInt("리뷰수");
-			String address = rs.getString("주소");
-			String businessHours = rs.getString("영업시간");
-			String webUrl = rs.getString("공식사이트");
-			String img = rs.getString("이미지");
-			int likedCnt = rs.getInt("찜한유무");
-			PlaceInfoDto p = new PlaceInfoDto(name, avgRating, reviewCnt, category, address, businessHours, webUrl, img,
-					likedCnt==1);
-			list.add(p);
+			Map<String,Object> tempMap = new HashMap<>();
+			tempMap.put("name", rs.getString("장소이름"));
+			tempMap.put("avgRating", rs.getDouble("평균별점"));
+			tempMap.put("category", rs.getString("분류"));
+			tempMap.put("reviewCnt", rs.getInt("리뷰수"));
+			tempMap.put("address", rs.getString("주소"));
+			tempMap.put("businessHours", rs.getString("영업시간"));
+			tempMap.put("webUrl", rs.getString("공식사이트"));
+			tempMap.put("img", rs.getString("이미지"));
+			tempMap.put("likedCnt", rs.getInt("찜한유무"));
+			tempMap.put("0", rs.getInt("0점"));
+			tempMap.put("1", rs.getInt("1점"));
+			tempMap.put("2", rs.getInt("2점"));
+			tempMap.put("3", rs.getInt("3점"));
+			tempMap.put("4", rs.getInt("4점"));
+			tempMap.put("5", rs.getInt("5점"));
+			list.add(tempMap);
 		}
 
 		rs.close();
@@ -106,10 +114,10 @@ public class PlaceDao {
 	
 	/** HA-17 장소 댓글 목록 조회 (p.13 일정표-정보창팝업2) 
 		input : 장소아이디(place_id)
-		output : List<ReviewDto>
+		output : List<Map<String,Object>>
 		결과가 공집합일 수 있음 */
-	List<ReviewDto> viewReviews(String placeId) throws Exception {
-		List<ReviewDto> list = new ArrayList<>();
+	List<Map<String,Object>> viewReviews(String placeId) throws Exception {
+		List<Map<String,Object>> list = new ArrayList<>();
 		
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
@@ -130,13 +138,14 @@ public class PlaceDao {
 
 		ResultSet rs = pstmt.executeQuery();
 		while (rs.next()) {
-			String content = rs.getString("content");
-			int rating = rs.getInt("rating");
-			String date = rs.getString("final_date");
-			String reviewImg = rs.getString("image");
-			String writerNick = rs.getString("nick_name");
-			String writerProfile = rs.getString("profile_img");
-			list.add(new ReviewDto(content, rating, date, reviewImg, writerNick, writerProfile));
+			Map<String,Object> tempMap = new HashMap<>();
+			tempMap.put("content", rs.getString("content"));
+			tempMap.put("rating", rs.getInt("rating"));
+			tempMap.put("date", rs.getString("final_date"));
+			tempMap.put("reviewImg", rs.getString("image"));
+			tempMap.put("writerNick", rs.getString("nick_name"));
+			tempMap.put("writerProfile", rs.getString("profile_img"));
+			list.add(tempMap);
 		}
 				
 		rs.close();
@@ -281,27 +290,15 @@ public class PlaceDao {
 		PlaceDao p = new PlaceDao();
 		
 		// 기본 설정값
-		//String placeId = "ChIJe1QMOBvraDUR9__2s01MxDE";
+		String placeId = "ChIJe1QMOBvraDUR9__2s01MxDE";
 		int memberId = 100;
 		String image = "im.png";
 		
 		// HA-13
-//		List<PlaceInfoDto> list = p.viewPlaceDetails(placeId, memberId);
-//		PlaceInfoDto pl;
-//		for(int i=0;i<list.size();i++){
-//			pl = list.get(i);
-//			System.out.println("이미지: " + pl.img);
-//		}
-//		pl = list.get(0);
-//		System.out.println("장소 이름: " + pl.name);
-//		System.out.println("평균 별점: " + (int)(pl.avgRating*10)/10.0);
-//		System.out.println("리뷰수: " + pl.reviewCnt);
-//		System.out.println("카테고리: " + pl.category);
-//		if(pl.isLikedPlace) System.out.println("❤️");
-//		else System.out.println("🤍");
-//		System.out.println("주소: " + pl.address);
-//		System.out.println("영업시간: " + pl.businessHours);
-//		System.out.println("사이트: " + pl.webUrl);
+		List<Map<String,Object>> list = p.viewPlaceDetails(placeId, memberId);
+		for(int i=0;i<list.size();i++){
+			System.out.println(list.get(i));
+		}
 		
 		// HA-16
 //		p.delLikedPlace(memberId, placeId);
@@ -352,8 +349,8 @@ public class PlaceDao {
 //		p.addPlace(placeId, name, categort, address, lat, lng, website_url);
 		
 		// NY-7.
-		String placeId = "ChIJe1QMOBvraDUR9__2s01MxDE";
-		System.out.println("DB 존재 : " + p.isPlaceExists(placeId));
+//		String placeId = "ChIJe1QMOBvraDUR9__2s01MxDE";
+//		System.out.println("DB 존재 : " + p.isPlaceExists(placeId));
 		
 		// 정상종료
 		sc.close();
