@@ -5,7 +5,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class BoardDao {
@@ -183,19 +185,16 @@ public class BoardDao {
 	}
 	/** NY-12. 내 일정에 들어가 있는 장소 조회 (p.11 / 일정표 - 메인(주), p.15,16 / 일정표 - 메인(일)) - 결과가 공집합일 수도 있다. 이미지가 여러개일 경우 여러행이 조회됨
 	 	input :  게시글번호(bno), 현재 보고 있는 member_id, 페이지 번호 
-		output:  List<placeDto> */
-	List<PlaceDto> getSelectedPlaces(int bno, int memberId, int page) throws Exception {
-		//DB 접속 
+		output:  List<Map<String,Object>> */
+	List<Map<String,Object>> getSelectedPlaces(int bno, int memberId, int page) throws Exception {
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
 		String dbId = "ab";
 		String dbPw = "12345";
 		
-		//1. 연결 : “Connection 객체”
 		Class.forName(driver);
 		Connection conn = DriverManager.getConnection(url,dbId,dbPw);
 		
-		//2. SQL문 : “PreparedStatement 객체”
 		String sql = "SELECT "
 				+ "    p.place_id, "
 				+ "    p.name \"장소이름\", "
@@ -219,44 +218,41 @@ public class BoardDao {
 		pstmt.setInt(1,memberId);
 		pstmt.setInt(2,bno);
 		
-		//3. 결과테이블 : “ResultSet객체”
 		ResultSet rs = pstmt.executeQuery(); 
-		List <PlaceDto> placeDtos = new ArrayList<PlaceDto>();
-	    while (rs.next()) { // 결과 행으로 이동 (필수!)
-	    	String placeId = rs.getString("place_id");
-	    	String name = rs.getString("장소이름");
-	    	String category = rs.getString("카테고리");
-	    	String address = rs.getString("주소");
-	    	double lat = rs.getDouble("위도");
-	    	double lng = rs.getDouble("경도");
-	    	String img = rs.getString("image");
-	    	double avgRating = rs.getDouble("평균별점");
-	    	int reviewCnt = rs.getInt("리뷰수");
-	    	boolean isLikedPlace = (rs.getInt("장소 찜 유무") == 1)? true : false;
-	    	placeDtos.add(new PlaceDto(placeId, name, category, address, lat, lng, img, avgRating, reviewCnt, isLikedPlace));
+		List<Map<String,Object>> list = new ArrayList<>();
+	    while (rs.next()) {
+	    	Map<String,Object> tempMap = new HashMap<>();
+	    	tempMap.put("placeId", rs.getString("place_id"));
+	    	tempMap.put("name", rs.getString("장소이름"));
+	    	tempMap.put("category", rs.getString("카테고리"));
+	    	tempMap.put("address", rs.getString("주소"));
+	    	tempMap.put("lat", rs.getObject("위도", Double.class));
+	    	tempMap.put("lng", rs.getObject("경도", Double.class));
+	    	tempMap.put("img", rs.getString("image"));
+	    	tempMap.put("avgRating", rs.getDouble("평균별점"));
+	    	tempMap.put("reviewCnt", rs.getInt("리뷰수"));
+	    	tempMap.put("isLikedPlace", rs.getInt("장소 찜 유무") == 1);
+	    	list.add(tempMap);
 	    }
 	    
 	    rs.close();
 		pstmt.close();
 		conn.close();
 		
-	    return placeDtos;
+	    return list;
 	}
 	/** NY-13. 찜한 장소들 조회 (p.11 / 일정표 - 메인(주), p.15,16 / 일정표 - 메인(일)) - 결과가 공집합일 수도 있다, 이미지가 여러개일 경우 여러행이 조회됨  (최근에 찜한 순)
 		input : 수정중인게시글번호(bno), 조회하고 있는 회원 아이디(member_id), 게시글의 여행지(place_id), 페이지 번호 
-		output: List<placeDto>(장소이름, 카테고리, 주소, 이미지들) */
-	List<PlaceDto> getLikedPlaces(int bno, int memberId, String arrPlaceId, int page) throws Exception {
-		//DB 접속 
+		output: List<Map<String,Object>>(장소이름, 카테고리, 주소, 이미지들) */
+	List<Map<String,Object>> getLikedPlaces(int bno, int memberId, String arrPlaceId, int page) throws Exception {
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
 		String dbId = "ab";
 		String dbPw = "12345";
 		
-		//1. 연결 : “Connection 객체”
 		Class.forName(driver);
 		Connection conn = DriverManager.getConnection(url,dbId,dbPw);
 		
-		//2. SQL문 : “PreparedStatement 객체”
 		String sql = "SELECT "
 				+ "    p.place_id , "
 				+ "    p.name \"장소이름\", "
@@ -290,28 +286,28 @@ public class BoardDao {
 		pstmt.setString(5,arrPlaceId);
 		pstmt.setInt(6, bno);
 		
-		//3. 결과테이블 : “ResultSet객체”
 		ResultSet rs = pstmt.executeQuery(); 
-		List <PlaceDto> placeDtos = new ArrayList<PlaceDto>();
-	    while (rs.next()) { // 결과 행으로 이동 (필수!)
-	    	String outputPlaceId = rs.getString("place_id");
-	    	String name = rs.getString("장소이름");
-	    	String category = rs.getString("카테고리");
-	    	String address = rs.getString("주소");
-	    	double lat = rs.getDouble("위도");
-	    	double lng = rs.getDouble("경도");
-	    	String img = rs.getString("image");
-	    	double avgRating = rs.getDouble("평균별점");
-	    	int reviewCnt = rs.getInt("리뷰수");
-	    	boolean isLikedPlace = (rs.getInt("장소 찜 유무") == 1)? true : false;
-	    	placeDtos.add(new PlaceDto(outputPlaceId, name, category, address, lat, lng, img, avgRating, reviewCnt, isLikedPlace));
+		List<Map<String,Object>> list = new ArrayList<>();
+	    while (rs.next()) {
+	    	Map<String,Object> tempMap = new HashMap<>();
+	    	tempMap.put("placeId", rs.getString("place_id"));
+	    	tempMap.put("name", rs.getString("장소이름"));
+	    	tempMap.put("category", rs.getString("카테고리"));
+	    	tempMap.put("address", rs.getString("주소"));
+	    	tempMap.put("lat", rs.getDouble("위도"));
+	    	tempMap.put("lng", rs.getDouble("경도"));
+	    	tempMap.put("img", rs.getString("image"));
+	    	tempMap.put("avgRating", rs.getDouble("평균별점"));
+	    	tempMap.put("reviewCnt", rs.getInt("리뷰수"));
+	    	tempMap.put("isLikedPlace", rs.getInt("장소 찜 유무") == 1);
+	    	list.add(tempMap);
 	    }
 	    
 	    rs.close();
 		pstmt.close();
 		conn.close();
 		
-	    return placeDtos;
+	    return list;
 	}
 	/** NY-14.게시글  제목 수정 (p.11 / 일정표 - 메인(주), p.15,16 / 일정표 - 메인(일), p.17 / 일정표 - 메인(월), p.18/ 내 일정 게시글1)
 		input : 바꿀 제목(title), 현재 수정 중인 게시글 번호(bno) 
@@ -341,19 +337,16 @@ public class BoardDao {
 	}
 	/** NY-15. 장소 검색 조회 (p.11 / 일정표 - 메인(주), p.15,16 / 일정표 - 메인(일)) - 찜여부 
 		input : 검색중인 memberId, 검색키워드(장소이름, 카테고리, 주소로 조회 가능), 여행지(place_id), 수정중인게시글번호(bno) 페이지 번호 
-		output : ArrayList<placeDto>*/
-	List<PlaceDto> getSerchedPlace(int memberId, String content, String arrPlaceId, int bno, int page) throws Exception {
-		//DB 접속 
+		output : List<Map<String,Object>>*/
+	List<Map<String,Object>> getSerchedPlace(int memberId, String content, String arrPlaceId, int bno, int page) throws Exception {
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
 		String dbId = "ab";
 		String dbPw = "12345";
 		
-		//1. 연결 : “Connection 객체”
 		Class.forName(driver);
 		Connection conn = DriverManager.getConnection(url,dbId,dbPw);
 		
-		//2. SQL문 : “PreparedStatement 객체”
 		String sql = "SELECT "
 				+ "    p.place_id ,"
 				+ "    p.name \"장소이름\", "
@@ -391,59 +384,54 @@ public class BoardDao {
 		pstmt.setString(7,arrPlaceId);
 		pstmt.setInt(8, bno);
 		
-		//3. 결과테이블 : “ResultSet객체”
 		ResultSet rs = pstmt.executeQuery(); 
-		List <PlaceDto> placeDtos = new ArrayList<PlaceDto>();
-	    while (rs.next()) { // 결과 행으로 이동 (필수!)
-	    	String outputPlaceId = rs.getString("place_id");
-	    	String name = rs.getString("장소이름");
-	    	String category = rs.getString("카테고리");
-	    	String address = rs.getString("주소");
-	    	double lat = rs.getDouble("위도");
-	    	double lng = rs.getDouble("경도");
-	    	String img = rs.getString("image");
-	    	double avgRating = rs.getDouble("평균별점");
-	    	int reviewCnt = rs.getInt("리뷰수");
-	    	boolean isLikedPlace = (rs.getInt("장소 찜 유무") == 1)? true : false;
-	    	placeDtos.add(new PlaceDto(outputPlaceId, name, category, address, lat, lng, img, avgRating, reviewCnt, isLikedPlace));
+		List<Map<String,Object>> list = new ArrayList<>();
+	    while (rs.next()) {
+	    	Map<String,Object> tempMap = new HashMap<>();
+	    	tempMap.put("placeId", rs.getString("place_id"));
+	    	tempMap.put("name", rs.getString("장소이름"));
+	    	tempMap.put("category", rs.getString("카테고리"));
+	    	tempMap.put("address", rs.getString("주소"));
+	    	tempMap.put("lat", rs.getDouble("위도"));
+	    	tempMap.put("lng", rs.getDouble("경도"));
+	    	tempMap.put("img", rs.getString("image"));
+	    	tempMap.put("avgRating", rs.getDouble("평균별점"));
+	    	tempMap.put("reviewCnt", rs.getInt("리뷰수"));
+	    	tempMap.put("isLikedPlace", rs.getInt("장소 찜 유무") == 1);
+	    	list.add(tempMap);
 	    }
 	    
 	    rs.close();
 		pstmt.close();
 		conn.close();
 	    
-	    return placeDtos;
+	    return list;
 	}
 	
 	/** NY-16. 공유 버튼 클릭 시 인증코드 및 만료일시 생성  (p.11 / 일정표 - 메인(주), p.15,16 / 일정표 - 메인(일), p.17 / 일정표 - 메인(월))
 		input : 현재 공유하려고 하는 게시글 번호(bno) 
 		output : -*/
 	void createShareKey(int bno) throws Exception{
-		
 		//랜덤 키 
-		StringBuilder sb = new StringBuilder();
+		StringBuffer sb = new StringBuffer();
 		while(sb.length()<6) {
 			int temp = (int)(Math.random()*75) + 48;
 			if(temp<58||(temp>64&&temp<91)||(temp>96)) sb.append((char)temp);
 		}
 		
-		//DB 접속 
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
 		String dbId = "ab";
 		String dbPw = "12345";
 		
-		//1. 연결 : “Connection 객체”
 		Class.forName(driver);
 		Connection conn = DriverManager.getConnection(url,dbId,dbPw);
 		
-		//2. SQL문 : “PreparedStatement 객체”
 		String sql = "UPDATE boards SET key = ?, ex_date = (SYSDATE + 1 / 24/10) WHERE bno = ?";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1,sb.toString());
 		pstmt.setInt(2, bno);
 		
-		//3. 결과테이블 : “ResultSet객체”
 		pstmt.executeUpdate();
 		
 		pstmt.close();
@@ -461,18 +449,15 @@ public class BoardDao {
 		String dbId = "ab";
 		String dbPw = "12345";
 		
-		//1. 연결 : “Connection 객체”
 		Class.forName(driver);
 		Connection conn = DriverManager.getConnection(url,dbId,dbPw);
 		
-		//2. SQL문 : “PreparedStatement 객체”
 		String sql = "UPDATE boards SET share_user_id = ? WHERE bno = ? AND share_user_id IS NULL AND key = ? AND ex_date > SYSDATE";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setInt(1, memberId);
 		pstmt.setInt(2, bno);
 		pstmt.setString(3, key);
 		
-		//3. 결과테이블 : “ResultSet객체”
 		pstmt.executeUpdate();
 		
 		pstmt.close();
@@ -484,18 +469,14 @@ public class BoardDao {
 		output : - 
 		(주의) 날짜를 지웠을 경우, 해당 하루치 블럭들 삭제 필수 */
 	void modifyTravelDate(int bno, String startDate, String endDate) throws Exception{
-		
-		//DB 접속 
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
 		String dbId = "ab";
 		String dbPw = "12345";
 		
-		//1. 연결 : “Connection 객체”
 		Class.forName(driver);
 		Connection conn = DriverManager.getConnection(url,dbId,dbPw);
 		
-		//2. SQL문 : “PreparedStatement 객체”
 		String sql = "UPDATE boards SET start_date = TO_DATE(?, 'YYYY-MM-DD'), end_date =  TO_DATE(?, 'YYYY-MM-DD') , final_date = SYSDATE WHERE bno = ?";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		
@@ -503,7 +484,6 @@ public class BoardDao {
 		pstmt.setString(2, endDate);
 		pstmt.setInt(3, bno);
 		
-		//3. 결과테이블 : “ResultSet객체”
 		pstmt.executeUpdate();
 		
 		pstmt.close();
@@ -514,22 +494,18 @@ public class BoardDao {
 		input : 업로드 하는 게시글의 번호 (bno)  
 		output : -*/
 	void updateFinalDate(int bno) throws Exception{
-		//DB 접속 
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
 		String dbId = "ab";
 		String dbPw = "12345";
 		
-		//1. 연결 : “Connection 객체”
 		Class.forName(driver);
 		Connection conn = DriverManager.getConnection(url,dbId,dbPw);
 		
-		//2. SQL문 : “PreparedStatement 객체”
 		String sql = "UPDATE boards SET final_date = SYSDATE WHERE bno=?" ;
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setInt(1, bno);
 		
-		//3. 결과테이블 : “ResultSet객체”
 		pstmt.executeUpdate();
 		
 		pstmt.close();
@@ -538,19 +514,16 @@ public class BoardDao {
 	
 	/** *NY-22.  게시글 정보 조회 (p.18 / 내 일정 게시글1)
 		input : 로그인 한 사람의 id(member.id), 게시글 번호(bno)
-		output : 해당 게시글의 BoardInfoDto, */
-	List <BoardInfoDto> getBoardInfo(int memberId, int bno) throws Exception {
-		//DB 접속 
+		output : 해당 게시글의 Map<String,Object> */
+	Map<String,Object> getBoardInfo(int memberId, int bno) throws Exception {
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
 		String dbId = "ab";
 		String dbPw = "12345";
 		
-		//1. 연결 : “Connection 객체”
 		Class.forName(driver);
 		Connection conn = DriverManager.getConnection(url,dbId,dbPw);
 		
-		//2. SQL문 : “PreparedStatement 객체”
 		String sql = "SELECT "
 				+ "    b.writer_id \"작성자Id\","
 				+ "    b.title \"게시글 제목\", "
@@ -576,40 +549,36 @@ public class BoardDao {
 		pstmt.setInt(1,memberId);
 		pstmt.setInt(2, bno);
 		
-		//3. 결과테이블 : “ResultSet객체”
 		ResultSet rs = pstmt.executeQuery(); 
-		List <BoardInfoDto> boardInfoDtos = new ArrayList<>();
-	    while (rs.next()) { // 결과 행으로 이동 (필수!)
-	    	int writerId = rs.getInt("작성자Id");
-		   	String title = rs.getString("게시글 제목"); //게시글 제목
-		   	String startPlaceId = rs.getString("출발지");
-		   	String arrPlaceId = rs.getString("도착지");
-		   	String startDate = rs.getString("출발날짜");
-		   	String endDate = rs.getString("도착날짜");
-		   	int maxCost = rs.getInt("최대경비");
-		   	int transportCost = rs.getInt("교통비");
-		   	int foodCost = rs.getInt("식비");
-		   	int roomCost = rs.getInt("숙소비");
-		   	int etcCost = rs.getInt("기타경비");
-		   	int commentCnt = rs.getInt("게시글의 댓글 수");
-		   	boolean isLikeBoard = (rs.getInt("찜 유무") == 1 ? true : false);
-		   	int likeBoardCnt= rs.getInt("찜 개수");
-		   	int blockIdx = rs.getInt("블럭 인덱스");
-		   	String startTime = rs.getString("블럭 시작시간");
-		   	String endTime= rs.getString("블럭 끝시간");
-		   	int colorIdx = rs.getInt("블럭 색깔 인덱스");
-		   	String colorCode = rs.getString("색깔 code");
-		   	String name = rs.getString("장소 이름");
-		   	
-		   	BoardInfoDto boardInfoDto = new BoardInfoDto(writerId, title, startPlaceId, arrPlaceId, startDate, endDate, maxCost, transportCost, foodCost, roomCost, etcCost, commentCnt, isLikeBoard, likeBoardCnt, blockIdx, startTime, endTime, colorIdx, colorCode, name);
-		   	boardInfoDtos.add(boardInfoDto);
+		Map<String,Object> tempMap = new HashMap<>();
+	    if (rs.next()) {
+	    	tempMap.put("writerId", rs.getInt("작성자Id"));
+	    	tempMap.put("title", rs.getString("게시글 제목"));
+	    	tempMap.put("startPlaceId", rs.getString("출발지"));
+	    	tempMap.put("arrPlaceId", rs.getString("도착지"));
+	    	tempMap.put("startDate", rs.getString("출발날짜"));
+	    	tempMap.put("endDate", rs.getString("도착날짜"));
+	    	tempMap.put("maxCost", rs.getObject("최대경비",Integer.class));
+	    	tempMap.put("transportCost", rs.getInt("교통비"));
+	    	tempMap.put("foodCost", rs.getInt("식비"));
+	    	tempMap.put("roomCost", rs.getInt("숙소비"));
+	    	tempMap.put("etcCost", rs.getInt("기타경비"));
+	    	tempMap.put("commentCnt", rs.getInt("게시글의 댓글 수"));
+	    	tempMap.put("isLikeBoard", rs.getInt("찜 유무") == 1);
+	    	tempMap.put("likeBoardCnt", rs.getInt("찜 개수"));
+	    	tempMap.put("blockIdx", rs.getInt("블럭 인덱스"));
+	    	tempMap.put("startTime", rs.getString("블럭 시작시간"));
+	    	tempMap.put("endTime", rs.getString("블럭 시작시간"));
+	    	tempMap.put("colorIdx", rs.getInt("블럭 색깔 인덱스"));
+	    	tempMap.put("colorCode", rs.getString("색깔 code"));
+	    	tempMap.put("name", rs.getString("장소 이름"));
 	    }
 	    
 	    rs.close();
 		pstmt.close();
 		conn.close();
 	    
-	    return boardInfoDtos;
+	    return tempMap;
 	}
 	
 	/** NY-24. -a. 타인의 일정 게시글 복제 (p.20 / 타인의 게시글)
@@ -618,17 +587,14 @@ public class BoardDao {
 		보드 복사 후 바로 블럭 복제 해야됨 
 		*/
 	void copyBoard(int bno, int memberId, String startPlaceId, String startDate) throws Exception{
-		//DB 접속 
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
 		String dbId = "ab";
 		String dbPw = "12345";
 		
-		//1. 연결 : “Connection 객체”
 		Class.forName(driver);
 		Connection conn = DriverManager.getConnection(url,dbId,dbPw);
 		
-		//2. SQL문 : “PreparedStatement 객체”
 		String sql = "INSERT INTO boards( "
 				+ "bno, writer_id, title, final_date, start_place_id, arr_place_id, start_date, end_date, transport_cost, food_cost, room_cost, etc_cost, arr_place_city)"
 				+ "SELECT "
@@ -654,7 +620,6 @@ public class BoardDao {
 		pstmt.setString(4, startDate);
 		pstmt.setInt(5, bno);
 		
-		//3. 결과테이블 : “ResultSet객체”
 		pstmt.executeUpdate();
 		
 		pstmt.close();
@@ -664,10 +629,10 @@ public class BoardDao {
 	/** HA-2. 최신 게시글 조회 (p.2 / 메인페이지)
 	 	a.로그인 버전
 		input : memberId(로그인아이디), page(페이지번호)
-		output : List<BoardDto>
+		output : List<Map<String,Object>>
 		주의: 장소가 들어간 블록이 있는 게시글만 - 지도 그려야해서. */
-	List<BoardDto> showBoardsLatestOrder(int memberId, int page) throws Exception {
-		List<BoardDto> list = new ArrayList<>();
+	List<Map<String,Object>> showBoardsLatestOrder(int memberId, int page) throws Exception {
+		List<Map<String,Object>> list = new ArrayList<>();
 		
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
@@ -694,27 +659,28 @@ public class BoardDao {
 
 		ResultSet rs = pstmt.executeQuery();
 		while(rs.next()) {
-			int bno = rs.getInt("bno");
-			String title = rs.getString("title");
-			int year = rs.getInt("여행년도");
-			int month = rs.getInt("여행월");
+			Map<String,Object> tempMap = new HashMap<>();
+			tempMap.put("bno", rs.getInt("bno"));
+			tempMap.put("title", rs.getString("title"));
+			tempMap.put("year", rs.getInt("여행년도"));
+			tempMap.put("month", rs.getInt("여행월"));
 			
 			// 수정 경과시간을 문자열 형태로 바꾸기
 			double temp = rs.getDouble("수정경과시간");
-			StringBuilder sb = new StringBuilder();
+			StringBuffer sb = new StringBuffer();
 			if(temp>14) sb.append("오래");
 			else if(temp>1) sb.append((int)temp + "일");
 			else if(temp/24>1) sb.append((int)(temp/24) + "시간");
 			else sb.append((int)(temp/24/60) + "분");
 			sb.append("전");
-			String elapsedTime = sb.toString();
+			tempMap.put("elapsedTime", sb.toString());
 			
-			int likedBoardCnt = rs.getInt("찜수");
-			boolean isLikedBoard = rs.getString("찜 유무").equals("1");
-			double lat = rs.getDouble("lat");
-			double lng = rs.getDouble("lng");
-			BoardDto b = new BoardDto(bno, title, year, month, elapsedTime, likedBoardCnt, isLikedBoard, lat, lng);
-			list.add(b);
+			tempMap.put("likedBoardCnt", rs.getInt("찜수"));
+			tempMap.put("isLikedBoard", rs.getInt("찜 유무")==1);
+			tempMap.put("lat", rs.getDouble("lat"));
+			tempMap.put("lng", rs.getDouble("lng"));
+			
+			list.add(tempMap);
 		}
 				
 		rs.close();
@@ -726,10 +692,10 @@ public class BoardDao {
 	/** HA-2. 최신 게시글 조회 (p.2 / 메인페이지)
  		b.로그아웃 버전 (찜수 표시x)
 		input : page(페이지번호)
-		output : List<BoardDto>
+		output : List<Map<String,Object>>
 		주의: 장소가 들어간 블록이 있는 게시글만 - 지도 그려야해서. */
-	List<BoardDto> showBoardsLatestOrder(int page) throws Exception {
-		List<BoardDto> list = new ArrayList<>();
+	List<Map<String,Object>> showBoardsLatestOrder(int page) throws Exception {
+		List<Map<String,Object>> list = new ArrayList<>();
 
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
@@ -754,30 +720,27 @@ public class BoardDao {
 
 		ResultSet rs = pstmt.executeQuery();
 		while (rs.next()) {
-			int bno = rs.getInt("bno");
-			String title = rs.getString("title");
-			int year = rs.getInt("여행년도");
-			int month = rs.getInt("여행월");
+			Map<String,Object> tempMap = new HashMap<>();
+			tempMap.put("bno", rs.getInt("bno"));
+			tempMap.put("title", rs.getString("title"));
+			tempMap.put("year", rs.getInt("여행년도"));
+			tempMap.put("month", rs.getInt("여행월"));
 
 			// 수정 경과시간을 문자열 형태로 바꾸기
 			double temp = rs.getDouble("수정경과시간");
-			StringBuilder sb = new StringBuilder();
-			if (temp > 14)
-				sb.append("오래");
-			else if (temp > 1)
-				sb.append((int) temp + "일");
-			else if (temp / 24 > 1)
-				sb.append((int) (temp / 24) + "시간");
-			else
-				sb.append((int) (temp / 24 / 60) + "분");
+			StringBuffer sb = new StringBuffer();
+			if(temp>14) sb.append("오래");
+			else if(temp>1) sb.append((int)temp + "일");
+			else if(temp/24>1) sb.append((int)(temp/24) + "시간");
+			else sb.append((int)(temp/24/60) + "분");
 			sb.append("전");
-			String elapsedTime = sb.toString();
+			tempMap.put("elapsedTime", sb.toString());
 
-			int likedBoardCnt = rs.getInt("찜수");
-			double lat = rs.getDouble("lat");
-			double lng = rs.getDouble("lng");
-			BoardDto b = new BoardDto(bno, title, year, month, elapsedTime, likedBoardCnt, false, lat, lng);
-			list.add(b);
+			tempMap.put("likedBoardCnt", rs.getInt("찜수"));
+			tempMap.put("lat", rs.getDouble("lat"));
+			tempMap.put("lng", rs.getDouble("lng"));
+			
+			list.add(tempMap);
 		}
 
 		rs.close();
@@ -789,10 +752,10 @@ public class BoardDao {
 	/** HA-3. 검색으로 게시글 조회 (p.2 / 메인페이지)
 	  	a. 로그인버전
 		input : input(검색키워드), memberId(로그인아이디), page(페이지번호)
-		output : List<BoardDto>
+		output : List<Map<String,Object>>
 		주의: 장소가 들어간 블록이 있는 게시글만 - 지도 그려야해서. */
-	List<BoardDto> showBoardsKeyOrder(String input, int memberId, int page) throws Exception {
-		List<BoardDto> list = new ArrayList<>();
+	List<Map<String,Object>> showBoardsKeyOrder(String input, int memberId, int page) throws Exception {
+		List<Map<String,Object>> list = new ArrayList<>();
 
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
@@ -823,31 +786,28 @@ public class BoardDao {
 
 		ResultSet rs = pstmt.executeQuery();
 		while (rs.next()) {
-			int bno = rs.getInt("bno");
-			String title = rs.getString("title");
-			int year = rs.getInt("여행년도");
-			int month = rs.getInt("여행월");
+			Map<String,Object> tempMap = new HashMap<>();
+			tempMap.put("bno", rs.getInt("bno"));
+			tempMap.put("title", rs.getString("title"));
+			tempMap.put("year", rs.getInt("여행년도"));
+			tempMap.put("month", rs.getInt("여행월"));
 
 			// 수정 경과시간을 문자열 형태로 바꾸기
 			double temp = rs.getDouble("수정경과시간");
-			StringBuilder sb = new StringBuilder();
-			if (temp > 14)
-				sb.append("오래");
-			else if (temp > 1)
-				sb.append((int) temp + "일");
-			else if (temp / 24 > 1)
-				sb.append((int) (temp / 24) + "시간");
-			else
-				sb.append((int) (temp / 24 / 60) + "분");
+			StringBuffer sb = new StringBuffer();
+			if(temp>14) sb.append("오래");
+			else if(temp>1) sb.append((int)temp + "일");
+			else if(temp/24>1) sb.append((int)(temp/24) + "시간");
+			else sb.append((int)(temp/24/60) + "분");
 			sb.append("전");
-			String elapsedTime = sb.toString();
+			tempMap.put("elapsedTime", sb.toString());
 
-			int likedBoardCnt = rs.getInt("찜수");
-			boolean isLikedBoard = rs.getString("찜 유무").equals("1");
-			double lat = rs.getDouble("lat");
-			double lng = rs.getDouble("lng");
-			BoardDto b = new BoardDto(bno, title, year, month, elapsedTime, likedBoardCnt, isLikedBoard, lat, lng);
-			list.add(b);
+			tempMap.put("likedBoardCnt", rs.getInt("찜수"));
+			tempMap.put("isLikedBoard", rs.getInt("찜 유무")==1);
+			tempMap.put("lat", rs.getDouble("lat"));
+			tempMap.put("lng", rs.getDouble("lng"));
+			
+			list.add(tempMap);
 		}
 
 		rs.close();
@@ -859,10 +819,10 @@ public class BoardDao {
 	/** HA-3. 검색으로 게시글 조회 (p.2 / 메인페이지) 
 	 	b. 로그아웃 버전 (찜수 제외)
 	 	input : input(검색키워드),page(페이지번호) 
-		output : List<BoardDto> 
+		output : List<Map<String,Object>>
 		주의: 장소가 들어간 블록이 있는 게시글만 - 지도 그려야해서. */
-	List<BoardDto> showBoardsKeyOrder(String input, int page) throws Exception {
-		List<BoardDto> list = new ArrayList<>();
+	List<Map<String,Object>> showBoardsKeyOrder(String input, int page) throws Exception {
+		List<Map<String,Object>> list = new ArrayList<>();
 
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
@@ -891,30 +851,27 @@ public class BoardDao {
 
 		ResultSet rs = pstmt.executeQuery();
 		while (rs.next()) {
-			int bno = rs.getInt("bno");
-			String title = rs.getString("title");
-			int year = rs.getInt("여행년도");
-			int month = rs.getInt("여행월");
+			Map<String,Object> tempMap = new HashMap<>();
+			tempMap.put("bno", rs.getInt("bno"));
+			tempMap.put("title", rs.getString("title"));
+			tempMap.put("year", rs.getInt("여행년도"));
+			tempMap.put("month", rs.getInt("여행월"));
 
 			// 수정 경과시간을 문자열 형태로 바꾸기
 			double temp = rs.getDouble("수정경과시간");
-			StringBuilder sb = new StringBuilder();
-			if (temp > 14)
-				sb.append("오래");
-			else if (temp > 1)
-				sb.append((int) temp + "일");
-			else if (temp / 24 > 1)
-				sb.append((int) (temp / 24) + "시간");
-			else
-				sb.append((int) (temp / 24 / 60) + "분");
+			StringBuffer sb = new StringBuffer();
+			if(temp>14) sb.append("오래");
+			else if(temp>1) sb.append((int)temp + "일");
+			else if(temp/24>1) sb.append((int)(temp/24) + "시간");
+			else sb.append((int)(temp/24/60) + "분");
 			sb.append("전");
-			String elapsedTime = sb.toString();
+			tempMap.put("elapsedTime", sb.toString());
 
-			int likedBoardCnt = rs.getInt("찜수");
-			double lat = rs.getDouble("lat");
-			double lng = rs.getDouble("lng");
-			BoardDto b = new BoardDto(bno, title, year, month, elapsedTime, likedBoardCnt, false, lat, lng);
-			list.add(b);
+			tempMap.put("likedBoardCnt", rs.getInt("찜수"));
+			tempMap.put("lat", rs.getDouble("lat"));
+			tempMap.put("lng", rs.getDouble("lng"));
+			
+			list.add(tempMap);
 		}
 
 		rs.close();
@@ -1049,9 +1006,9 @@ public class BoardDao {
 	
 	/** HA-35 추천여행지 조회 (p.8 / 일정표 만들기-떠나고 싶은 도시는? -1)
 		input : -
-		output : List<RecommendedPlacesDto> */
-	List<RecommendedPlacesDto> viewRecommendedPlace() throws Exception {
-		List<RecommendedPlacesDto> list = new ArrayList<RecommendedPlacesDto>();
+		output : List<Map<String,Object>> */
+	List<Map<String,Object>> viewRecommendedPlace() throws Exception {
+		List<Map<String,Object>> list = new ArrayList<>();
 		
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
@@ -1069,12 +1026,12 @@ public class BoardDao {
 
 		ResultSet rs = pstmt.executeQuery();
 		while (rs.next()) {
-			String rcPlaceId = rs.getString("place_id");
-			String name = rs.getString("spot");
-			double lat = rs.getDouble("lat");
-			double lng = rs.getDouble("lng");
-			RecommendedPlacesDto r = new RecommendedPlacesDto(rcPlaceId, name, lat, lng);
-			list.add(r);
+			Map<String,Object> tempMap = new HashMap<>();
+			tempMap.put("rcPlaceId", rs.getString("place_id"));
+			tempMap.put("name", rs.getString("spot"));
+			tempMap.put("lat", rs.getDouble("lat"));
+			tempMap.put("lng", rs.getDouble("lng"));
+			list.add(tempMap);
 		}
 				
 		rs.close();

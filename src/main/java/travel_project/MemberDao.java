@@ -105,7 +105,7 @@ public class MemberDao {
 		output : - */
 	void updateKey(String email) throws Exception {
 		// 6자리 소문자, 대문자, 숫자 랜덤 key 생성
-		StringBuilder sb = new StringBuilder();
+		StringBuffer sb = new StringBuffer();
 		while(sb.length()<6) {
 			int temp = (int)(Math.random()*75) + 48;
 			if(temp<58||(temp>64&&temp<91)||(temp>96)) sb.append((char)temp);
@@ -163,7 +163,7 @@ public class MemberDao {
 		output : - */
 	void addMember(String email) throws Exception {
 		// 16자리 소문자, 대문자, 숫자 랜덤 key 생성
-		StringBuilder sb = new StringBuilder();
+		StringBuffer sb = new StringBuffer();
 		while (sb.length() < 16) {
 			int temp = (int) (Math.random() * 75) + 48;
 			if (temp < 58 || (temp > 64 && temp < 91) || (temp > 96))
@@ -283,7 +283,7 @@ public class MemberDao {
 	
 	/** NY-1. 내 게시글들 조회, 공동작업자부분도 띄어줘야함 (p.4 / 마이페이지)
 		input : 로그인한 사람의 member_id, 페이지번호
-		output : 내 일정들 나열 (List<MypageDto>) */
+		output : 내 일정들 나열 (List<Map<String,Object>>) */
 	List<Map<String,Object>> getMyBoard(int memberId, int page) throws Exception {
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
@@ -306,7 +306,7 @@ public class MemberDao {
 		pstmt.setInt(3, memberId);
 	
 		ResultSet rs = pstmt.executeQuery();
-		List<Map<String,Object>> mypageDtos = new ArrayList<>();
+		List<Map<String,Object>> list = new ArrayList<>();
 	    while (rs.next()) { 
 	    	Map<String,Object> tempMap = new HashMap<>();
 	    	tempMap.put("bno", rs.getInt("게시글 번호"));
@@ -323,19 +323,19 @@ public class MemberDao {
 	    	tempMap.put("nickname", rs.getString("작성자"));
 	    	tempMap.put("isLiked", rs.getInt("찜 유무")==1);
 	    	tempMap.put("likeCnt", rs.getInt("찜 개수"));
-	    	mypageDtos.add(tempMap);
+	    	list.add(tempMap);
 	    }
 	
 	    rs.close();
 		pstmt.close();
 		conn.close();
 		
-		return mypageDtos;
+		return list;
 	}
 	
 	/** NY-2. 내가 찜한 일정들 조회 (p.4 / 마이페이지)
 		input : 로그인한 사람의 member_id, 페이지 번호 
-		output : 로그인한 사람이 찜한 게시물 조회 (List<MyPageDto>) */
+		output : 로그인한 사람이 찜한 게시물 조회 (List<Map<String,Object>>) */
 	List<Map<String,Object>> getLikedBoard(int memberId, int page) throws Exception {
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
@@ -358,7 +358,7 @@ public class MemberDao {
 		pstmt.setInt(2, memberId);
 	
 		ResultSet rs = pstmt.executeQuery();
-		List<Map<String,Object>> mypageDtos = new ArrayList<>();
+		List<Map<String,Object>> list = new ArrayList<>();
 	    while (rs.next()) {
 	    	Map<String,Object> tempMap = new HashMap<>();
 	    	tempMap.put("bno", rs.getInt("찜한 게시글 번호"));
@@ -366,19 +366,19 @@ public class MemberDao {
 	    	tempMap.put("nickname", rs.getString("작성자"));
 	    	tempMap.put("isLiked", rs.getInt("찜 유무")==1);
 	    	tempMap.put("likeCnt", rs.getInt("찜 개수"));
-	    	mypageDtos.add(tempMap);
+	    	list.add(tempMap);
 	    }
 	
 	    rs.close();
 		pstmt.close();
 		conn.close();
 		
-		return mypageDtos;
+		return list;
 	}
 
 	/** NY-3. 내가 댓글 단 일정 조회 (p.4 / 마이페이지) 
 		input : 로그인한 사람의 member_id, 페이지 번호
-		output : 로그인한 사람이 댓글을 단 게시물 조회  (List<MyPageDto>) */
+		output : 로그인한 사람이 댓글을 단 게시물 조회  (List<Map<String,Object>>) */
 	List<Map<String,Object>> getCommentBoard(int memberId, int page) throws Exception {
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
@@ -403,7 +403,7 @@ public class MemberDao {
 		pstmt.setInt(3, memberId);
 	
 		ResultSet rs = pstmt.executeQuery();
-		List<Map<String,Object>> mypageDtos = new ArrayList<>();
+		List<Map<String,Object>> list = new ArrayList<>();
 	    while (rs.next()) {
 	    	Map<String,Object> tempMap = new HashMap<>();
 	    	tempMap.put("bno", rs.getInt("댓글을 단 게시글 번호"));
@@ -411,21 +411,21 @@ public class MemberDao {
 	    	tempMap.put("nickname", rs.getString("작성자"));
 	    	tempMap.put("isLiked", rs.getInt("찜 유무")==1);
 	    	tempMap.put("likeCnt", rs.getInt("찜 개수"));
-	    	mypageDtos.add(tempMap);
+	    	list.add(tempMap);
 	    }
 	
 	    rs.close();
 		pstmt.close();
 		conn.close();
 		
-		return mypageDtos;
+		return list;
 	}
 	
 	/** NY-4. 프로필 & 활동한 내용 카운트 조회 (p.4 / 마이페이지) -member
 		ProfileDto(프로필 사진, 닉네임, 작성한 일정 수, 찜한 수, 댓글 쓴 수)
 		input : 로그인한 사람의 member_id
-		output : ProfileDto*/
-	ProfileDto getMemberProfile(int memberId) throws Exception {
+		output : Map<String,Object>*/
+	Map<String,Object> getMemberProfile(int memberId) throws Exception {
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
 		String dbId = "ab";
@@ -449,23 +449,20 @@ public class MemberDao {
 	
 		//3. 결과테이블 : “ResultSet객체”
 		ResultSet rs = pstmt.executeQuery();
-		ProfileDto profileDto = null;
-	    if (rs.next()) { 
-	    	
-	    	String profile = rs.getString("프로필 사진");
-	    	String nickName = rs.getString("닉네임");
-	    	int myTavelCnt = rs.getInt("내 일정 수");
-	    	int myLikeCnt = rs.getInt("찜한 수");
-	    	int myCommentCnt = rs.getInt("댓글 쓴 수");
-	    	
-	    	profileDto = new ProfileDto(profile, nickName, myTavelCnt, myLikeCnt, myCommentCnt);
+		Map<String,Object> map = new HashMap<>();
+	    if (rs.next()) {
+	    	map.put("profile", rs.getString("프로필 사진"));
+	    	map.put("nickName", rs.getString("닉네임"));
+	    	map.put("myTavelCnt", rs.getInt("내 일정 수"));
+	    	map.put("myLikeCnt", rs.getInt("찜한 수"));
+	    	map.put("myCommentCnt", rs.getInt("댓글 쓴 수"));
 	    }
 	
 	    rs.close();
 		pstmt.close();
 		conn.close();
 		
-		return profileDto;
+		return map;
 	}
 
 	public static void main(String[] args) throws Exception {
