@@ -43,7 +43,7 @@ public class CommentDao {
 
 	/** NY-20. 댓글 목록 조회 (p.19 / 내 일정 게시글) 
 		input : 현재 보고 있는 게시글의 번호(bno), 페이지 번호
-		output : List<CommentDto> */
+		output : List<Map<String, Object>> */
 	List<Map<String, Object>> getComment(int bno, int page) throws Exception {
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
@@ -59,7 +59,6 @@ public class CommentDao {
 		pstmt.setInt(1, bno);
 
 		ResultSet rs = pstmt.executeQuery();
-//		List<CommentDto> commentDtos = new ArrayList<>();
 		List<Map<String,Object>> mapList = new ArrayList<>();
 		while (rs.next()) {
 			Map<String, Object> tempMap= new HashMap<String,Object>();
