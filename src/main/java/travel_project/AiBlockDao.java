@@ -46,7 +46,7 @@ public class AiBlockDao {
 		Connection conn = DriverManager.getConnection(url, dbId, dbPw);
 				
 		String sql = "INSERT INTO ai_blocks(ai_block_idx, bno, place_id, ai_start_time, ai_end_time, ai_travel_time) "
-				+ "VALUES(SEQ_AI_BLOCK.nextval, ?, ?, TO_DATE(?, 'YYYY-MM-DD HH24:MI:SS'), TO_DATE(?, 'YYYY-MM-DD HH24:MI:SS'), ? ) ";
+					+"VALUES(SEQ_AI_BLOCK.nextval, ?, ?, TO_DATE(?, 'YYYY-MM-DD HH24:MI:SS'), TO_DATE(?, 'YYYY-MM-DD HH24:MI:SS'), ? ) ";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setInt(1,bno);
 		pstmt.setString(2,placeId);

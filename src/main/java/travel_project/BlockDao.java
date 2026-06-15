@@ -148,7 +148,7 @@ public class BlockDao {
 		Class.forName(driver);
 		Connection conn = DriverManager.getConnection(url, dbId, dbPw);
 
-		String sql = "UPDATE  blocks SET start_time = TO_DATE(?, 'YYYY-MM-DD HH24:MI:SS') , end_time = TO_DATE(?, 'YYYY-MM-DD HH24:MI:SS')" 
+		String sql = "UPDATE  blocks SET start_time = TO_DATE(?, 'YYYY-MM-DD HH24:MI:SS'), end_time = TO_DATE(?, 'YYYY-MM-DD HH24:MI:SS')" 
 				+ " WHERE block_idx = ?";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, startTime);
@@ -197,12 +197,12 @@ public class BlockDao {
 		Class.forName(driver);
 		Connection conn = DriverManager.getConnection(url, dbId, dbPw);
 
-		String sql = "SELECT b.start_time, b.end_time, b.checked_ai,"
-				+ " b.color_idx, c.color_code, p.name, p.category, p.address, p.lat, p.lng"
-				+ "	FROM blocks b LEFT OUTER JOIN places p"
-				+ "	ON b.place_id = p.place_id"
-				+ "	INNER JOIN colors c ON b.color_idx = c.color_idx"
-				+ "	WHERE block_idx = ?";
+		String sql = "SELECT b.start_time, b.end_time, b.checked_ai, "
+				+ "b.color_idx, c.color_code, p.name, p.category, p.address, p.lat, p.lng "
+				+ "FROM blocks b LEFT OUTER JOIN places p "
+				+ "ON b.place_id = p.place_id "
+				+ "INNER JOIN colors c ON b.color_idx = c.color_idx "
+				+ "WHERE block_idx = ? ";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setInt(1, blockIdx);
 		
@@ -240,24 +240,24 @@ public class BlockDao {
 		Class.forName(driver);
 		Connection conn = DriverManager.getConnection(url, dbId, dbPw);
 
-		String sql = "SELECT b.block_idx, b.start_time, b.end_time, b.checked_ai, b.travel_time,"
-				+ " b.color_idx, c.color_code, p.name, lat, lng"
-				+ "	FROM blocks b LEFT OUTER JOIN places p ON b.place_id = p.place_id"
-				+ " INNER JOIN colors c ON b.color_idx = c.color_idx"
-				+ "	WHERE b.bno = ?"
-				+ "	ORDER BY start_time";
+		String sql = "SELECT b.block_idx, b.start_time, b.end_time, b.checked_ai, b.travel_time, "
+				+ "b.color_idx, c.color_code, p.name, lat, lng "
+				+ "FROM blocks b LEFT OUTER JOIN places p ON b.place_id = p.place_id "
+				+ "INNER JOIN colors c ON b.color_idx = c.color_idx "
+				+ "WHERE b.bno = ? "
+				+ "ORDER BY start_time ";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setInt(1, bno);
 
 		List<Map<String,Object>> mapList = new ArrayList<>();
 		ResultSet rs = pstmt.executeQuery();
 		while(rs.next()) {
-			Map<String,Object> tempMap = new HashMap();
+			Map<String,Object> tempMap = new HashMap<>();
 			tempMap.put("blockIdx", rs.getInt("block_idx"));
 			tempMap.put("startTime", rs.getString("start_time"));
 			tempMap.put("endTime", rs.getString("end_time"));
 			tempMap.put("isCheckedAi", rs.getInt("checked_ai")==1);
-			tempMap.put("travelTime", (rs.getInt("travel_time")==0));
+			tempMap.put("travelTime", rs.getObject("travel_time",Integer.class));
 			tempMap.put("colorIdx", rs.getInt("color_idx"));
 			tempMap.put("colorCode", rs.getString("color_code"));
 			tempMap.put("name", rs.getString("name"));
@@ -277,8 +277,7 @@ public class BlockDao {
 		input : 게시글번호(bno), 시작시간(inputStartTime), 끝시간(inputEndTime)  
 		output : ArrayList<BlockDto> 
 		주의 : 장소가 없는 경우 위도, 경도에 0이 들어감*/
-	List<BlockDto> showBlocksBetween(int bno, String inputStartTime, String inputEndTime) throws Exception {
-		List<BlockDto> list = new ArrayList<>();
+	List<Map<String,Object>> showBlocksBetween(int bno, String inputStartTime, String inputEndTime) throws Exception {
 		
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
@@ -288,33 +287,35 @@ public class BlockDao {
 		Class.forName(driver);
 		Connection conn = DriverManager.getConnection(url, dbId, dbPw);
 
-		String sql = "SELECT block_idx, start_time, end_time, checked_ai, travel_time,"
-				+ " b.color_idx, c.color_code, p.name, lat, lng"
-				+ "	FROM blocks b LEFT OUTER JOIN places p"
-				+ "	ON b.place_id = p.place_id"
-				+ "	INNER JOIN colors c ON b.color_idx = c.color_idx"
-				+ "	WHERE b.bno = ?"
-				+ "	AND start_time BETWEEN TO_DATE(?, 'YYYY-MM-DD HH24:MI:SS') AND TO_DATE(?, 'YYYY-MM-DD HH24:MI:SS')"
-				+ "	ORDER BY start_time";
+		String sql = "SELECT block_idx, start_time, end_time, checked_ai, travel_time, "
+				+ "b.color_idx, c.color_code, p.name, lat, lng "
+				+ "FROM blocks b LEFT OUTER JOIN places p "
+				+ "ON b.place_id = p.place_id "
+				+ "INNER JOIN colors c ON b.color_idx = c.color_idx "
+				+ "WHERE b.bno = ? "
+				+ "AND start_time BETWEEN TO_DATE(?, 'YYYY-MM-DD HH24:MI:SS') AND TO_DATE(?, 'YYYY-MM-DD HH24:MI:SS') "
+				+ "ORDER BY start_time ";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setInt(1, bno);
 		pstmt.setString(2, inputStartTime);
 		pstmt.setString(3, inputEndTime);
 
 		ResultSet rs = pstmt.executeQuery();
+		List<Map<String,Object>> list = new ArrayList<>();
 		while(rs.next()) {
-			int blockIdx = rs.getInt("block_idx");
-			String startTime = rs.getString("start_time");
-			String endTime = rs.getString("end_time");
-			boolean isCheckedAi = rs.getInt("checked_ai")==1;
-			int travelTime = rs.getInt("travel_time");
-			int colorIdx = rs.getInt("color_idx");
-			String colorCode = rs.getString("color_code");
-			String name = rs.getString("name");
-			double lat = rs.getDouble("lat");
-			double lng = rs.getDouble("lng");
-			BlockDto b = new BlockDto(blockIdx, startTime, endTime, isCheckedAi, colorIdx, travelTime, colorCode, name, colorCode, name, lat, lng);
-			list.add(b);
+			Map<String,Object> tempMap = new HashMap<>();
+			tempMap.put("blockIdx", rs.getInt("block_idx"));
+			tempMap.put("startTime", rs.getString("start_time"));
+			tempMap.put("endTime", rs.getString("end_time"));
+			tempMap.put("isCheckedAi", rs.getInt("checked_ai")==1);
+			tempMap.put("travelTime", rs.getObject("travel_time",Integer.class));
+			tempMap.put("colorIdx", rs.getInt("color_idx"));
+			tempMap.put("colorCode", rs.getString("color_code"));
+			tempMap.put("name", rs.getString("name"));
+			tempMap.put("lat", rs.getDouble("lat"));
+			tempMap.put("lng", rs.getDouble("lng"));
+			
+			list.add(tempMap);
 		}
 				
 		rs.close();
@@ -431,14 +432,12 @@ public class BlockDao {
 		conn.close();
 	}
 	
-	
-	
 	public static void main(String[] args) throws Exception {
 		BlockDao b = new BlockDao();
 		Scanner sc = new Scanner(System.in);
 		
 		// 기본 설정값
-		int bno = 100;
+		int bno = 1;
 		String placeId = "ChIJofoWUQCNaDURDqIZjAjYMU8";
 		
 		// HA-20
@@ -493,30 +492,20 @@ public class BlockDao {
 //		System.out.println(bl);
 		
 		// HA-27
-		////////////////////////////////////String.......////////////////////////
-		System.out.print("블럭을 조회할 게시글 번호: ");
-		bno = sc.nextInt();
-		List<Map<String,Object>> bd = b.showAllBlocks(bno);
-		for(int i=0;i<bd.size();i++) {
-			System.out.println(bd.get(i));
-//			System.out.println(bd.get(i).get("travelTime").getClass());
-		}
+//		System.out.print("블럭을 조회할 게시글 번호: ");
+//		bno = sc.nextInt();
+//		List<Map<String,Object>> bd = b.showAllBlocks(bno);
+//		for(int i=0;i<bd.size();i++) {
+//			System.out.println(bd.get(i));
+//		}
 		
 		// HA-28
-//		String startTime = "2022-02-02";
-//		String endTime = "2027-02-02";
-//		List<BlockDto> bd = b.showBlocksBetween(bno, startTime, endTime);
-//		for(int i=0;i<bd.size();i++) {
-//			BlockDto bl = bd.get(i);
-//			System.out.println("색 인덱스: " + bl.colorIdx);
-//			System.out.println("색상 코드: " + bl.colorCode);
-//			System.out.println("블럭 인덱스: " + bl.blockIdx);
-//			System.out.println("블럭 시간: " + bl.startTime + "~" + bl.endTime);
-//			System.out.println("ai 반영여부: " + bl.isCheckedAi);
-//			System.out.println("이동시간: " + bl.travelTime);
-//			System.out.println("장소이름: " + bl.name);
-//			System.out.println("위도, 경도: " + bl.lat + ", " + bl.lng);
-//		}
+		String startTime = "2026-05-06";
+		String endTime = "2027-05-09";
+		List<Map<String,Object>> bds = b.showBlocksBetween(bno, startTime, endTime);
+		for(int i=0;i<bds.size();i++) {	
+			System.out.println(bds.get(i));
+		}
 		
 //		// HA-29
 //		System.out.print("변경할 블록 인덱스: ");
