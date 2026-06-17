@@ -1,0 +1,136 @@
+@charset "UTF-8";
+
+.bd{border: 1px solid red;}
+.bs{box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;}
+.fl{float:left;}
+.fr{float:right;}
+::-webkit-scrollbar {
+	width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: #E3D4FF;
+	border-radius: 10px;
+	background-clip: padding-box;
+	border: 2px solid transparent;
+}
+
+::-webkit-scrollbar-track {
+	background-color: rgba(0, 0, 0, 0);
+	border-radius: 10px;
+}
+* {box-sizing: border-box;}
+body {
+   font-family: Pretendard, "Apple SD Gothic Neo";
+   background-color: #F8F5FD;
+}
+body > *:not(:first-child){margin: 80px auto 0;}
+/************헤더***********/
+#header {
+	margin:auto;
+	background-color: white;
+	width: 850px; /* 필요시사이즈조절 */
+	height: 72px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+#header > div {
+	cursor: pointer;
+	margin: auto 15px;
+}
+#header > div:nth-child(1)>svg {
+	color: #925DE8;
+	height: 24px;
+}
+#header > div:nth-child(1) > a { /*트래블플레너*/
+	color: #925DE8;
+	font-size: 24px;
+	font-weight: 500;
+}
+/*메인*/
+#main {
+	position: relative;
+	width: 850px;
+	height: 565px;
+	background-color: white;
+	border-radius: 5px;
+	padding: 28px 40px;
+	
+}
+#main * {
+	margin:auto;
+}
+#main > svg:nth-child(1) {
+	display:block;
+	width: 70px;
+	margin-bottom: 20px;
+	color: #925DE8;
+	padding: 10px;
+	border-radius: 30px;
+	background-color: #F8F5FD;
+	border: 1px solid rgb(210, 210, 210);	
+}
+#main > h3 { /*비밀번호재설정*/
+	letter-spacing: -0.15px;
+	color: rgb(38, 55, 71);
+	text-align:center;
+}
+#main > div:nth-child(3) {
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 24px;
+	color: rgb(38, 55, 71);
+	margin-top: 17px;
+	margin-bottom: 74px;
+	text-align:center;
+}
+#main > div:nth-child(4) { /*비밀번호를 재설정 할 이메일*/
+	margin-bottom: 17px;
+	margin-left: 188px;
+	font-size: 13px;
+	font-weight: 700;
+	color: rgb(0,0,0);
+	text-align: left;
+}
+#main > div:nth-child(4)::after { /* * */
+	color: red;
+	content: "*";
+}
+#main > input {
+	margin-left: 188px;
+	padding-bottom: 8px;
+	padding-left: 44px;
+	padding-right: 14px;
+	padding-top: 8px;
+	border-radius: 4px;
+	border: 1px solid rgb(210, 210, 210);
+	width: 400px;
+	height: 46px;
+	font-size: 16px;
+	font-weight: 400;
+	background-color: #fbfbfd;
+}
+#main > svg:nth-child(6) { /*편지이모티콘*/
+	position: absolute;
+	top: 353px;
+	left: 242px;	
+	width: 18px;
+	height: 15px;
+}
+#main > button {
+	border: none;
+	display:block;
+	width: 300px;
+	height: 46px;
+	margin-top: 90px;
+	border-radius: 4px;
+	font-size: 16px;
+	font-weight: 700;
+	color: white;
+	background-color: #925DE8;
+	cursor: pointer;
+}
+#main > button:hover {
+	opacity: 0.3;
+}
