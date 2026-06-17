@@ -257,7 +257,7 @@ body>* {
 }
 
 #main > div:nth-child(2)>div:nth-child(2) {
-	background-image: url("../img/c2.png");
+	background-image: url("../img/일정예시이미지.png");
 	height: 500px;
 }
 

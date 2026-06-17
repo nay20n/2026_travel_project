@@ -283,6 +283,10 @@ input:focus {
 	cursor: pointer;
 }
 
+.popup-container> div > svg:nth-child(1):hover {
+	color: #E3D4FF;
+}
+
 .popup-container>div:nth-child(1)>div:nth-child(2) {
 	margin-top: 150px;
 	position: relative;
