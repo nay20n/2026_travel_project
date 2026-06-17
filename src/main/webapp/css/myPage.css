@@ -1,0 +1,393 @@
+@charset "UTF-8";
+
+.bd{border: 1px solid red;}
+.bs{box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;}
+.fl{float:left;}
+.fr{float:right;}
+::-webkit-scrollbar {
+	width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: #E3D4FF;
+	border-radius: 10px;
+	background-clip: padding-box;
+	border: 2px solid transparent;
+}
+
+::-webkit-scrollbar-track {
+	background-color: rgba(0, 0, 0, 0);
+	border-radius: 10px;
+}
+* {box-sizing: border-box;}
+body {
+   font-family: Pretendard, "Apple SD Gothic Neo";
+   background-color: #F8F5FD;
+}
+body > *:not(:first-child){margin: 20px auto 0;}
+/************헤더***********/
+#header {
+	margin:auto;
+	background-color: white;
+	width: 850px; /* 필요시사이즈조절 */
+	height: 72px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+#header > div {
+	cursor: pointer;
+	margin: auto 15px;
+}
+
+#header > div:nth-child(1)>svg {
+	color: #925DE8;
+	height: 24px;
+}
+
+#header > div:nth-child(1) > a { /*트래블플레너*/
+	color: #925DE8;
+	font-size: 24px;
+	font-weight: 500;
+}
+#header > div:nth-child(2) {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+#header > div:nth-child(2) > div:nth-child(1) { /*로그아웃버튼감싸고있는 div*/
+	margin-right: 10px;
+	margin-top: 5px;
+}
+#header > div:nth-child(2) > div:nth-child(1)> a { /*로그아웃버튼*/
+	border: 1px solid #925DE8;
+	border-radius: 10px;
+	background-color: #925DE8;
+	padding: 8px 10px;
+	font-size: 16px;
+	font-weight: 500;
+	color: white;
+}
+#header > div:nth-child(2) > div:nth-child(1)> a:hover {
+	opacity: 0.3;
+}
+#header >div:nth-child(2) > div:nth-child(2) > a { /*마이페이지*/
+	border: 1px solid #925DE8;
+	border-radius: 28px;
+	background-color: #925DE8;
+	padding: 18px 3px;
+	font-size: 10px;
+	font-weight: 500;
+	color: white;
+}
+#header >div:nth-child(2) > div:nth-child(2) > a:hover {
+	opacity: 0.3;
+}
+/*************profile**********/
+#profile {
+	position: relative;
+	display: flex;  
+	border-radius: 5px;
+	width: 850px;
+	height: 170px;
+	background-color: white;
+	align-items: center;    
+}
+#profile > svg { /*프로필 사진*/
+	margin-left: 15px;
+	width: 170px;
+	color: #E3D4FF;
+}
+#profile > div:nth-child(2){ /*닉네임*/
+	font-size: 25px;
+	font-weight: 700;
+}
+#profile > div:not(:nth-child(2)):not(:last-child) { /*박스 3개 div*/
+	position: absolute;
+	background-color: #F8F5FD; 	
+	border: 3px solid #EDE8F6;
+	border-radius: 5px;
+	width:130px;
+	height:70px;
+	font-size: 20px;
+}
+#profile > div:not(:nth-child(2)):not(:last-child) > svg {
+	margin: 10px;
+	color: #925DE8;
+	width: 20px;
+}
+#profile > div:nth-child(3) { /*내 일정 수 박스 위치*/
+	position: relative;
+	bottom: 15px;
+	right: 320px;
+}
+#profile > div:nth-child(4) { /*찜 수 박스 위치*/
+	position: relative;
+	bottom: 15px;
+	right: 160px;
+}
+#profile > div:nth-child(5) { /*댓글 쓴 수 박스 위치*/
+	position: relative;
+	bottom: 15px;
+	right: 20px;
+}
+#profile > div:not(:nth-child(2)):not(:last-child) > div:nth-child(2) { /*박스 안에 이름 ex.내 일정 수, 찜 */
+	position: absolute;
+	display: inline;
+	top: 13px;
+	left: 46px;
+	font-size: 12px;
+	font-weight: 500;
+}
+#profile > div:not(:nth-child(2)):not(:last-child) > div:nth-child(3) { /*숫자*/
+	position : absolute;
+	bottom: 5px;
+	left: 52px; 
+	display: flex;
+	justify-content: center;    
+	align-items: center;        
+	width: 30px;
+	height: 30px;
+	border: 1px solid #EDE8F6;
+	border-radius: 10px;
+	background-color: white;
+	font-size: 20px;
+	font-weight: 500;
+	text-align:center;
+} 
+#profile > div:nth-child(6) { 
+	cursor:pointer;
+	position: absolute;
+	top: 10px;
+	right: 15px;
+	width: 100px;
+	height: 40px;
+	border: 1px solid #EDE8F6;
+	border-radius: 5px;
+}
+#profile > div:nth-child(6):hover {
+	background-color: #E3D4FF;
+}
+#profile > div:nth-child(6) > a { /*정보수정*/
+	cursor:pointer;
+	margin-top: 8px;
+	font-size: 15px;
+	font-weight: 500;
+	color: #925DE8;
+}
+#profile > div:nth-child(6) > svg { /*연필사진*/
+	margin-top: 10px;
+	margin-left: 11px;
+	width:15px;
+	color: #925DE8;
+}
+
+/**************테이블 ************/
+.tableDiv {
+	border-radius: 5px;
+	width: 850px;
+	height: 240px;
+	background-color: white;
+} 
+.tableDiv .tableTitle { /*내 게시글*/
+	padding: 14px;
+	font-size: 14px;
+	font-weight: 700;
+}
+.table {
+	margin: auto;
+	height: 181px;
+	width: 850px;
+	overflow-y: scroll;
+}
+.table table {
+	margin: auto;
+	width: 781px;
+	height: 181px;
+	overflow: scroll;
+	border-collapse : collapse;
+	font-size: 12px;
+}
+.table thead {
+	position: sticky;
+	top: 0px;
+	background-color: #E9D5FF;
+}
+.table tr {
+	border: 1px solid #EDE8F6;
+}
+.table tr:not(first-child):hover {
+	background-color: rgba(227, 212, 255, 0.3);
+}
+.table th:first-child{ /*순서*/
+	width: 100px;
+	
+}
+.table th:not(first-child) {/*나머지*/
+	cursor:pointer;
+	height: 30px;
+	width: 170px;
+	font-weight: 500;
+}
+body > div:nth-child(5) {
+	margin-bottom: 60px;
+}
+
+/****************정보수정창****************/
+#popupEditInfo {
+	visibility: hidden;
+	position:fixed;
+	top:0;
+	left:0;
+	margin: auto;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+#popupEditInfo > div {
+	margin: 10% auto;
+	width: 500px;
+	height: 374px;
+	background-color: #fff;	
+	border-radius: 15px;
+}
+/*정보창 헤어*/
+#popupHeader { 
+	width: 500px;
+	height: 59px;
+	border-bottom: 1px solid #dcdcdc;
+}
+#popupHeader > span { /*계정 정보 인증 */
+	margin-left: 35px;
+	margin-top: 20px;
+	font-size: 14px;
+	font-weight: 710;
+	color: rgb(38, 55, 71);
+}
+#popupHeader > svg{ /*X*/
+	margin-right: 35px;
+	margin-top: 20px;
+	opacity: 0.5;
+	cursor: pointer;
+}
+/*정보창 콩텐츠*/
+#popupContent {
+	padding: 26px 36px 0px;
+}
+#popupContent > div:nth-child(1){ /*계정 정보를 안전하게 보호하기 위해 비밀번호를 입력해주세요. SNS로 가입한 경우에는 다시 로그인해 주세요.*/
+	margin-bottom: 20px;
+	font-size: 17px;
+	font-weight: 700;
+	color: #000;
+}
+#popupPw > div:nth-child(1) { /* 비밀번호 인증*/
+	margin-bottom: 15px;
+	font-size: 13px;
+	font-weight: 700;
+	color: #000;
+}
+#popupPw > div:nth-child(2) { /*비밀번호 입력 묵어논 div*/
+	margin-bottom:12px;
+	width: 435px;
+	height: 48px;
+	position: relative;
+}
+#popupPw > div > input {
+	width: 343px;
+	height: 46px;
+	padding-bottom: 11px;
+	padding-left: 48px;
+	padding-right: 48px;
+	padding-top: 11px;
+	border-radius: 4px;
+	border: 1px solid rgb(210, 210, 210);
+	margin-right: 12px;
+	font-size: 16px;
+	font-weight: 400;
+	background-color: #fbfbfd;
+}
+#popupPw > div > svg {
+	position: absolute;
+	top: 11px;
+	left: 16px;
+	width: 24px;
+	height: 24px;
+	opacity: 0.2;
+}
+#popupPw > div > span { /*확인버튼*/
+	cursor: pointer;
+	display: flex;
+	margin-top: 1px;
+	width: 80px;
+	height: 44px;
+	background-color:#925DE8;
+	border-radius: 4px;	
+	font-size: 14px;
+	font-weight: 700;
+	color: #fff;
+	justify-content: center;
+	align-items: center;
+}
+#popupPw > div > span:hover {
+	opacity: 0.4;
+}	
+/*****맞지 않은 비밀번호를 입력할 경우*/
+#popupContent > div:nth-child(3) {
+	/*display:none;*/
+	
+	position: relative;
+	height: 18px;
+	width: 257px;
+	margin-bottom:10px;
+}
+#popupContent > div:nth-child(3) > svg{
+	position: absolute;
+	left: 9px;	
+	width: 16px;
+}
+#popupContent > div:nth-child(3) > svg > path {
+	fill: rgb(255, 153, 0)
+}
+#popupContent > div:nth-child(3) > span {
+	position: absolute;
+	left:30px;
+	font-size: 14px;
+	font-weight: 400;
+	color: rgb(255, 153, 0);
+}
+#popupContent > div:nth-child(4) { /*비밀번호를 잊으셧나요?*/
+	font-size: 12px;
+	font-weight: 400;
+	color: rgb(132, 145, 158);
+}
+#popupContent > div:nth-child(4) > a { /*비밀번호 재설정*/
+	cursor: pointer;
+	color: #0078ff;
+}
+#popupEditInfo > div {
+	position: relative;
+}
+#popupVerify { /*인증버튼*/
+	position:absolute;
+	bottom: 18px;
+	left: 35px;
+	width: 428px;
+	height: 54px;
+	cursor: pointer;
+	border-radius:10px;
+	border: 1px solid rgb(220, 225, 229);
+	/*background-color: rgb(249, 250, 251); /*마우스 오버시   */ 
+	
+}
+#popupVerify > img { /*구글이미지*/
+	width: 428px;
+	height: 54px;
+}
+
+
+
+
+
+
+

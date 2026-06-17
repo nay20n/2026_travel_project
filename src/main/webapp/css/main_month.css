@@ -1,0 +1,207 @@
+@charset "UTF-8";
+
+.bd{border: 1px solid red;}
+.bs{box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;}
+.fl{float:left;}
+.fr{float:right;}
+::-webkit-scrollbar {
+	width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: #E3D4FF;
+	border-radius: 10px;
+	background-clip: padding-box;
+	border: 2px solid transparent;
+}
+
+::-webkit-scrollbar-track {
+	background-color: rgba(0, 0, 0, 0);
+	border-radius: 10px;
+}
+* {box-sizing: border-box;}
+body {
+   font-family: Pretendard, "Apple SD Gothic Neo";
+   background-color: #F8F5FD;
+}
+body > *:not(:first-child){margin: 20px auto 0;}
+#header {
+	margin: 0px auto;
+	background-color: white;
+	width: 1280px;
+	height: 72px;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+#header > div {
+	cursor: pointer;
+	margin: auto 15px;
+}
+#header > div:nth-child(1)>svg {
+	color: #925DE8;
+	height: 24px;
+}
+#header > div:nth-child(1)>a {
+	color: #925DE8;
+	font-size: 24px;
+	font-weight: 500;
+}
+#header > div:nth-child(1) > span {
+	margin-left: 10px;
+	cursor: text;
+}
+#header > div:nth-child(2) {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+#header > div:nth-child(2) > div:nth-child(1) { /*공유버튼*/
+	margin-right: 10px;
+	argin-top: 5px;
+	border: 1px solid #925DE8;
+	border-radius: 10px;
+	background-color: white;
+	padding: 8px 10px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+#header > div:nth-child(2) > div:nth-child(1):hover {
+	background-color: #E3D4FF;
+}
+#header > div:nth-child(2) > div:nth-child(1)> svg { /*공유이모티콘*/
+	margin-right: 4px;
+	height: 20px;
+	color: #925DE8;
+}
+#header > div:nth-child(2) > div:nth-child(1)> a {  /*공유텍스트*/
+	font-size: 16px;
+	font-weight: 500;
+	color: #925DE8;
+}
+#header > div:nth-child(2) > div:nth-child(2) > a { /*마이페이지*/
+	border: 1px solid #925DE8;
+	border-radius: 28px;
+	background-color: #925DE8;
+	padding: 18px 3px;
+	font-size: 10px;
+	color: white;
+}
+#header>div:nth-child(2) > div:nth-child(2) > a:hover {
+	opacity: 0.3;
+}
+/***********main****************/
+#main {
+	width: 1280px;
+	height: 830px;
+	text-align: center;
+	padding: 30px 180px;
+	background-color: white;
+	border-radius: 15px;
+}
+.date { /*2026년 5월*/
+   font-size: 22px;
+}
+.changeView { /*일월주담고잏ㅅ는 큰 div*/
+	margin-top: 12px;
+	margin-left: 30px;
+	width: 181px;
+	height: 35px;
+	background-color: #E7DEF9;
+	border-radius: 12px;
+	border: 1.3px solid rgba(58, 58, 58, 0.2);
+	display: flex;
+	justify-content: space-between;
+}
+.changeView > span { /*일월주*/
+	cursor:pointer;
+	font-size : 16px;
+	font-weight: 600;
+	color: #925DE8;
+	height: 25px;
+	width: 57px;
+	margin: 3px;
+	padding: 6px 20px; 
+	border-radius: 12px;
+}
+.changeView > span:hover {
+	background-color: #925DE8;
+	color: white;
+}
+.move_date { /* <오늘>*/
+   border: 1px solid #EDE8F6;
+   background-color: white;
+   border-radius: 20px;
+   padding: 2px 8px;
+   font-size: 12px;
+   cursor: pointer;
+}
+.move_date:hover {
+	backgroud-color: #EDE8F6;
+}
+#main > div:nth-child(2) > img { /*달력이미지*/
+	margin:auto;
+	width: 910px;
+}
+#main > div:nth-child(2) { /*달력담고잇는 div*/
+	position: relative;
+}
+#main > div:nth-child(2) > span{ /*불투명 박스*/
+	position: absolute;
+	width: 128px;
+	height: 107px;
+	background-color: rgba(146, 93, 232, 0.3);
+}
+#main > div:nth-child(2) > span:nth-child(3) {/*처음꺼*/
+	top: 351px;
+	left: 137px;
+}
+#main > div:nth-child(2) > span:nth-child(4) {/*두번쨰꺼*/
+	top: 351px;
+	left: 266px;
+}
+#main > div:nth-child(2) > span > svg { /*쓰레기 버튼들 */
+	cursor:pointer;
+	margin-top: 24px;
+	width: 65px;
+	color: rgb(146, 93, 232);
+	padding: 10px;
+	border-radius: 40px;
+	border: 3px solid rgb(146, 93, 232);
+}
+#main > div:nth-child(2) > svg { /* +버튼들 */
+	cursor:pointer;
+	position: absolute;
+	width: 65px;
+	color: rgb(146, 93, 232);
+	padding: 10px;
+	border-radius: 40px;
+	border: 3px solid rgb(146, 93, 232);
+}
+#main > div:nth-child(2) > svg:nth-child(2) {
+	top: 375px;
+	left: 39px;
+}
+#main > div:nth-child(2) > svg:nth-child(5) {
+	top: 375px;
+	left: 427px;
+}
+#main > button { /*일정확정하기버튼*/
+	cursor:pointer;
+	border-radius: 4px;
+	border: none;
+	position:fixed;
+	bottom: 50px;
+	right: 132px;
+	width: 170px;
+	height: 50px;
+	font-size: 20px;
+	font-weight: 700;
+	background-color: #925DE8;
+	color: white;
+}
+#main > button:hover {
+	opacity: 0.3;
+}
