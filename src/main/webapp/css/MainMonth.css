@@ -130,7 +130,7 @@ body > *:not(:first-child){margin: 20px auto 0;}
 	background-color: #925DE8;
 	color: white;
 }
-.move_date { /* <오늘>*/
+.moveDate { /* <오늘>*/
    border: 1px solid #EDE8F6;
    background-color: white;
    border-radius: 20px;
@@ -138,7 +138,7 @@ body > *:not(:first-child){margin: 20px auto 0;}
    font-size: 12px;
    cursor: pointer;
 }
-.move_date:hover {
+.moveDate:hover {
 	backgroud-color: #EDE8F6;
 }
 #main > div:nth-child(2) > img { /*달력이미지*/
