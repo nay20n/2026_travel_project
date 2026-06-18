@@ -33,6 +33,7 @@ body > * {margin: 0px auto;}
 	height: 34px
 }
 #header > img{ /*<-*/
+	cursor: pointer;
 	height: 34px;
 	margin: right: 6px;
 }
@@ -69,7 +70,6 @@ body > * {margin: 0px auto;}
 /********추천여행지**********/
 #recomendPlace { 
 	margin-top: 50px;
-	padding: 0px 30px;
 	width: 763px;
 }
 #recomendPlace > div:nth-child(1) { /*추천여행지*/
@@ -98,10 +98,14 @@ body > * {margin: 0px auto;}
 	font-weight:700;
 	color:rgba(58, 58, 58, 0.6);
 }
-#recomendPlace > div:nth-child(2) > span:active {
+.coloredPlace {
+	color: #925DE8 !important;
+	border-color: #925DE8 !important;
+}
+/* #recomendPlace > div:nth-child(2) > span:active {
 	color: #925DE8;
 	border-color: #925DE8;
-}
+} */
 /************직접 여행지 찾기************/
 #searchPlace {
 	margin-top: 50px;
@@ -141,8 +145,8 @@ body > * {margin: 0px auto;}
 	left: 50%;
 	transform: translateX(-50%);
 }
-#nextBtn > button{
-	/*opacity: 0.3; /*선택이 안됐을 경우 */
+#nextBtn > div {
+	opacity: 0.3; /*선택이 안됐을 경우 */
 	display: flex;
 	padding: 0px 30px;
 	width: 763px;
@@ -156,4 +160,7 @@ body > * {margin: 0px auto;}
 	font-size:14px;
 	font-weight:700;
 	color:white;
+}
+.coloredBtn {
+	opacity: 1 !important;
 }

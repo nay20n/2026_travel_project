@@ -81,7 +81,8 @@ body > div:nth-child(2) { /*계정관리*/
 	border-radius: 50%;
 }
 #basicInfo > div:nth-child(2) > svg { /*수정하기 연필 버튼*/
-	position:absolute;
+	cursor: pointer;
+	position: absolute;
 	top: 96px;
 	left: 452px;
 }

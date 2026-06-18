@@ -27,16 +27,17 @@ body{
 }
 body > * {margin: 0px auto;}
 /**************헤더2*****************/
-#header2 {
+#header {
 	padding: 2px 12px;
 	width: 763px;
 	height: 34px;
 }
-#header2 > img{ /*<-*/
+#header > img{ /*<-*/
+	cursor: pointer;
 	height: 34px;
 	margin: right: 6px;
 }
-#header2 > div {
+#header > div {
 	margin-top: 8px;
 	margin-right: 21px;
 	font-size: 13px;
@@ -86,8 +87,7 @@ body > * {margin: 0px auto;}
 	transform: translateX(-50%);
 }
 #nextBtn > div {
-	/*opacity: 0.3; /*클릭 안되면 */
-	
+	opacity: 0.3; /*클릭 안되면 */
 	display: flex;
 	padding: 0px 30px;
 	width: 768px;
@@ -101,4 +101,8 @@ body > * {margin: 0px auto;}
 	font-size:14px;
 	font-weight:700;
 	color:white;
+}
+
+.coloredBtn {
+	opacity: 1 !important;
 }
