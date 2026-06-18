@@ -74,29 +74,40 @@ body > *:not(:first-child) {margin: 80px auto 0;}
 	color: rgb(38, 55, 71);
 	text-align:center;
 }
-#main > div:nth-child(3) {
-	font-size: 14px;
-	font-weight: 400;
-	line-height: 24px;
-	color: rgb(38, 55, 71);
-	margin-top: 17px;
-	margin-bottom: 74px;
-	text-align:center;
+
+#pwInput { /*div*/
+	width: 423px;
+	margin-top: 30px;
+	padding: 5px;
 }
-#main > div:nth-child(4) { /*비밀번호를 재설정 할 이메일*/
+#pwInput > div {
+	margin-bottom: 35px;
+}
+#pwInput > div > div:nth-child(1) { /*비밀번호, 비밀번호 확인*/
 	margin-bottom: 17px;
-	margin-left: 188px;
 	font-size: 13px;
 	font-weight: 700;
 	color: rgb(0,0,0);
 }
-#main > div:nth-child(4)::after { /* * */
-	color: red;
-	content: "*";
+#pwInput > div:nth-child(1) > div:nth-child(3) { /*비밀번호 (영문자, 숫자 특수문자 포함 최소 8~20자)*/
+	margin-left: 4px;
+	margin-top: 7px;
+	font-size: 12px;
+	line-height: 12px;
+	color: #98a8b9;
 }
-#main > input {
-	margin-left: 188px;
-	padding: 8px 14px 8px 44px;
+.pwWarning {color: rgb(255, 0, 0) !important;}
+#pwInput > div:nth-child(2) > div:nth-child(3) { /*입력하신 비밀번호와 다릅니다.*/
+	visibility: hidden;
+	margin-left: 4px;
+	margin-top: 7px;
+	font-size: 12px;
+	line-height: 12px;
+	color: rgb(255, 0, 0);
+}
+.show {visibility: visible !important;}
+#pwInput > div > input { /*인풋들*/
+	padding: 14px;
 	border-radius: 4px;
 	border: 1px solid rgb(210, 210, 210);
 	width: 400px;
@@ -105,26 +116,24 @@ body > *:not(:first-child) {margin: 80px auto 0;}
 	font-weight: 400;
 	background-color: #fbfbfd;
 }
-#main > svg:nth-child(6) { /*편지이모티콘*/
-	position: absolute;
-	top: 353px;
-	left: 242px;	
-	width: 18px;
-	height: 15px;
+#main > div:last-child { /*버튼 담고 있는 div*/
+	width: 510px;
+	height: 50px;
+	margin-top: 38px;
 }
-#main > button {
+#main > div:last-child > button {
+	margin: 0px 5px;
 	border: none;
 	display:block;
-	width: 300px;
-	height: 46px;
-	margin-top: 90px;
+	width: 100px;
+	height: 48px;
 	border-radius: 4px;
 	font-size: 16px;
 	font-weight: 700;
+	cursor: pointer;
 	color: white;
 	background-color: #925DE8;
-	cursor: pointer;
 }
-#main > button:hover {
+#main > div:last-child > button:hover {
 	opacity: 0.3;
 }

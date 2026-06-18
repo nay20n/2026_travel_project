@@ -4,6 +4,9 @@
 .bs{box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;}
 .fl{float:left;}
 .fr{float:right;}
+.hide {
+	display: none !important;
+}
 ::-webkit-scrollbar {
 	width: 10px;
 }
@@ -24,7 +27,7 @@ body {
    font-family: Pretendard, "Apple SD Gothic Neo";
    background-color: #F8F5FD;
 }
-body > *:not(:first-child){margin: 20px auto 0;}
+body > *:not(:first-child) {margin: 20px auto 0;}
 /************헤더***********/
 #header {
 	margin:auto;
@@ -41,7 +44,7 @@ body > *:not(:first-child){margin: 20px auto 0;}
 	margin: auto 15px;
 }
 
-#header > div:nth-child(1)>svg {
+#header > div:nth-child(1) > svg {
 	color: #925DE8;
 	height: 24px;
 }
@@ -60,7 +63,7 @@ body > *:not(:first-child){margin: 20px auto 0;}
 	margin-right: 10px;
 	margin-top: 5px;
 }
-#header > div:nth-child(2) > div:nth-child(1)> a { /*로그아웃버튼*/
+#header > div:nth-child(2) > div:nth-child(1) > a { /*로그아웃버튼*/
 	border: 1px solid #925DE8;
 	border-radius: 10px;
 	background-color: #925DE8;
@@ -69,10 +72,10 @@ body > *:not(:first-child){margin: 20px auto 0;}
 	font-weight: 500;
 	color: white;
 }
-#header > div:nth-child(2) > div:nth-child(1)> a:hover {
+#header > div:nth-child(2) > div:nth-child(1) > a:hover {
 	opacity: 0.3;
 }
-#header >div:nth-child(2) > div:nth-child(2) > a { /*마이페이지*/
+#header > div:nth-child(2) > div:nth-child(2) > a { /*마이페이지*/
 	border: 1px solid #925DE8;
 	border-radius: 28px;
 	background-color: #925DE8;
@@ -99,7 +102,7 @@ body > *:not(:first-child){margin: 20px auto 0;}
 	width: 170px;
 	color: #E3D4FF;
 }
-#profile > div:nth-child(2){ /*닉네임*/
+#profile > div:nth-child(2) { /*닉네임*/
 	font-size: 25px;
 	font-weight: 700;
 }
@@ -236,7 +239,7 @@ body > div:nth-child(5) {
 
 /****************정보수정창****************/
 #popupEditInfo {
-	visibility: hidden;
+	display: none;
 	position:fixed;
 	top:0;
 	left:0;
@@ -265,13 +268,13 @@ body > div:nth-child(5) {
 	font-weight: 710;
 	color: rgb(38, 55, 71);
 }
-#popupHeader > svg{ /*X*/
+#popupHeader > svg { /*X*/
 	margin-right: 35px;
 	margin-top: 20px;
 	opacity: 0.5;
 	cursor: pointer;
 }
-/*정보창 콩텐츠*/
+/*정보창 콘텐츠*/
 #popupContent {
 	padding: 26px 36px 0px;
 }
@@ -334,14 +337,13 @@ body > div:nth-child(5) {
 }	
 /*****맞지 않은 비밀번호를 입력할 경우*/
 #popupContent > div:nth-child(3) {
-	/*display:none;*/
-	
+	display:none;
 	position: relative;
 	height: 18px;
 	width: 257px;
 	margin-bottom:10px;
 }
-#popupContent > div:nth-child(3) > svg{
+#popupContent > div:nth-child(3) > svg {
 	position: absolute;
 	left: 9px;	
 	width: 16px;

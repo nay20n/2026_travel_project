@@ -7,7 +7,6 @@
 ::-webkit-scrollbar {
 	width: 10px;
 }
-
 ::-webkit-scrollbar-thumb {
 	background-color: #E3D4FF;
 	border-radius: 10px;
@@ -39,11 +38,11 @@ body > *:not(:first-child){margin: 20px auto 0;}
 	cursor: pointer;
 	margin: auto 15px;
 }
-#header > div:nth-child(1)>svg {
+#header > div:nth-child(1) > svg {
 	color: #925DE8;
 	height: 24px;
 }
-#header > div:nth-child(1)>a {
+#header > div:nth-child(1) > a {
 	color: #925DE8;
 	font-size: 24px;
 	font-weight: 500;
@@ -71,12 +70,12 @@ body > *:not(:first-child){margin: 20px auto 0;}
 #header > div:nth-child(2) > div:nth-child(1):hover {
 	background-color: #E3D4FF;
 }
-#header > div:nth-child(2) > div:nth-child(1)> svg { /*공유이모티콘*/
+#header > div:nth-child(2) > div:nth-child(1) > svg { /*공유이모티콘*/
 	margin-right: 4px;
 	height: 20px;
 	color: #925DE8;
 }
-#header > div:nth-child(2) > div:nth-child(1)> a {  /*공유텍스트*/
+#header > div:nth-child(2) > div:nth-child(1) > a {  /*공유텍스트*/
 	font-size: 16px;
 	font-weight: 500;
 	color: #925DE8;
@@ -89,7 +88,7 @@ body > *:not(:first-child){margin: 20px auto 0;}
 	font-size: 10px;
 	color: white;
 }
-#header>div:nth-child(2) > div:nth-child(2) > a:hover {
+#header > div:nth-child(2) > div:nth-child(2) > a:hover {
 	opacity: 0.3;
 }
 /***********main****************/

@@ -4,6 +4,22 @@
 		<meta charset="UTF-8">
 		<title>정보수정</title>
 		<link rel="stylesheet" href="css/EditInfo.css"/>
+		<script type="text/javascript" src="js/jquery-4.0.0.min.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				/***************** 헤더 ************/
+				// 트래플 플래너 로그 클릭
+				$("#header > div:nth-child(1)").click(function() {
+					location.href="MainPage.html";
+				});
+				
+				/************** 계정관리 ************/
+				// 프로필 연필 수정 버튼 
+				$("#basicInfo > div:nth-child(2) > svg").click(function() {
+					alert("프로필 사진 수정");
+				});
+			});
+		</script>
 	</head>
 	<body>
 		<div id="header" class="bs"> <!-- 헤더 -->
