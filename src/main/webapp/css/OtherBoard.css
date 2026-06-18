@@ -388,7 +388,7 @@ textarea:focus {
 	font-size: 22px;
 }
 
-.move_date {
+.moveDate {
 	border: 1px solid #EDE8F6;
 	background-color: white;
 	border-radius: 20px;
@@ -398,7 +398,7 @@ textarea:focus {
 	box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 
-.move_date:hover {
+.moveDate:hover {
 	background-color: #E3D4FF;
 }
 

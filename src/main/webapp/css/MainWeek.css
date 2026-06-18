@@ -161,47 +161,47 @@ body>* {
 	object-fit: cover;
 }
 
-.place-info {
+.placeInfo {
 	border-bottom: 1px solid #EDE8F6;
 }
 
-.place-title {
+.placeTitle {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 }
 
-.place-title > div > a {
+.placeTitle > div > a {
 	font-size: 18px;
     font-weight: 500;
     cursor: pointer;
 }
 
-.place-title > div > span {
+.placeTitle > div > span {
 	margin-left: 6px;
 	font-size: 12px;
     font-weight: 400;
 }
 
-.place-title > div > svg {
+.placeTitle > div > svg {
 	margin: 8px 4px 0px;
 	height: 20px;
 	cursor: pointer;
 }
 
-.place-info > div:nth-child(2) > svg {
+.placeInfo > div:nth-child(2) > svg {
 	margin: -2px 0px;
 	height: 15px;
 }
 
-.place-info > div:nth-child(2) > span:nth-child(2){
+.placeInfo > div:nth-child(2) > span:nth-child(2){
 	color: #4B4C56;
 	font-size: 15px;
 	font-weight: 600;
 	margin-right: 5px;
 }
 
-.place-info > div:nth-child(3) {
+.placeInfo > div:nth-child(3) {
 	color: #4B4C56;
 	margin-bottom: 12px;
 }
@@ -284,7 +284,7 @@ body>* {
 	font-size: 22px;
 }
 
-.move_date {
+.moveDate {
 	border: 1px solid #EDE8F6;
 	background-color: white;
 	border-radius: 20px;
@@ -294,13 +294,13 @@ body>* {
 	box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 
-.move_date:hover {
+.moveDate:hover {
 	background-color: #E3D4FF;
 }
 
 /* ******************** 정보창 팝업 ************************** */
 
-.popup-container {
+.popupContainer {
 	width: 100%;
 	height: 100%;
 	position: fixed;
@@ -309,7 +309,7 @@ body>* {
 	background-color: rgb(0, 0, 0, 0.05);
 }
 
-.popup-container > div:nth-child(1) {
+.popupContainer > div:nth-child(1) {
 	width: 450px;
 	height: 700px;
 }
@@ -321,13 +321,13 @@ body>* {
 	border-radius: 20px;
 }
 
-.popup-container> div {
+.popupContainer> div {
 	position: relative;
 	overflow-y: auto;
 	overflow-x: hidden;
 }
 
-.popup-container> div > svg:nth-child(1) { /* 창닫기 */
+.popupContainer> div > svg:nth-child(1) { /* 창닫기 */
 	position: sticky;
     height: 30px;
     left: 394px;
@@ -339,60 +339,60 @@ body>* {
 	background-color: white;
 }
 
-.popup-container> div > svg:nth-child(1):hover {
+.popupContainer> div > svg:nth-child(1):hover {
 	background-color: #E3D4FF;
 }
 
-.popup-container> div > div {	
+.popupContainer> div > div {	
 	margin-top: -35px;
 }
 
-.popup-container> div:nth-child(1) > div > img {
+.popupContainer> div:nth-child(1) > div > img {
 	border-radius: 20px;
 	width: 450px;
 	height: 300px;
 	object-fit: cover;
 }
 
-.popup-place {
+.popupPlace {
 	width: 450px;
 	padding: 0px 24px 10px 20px;
 }
 
-.popup-place > div.place-title {
+.popupPlace > div.placeTitle {
 	padding: 5px 2px;
 }
 
-.popup-place > div.place-title > div:nth-child(1) > a {
+.popupPlace > div.placeTitle > div:nth-child(1) > a {
 	font-size: 24px;
 	cursor: context-menu;
 }
 
-.popup-place > div > svg {
+.popupPlace > div > svg {
 	width: 20px;
 }
 
-.popup-place > div:nth-child(2) > svg {	
+.popupPlace > div:nth-child(2) > svg {	
 	margin: -2px 0px;
 	height: 18px;
 	width: 18px;
 }
 
-.popup-place > div:nth-child(2) > span:nth-child(2){ /* 별점글자 */
+.popupPlace > div:nth-child(2) > span:nth-child(2){ /* 별점글자 */
 	color: #925DE8;
 	font-size: 15px;
 	font-weight: 600;
 	margin-right: 8px;
 }
 
-.popup-place > div:nth-child(3) { /*카테고리*/
+.popupPlace > div:nth-child(3) { /*카테고리*/
 	color: #4B4C56;
 	margin-top: 3px;
 	margin-bottom: 12px;
 	font-size: 14px;
 }
 
-.place-detail > div {
+.placeDetail > div {
 	font-size: 14px;
 	padding: 8px 16px 8px 14px;
     display: flex;
@@ -400,41 +400,41 @@ body>* {
     align-items: center;
 }
 
-.place-detail > div > svg {
+.placeDetail > div > svg {
 	margin-right: 20px;
 	height: 24px;
 	color: #925DE8;	
 	flex-shrink: 0;
 }
 
-.place-detail > div:nth-child(2) > svg:NOT(:first-child) { /* 접기 버튼 */
+.placeDetail > div:nth-child(2) > svg:NOT(:first-child) { /* 접기 버튼 */
 	margin-left: 20px;
 	width: 20px;
 	color: #925DE8;
 	cursor: pointer;
 }
 
-.place-detail > div:nth-child(2) > svg:NOT(:first-child):hover { /* 접기 버튼 */
+.placeDetail > div:nth-child(2) > svg:NOT(:first-child):hover { /* 접기 버튼 */
 	color: #E3D4FF;
 }
 
-.place-detail > div:nth-child(3) { /* 요일별영업시간 */
+.placeDetail > div:nth-child(3) { /* 요일별영업시간 */
 	display: block;
 	margin-left: 45px;
 }
 
-.place-detail > div:nth-child(3) > div {
+.placeDetail > div:nth-child(3) > div {
 	padding: 10px;
 }
 
-.place-detail > div:nth-child(5) > div:nth-child(1) > div { /* 별점 별 감싼 블록 */
+.placeDetail > div:nth-child(5) > div:nth-child(1) > div { /* 별점 별 감싼 블록 */
 	display: flex;
     justify-content: flex-start;
     align-items: center;
     margin: 7px;
 }
 
-.place-detail > div:nth-child(5) > div:nth-child(1) > div > div { /* 별점바 테두리 */
+.placeDetail > div:nth-child(5) > div:nth-child(1) > div > div { /* 별점바 테두리 */
    	position: relative;
    	border-radius: 20px;
     margin: 0px 10px;
@@ -443,7 +443,7 @@ body>* {
     background-color: #EDE8F6;
 }
 
-.place-detail > div:nth-child(5) > div:nth-child(1) > div > div > div { /* 별점바 */
+.placeDetail > div:nth-child(5) > div:nth-child(1) > div > div > div { /* 별점바 */
    	position: absolute;
    	border-radius: 20px;
     width: 10%;
@@ -451,55 +451,55 @@ body>* {
     background-color: #925DE8;
 }
 
-.place-detail > div:nth-child(5) > div:nth-child(2) {
+.placeDetail > div:nth-child(5) > div:nth-child(2) {
 	margin-left: 20px;
 }
 
-.place-detail > div:nth-child(5) > div:nth-child(2) > div {
+.placeDetail > div:nth-child(5) > div:nth-child(2) > div {
 	text-align: center;
 	margin: 2px 0px;
 }
 
-.place-detail > div:nth-child(5) > div:nth-child(2) > div:nth-child(1) {
+.placeDetail > div:nth-child(5) > div:nth-child(2) > div:nth-child(1) {
 	font-size: 24px;
 	font-weight: 500;
 }
 
-.place-detail > div:nth-child(5) > div:nth-child(2) > div:nth-child(2) > svg { /*별*/
+.placeDetail > div:nth-child(5) > div:nth-child(2) > div:nth-child(2) > svg { /*별*/
 	width: 15px;
 	color: #925DE8;
 }
 
-.review-input {	
+.reviewInput {	
 	border-top: 1px solid #EDE8F6;
 	padding: 15px;
 }
 
-.review-input > div:nth-child(1) {
+.reviewInput > div:nth-child(1) {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	margin-bottom: 15px;
 }
 
-.review-input > div:nth-child(1) > svg { /* 별점 입력 별 */
+.reviewInput > div:nth-child(1) > svg { /* 별점 입력 별 */
 	width: 40px;
 	color: #925DE8;
 	cursor: pointer;
 }
 
-.review-input > div:nth-child(2) {
+.reviewInput > div:nth-child(2) {
 	height: 80px;
 }
 
-.review-input > div:nth-child(3) { /* 댓글 등록 버튼들 */
+.reviewInput > div:nth-child(3) { /* 댓글 등록 버튼들 */
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	margin-top: 15px;
 }
 
-.review-input > div:nth-child(3) > div {
+.reviewInput > div:nth-child(3) > div {
 	border-radius: 40px;
 	cursor: pointer;
 	padding: 5px 15px;
@@ -507,33 +507,33 @@ body>* {
 	background-color: #925DE8;
 }
 
-.review-input > div:nth-child(3) > div:hover {
+.reviewInput > div:nth-child(3) > div:hover {
 	opacity: 30%;
 }
 
-.popup-place > div:nth-child(5) {
+.popupPlace > div:nth-child(5) {
 	margin: 10px 0px;
 }
 
-.place-review {
+.placeReview {
 	padding: 16px 0px;
     margin: 0px 2px;
 	border-top: 1px solid #EDE8F6;
 }
 
-.place-review > div:nth-child(1) {
+.placeReview > div:nth-child(1) {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 }
 
-.place-review > div:nth-child(1) > div {
+.placeReview > div:nth-child(1) > div {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 }
 
-.place-review > div:nth-child(1) > div:nth-child(1) > img {
+.placeReview > div:nth-child(1) > div:nth-child(1) > img {
 	margin: 2px 15px;
 	border-radius: 35px;
 	width: 32px;
@@ -541,12 +541,12 @@ body>* {
 	object-fit: cover;
 }
 
-.place-review > div:nth-child(1) > div:nth-child(1) > div {
+.placeReview > div:nth-child(1) > div:nth-child(1) > div {
 	font-size: 16px;
 	font-weight: 400;
 }
 
-.place-review > div:nth-child(1) > div:nth-child(2) > div {
+.placeReview > div:nth-child(1) > div:nth-child(2) > div {
 	margin: 2px;
     font-size: 12px;
     font-weight: 600;
@@ -559,46 +559,46 @@ body>* {
 	align-items: center;
 }
 
-.place-review > div:nth-child(1) > div:nth-child(2) > div:hover {
+.placeReview > div:nth-child(1) > div:nth-child(2) > div:hover {
 	background-color: #E3D4FF;
 }
 
-.place-review > div:nth-child(1) > div:nth-child(2) > div > svg {
+.placeReview > div:nth-child(1) > div:nth-child(2) > div > svg {
 	color: #925DE8;
 	width: 12px;
 }
 
-.place-review > div:nth-child(2) {
+.placeReview > div:nth-child(2) {
 	margin: 4px 2px 4px 14px;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 }
 
-.place-review > div:nth-child(2) > div {
+.placeReview > div:nth-child(2) > div {
 	color: #4B4C56;
 	font-size: 12px;
 }
 
-.place-review > div:nth-child(2) > div > svg {
+.placeReview > div:nth-child(2) > div > svg {
 	color: #925DE8;
 	width: 16px;
 }
 
-.place-review > img {
+.placeReview > img {
 	width: 400px;
 	height: 250px;
 	object-fit: cover;
 }
 
-.place-review > div:nth-child(4) {
+.placeReview > div:nth-child(4) {
 	margin: 0px 10px;
 	font-weight: 400;
 }
 
 /* *********************일정 블록 팝업********************* */
 
-.popup-container > div:nth-child(2) {
+.popupContainer > div:nth-child(2) {
 	width: 300px;
 	height: 200px;
 	position: fixed;
@@ -607,7 +607,7 @@ body>* {
     padding: 15px;
 }
 
-.popup-container> div:nth-child(2) > svg:nth-child(1) { /* 창닫기 */
+.popupContainer> div:nth-child(2) > svg:nth-child(1) { /* 창닫기 */
 	position: sticky;
     height: 30px;
     top: 0%;
@@ -617,31 +617,31 @@ body>* {
 	background-color: white;
 }
 
-.popup-container> div:nth-child(2) > svg:nth-child(1):hover {
+.popupContainer> div:nth-child(2) > svg:nth-child(1):hover {
 	background-color: #E3D4FF;
 }
 
-.popup-container> div:nth-child(2) > div:nth-child(2) { /* 시간, AI 체크박스 */
+.popupContainer> div:nth-child(2) > div:nth-child(2) { /* 시간, AI 체크박스 */
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	margin-right: 38px;
 }
 
-.popup-container> div:nth-child(2) > div:nth-child(2) > div > span {
+.popupContainer> div:nth-child(2) > div:nth-child(2) > div > span {
 	font-size: 14px;
 	margin-right: 5px;
 }
 
-.popup-container> div:nth-child(2) > div:nth-child(2) > div:nth-child(1) > span:nth-child(2):hover {
+.popupContainer> div:nth-child(2) > div:nth-child(2) > div:nth-child(1) > span:nth-child(2):hover {
 	opacity: 50%;
 }
 
-.popup-container> div:nth-child(2) > div:nth-child(2) > div:nth-child(1) > span:nth-child(2) {
+.popupContainer> div:nth-child(2) > div:nth-child(2) > div:nth-child(1) > span:nth-child(2) {
 	cursor: pointer;
 }
 
-.popup-container> div:nth-child(2) > div:nth-child(3) { /* 장소정보 */
+.popupContainer> div:nth-child(2) > div:nth-child(3) { /* 장소정보 */
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -649,7 +649,7 @@ body>* {
 	margin-top: 11px;
 }
 
-.popup-container> div:nth-child(2) > div:nth-child(3) > div:nth-child(1) { /* 좌표 */
+.popupContainer> div:nth-child(2) > div:nth-child(3) > div:nth-child(1) { /* 좌표 */
 	background-color: red;
 	width: 240px;
     height: 135px;
@@ -658,15 +658,15 @@ body>* {
 	box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 
-.popup-container> div:nth-child(2) > div:nth-child(3) > div:nth-child(2) {
+.popupContainer> div:nth-child(2) > div:nth-child(3) > div:nth-child(2) {
     text-align: center;
 }
 
-.popup-container> div:nth-child(2) > div:nth-child(3) > div:nth-child(2) > div {
+.popupContainer> div:nth-child(2) > div:nth-child(3) > div:nth-child(2) > div {
     margin-bottom: 1px;
 }
 
-.popup-container> div:nth-child(2) > div:nth-child(3) > div:nth-child(2) > div:nth-child(2) {
+.popupContainer> div:nth-child(2) > div:nth-child(3) > div:nth-child(2) > div:nth-child(2) {
     margin-bottom: 3px;
     font-size: 10px;
     color: #4B4C56;
@@ -674,7 +674,7 @@ body>* {
 
 /* ************* 색선택 팝업 ********************* */
 
-.popup-container> div:nth-child(3) {	
+.popupContainer> div:nth-child(3) {	
 	position: fixed;
     top: 164px;
     left: 518px;
@@ -686,17 +686,17 @@ body>* {
     background-color: white;
 }
 
-.popup-container> div:nth-child(3) > span {	
+.popupContainer> div:nth-child(3) > span {	
 	cursor: pointer;
 }
 
-.popup-container> div:nth-child(3) > span:hover {	
+.popupContainer> div:nth-child(3) > span:hover {	
 	opacity: 50%;
 }
 	
 /* ************* 교통선택 팝업 ********************* */
 
-.popup-container> div:nth-child(4) {
+.popupContainer> div:nth-child(4) {
 	position: fixed;
     top: 164px;
     left: 518px;
@@ -713,14 +713,14 @@ body>* {
 	background-size: cover;
 }
 
-.popup-container> div:nth-child(4) > span {
+.popupContainer> div:nth-child(4) > span {
 	width: 34px;
 	height: 31px;
 	cursor: pointer;
 	border-radius: 8px;
 }
 
-.popup-container> div:nth-child(4) > span:hover {
+.popupContainer> div:nth-child(4) > span:hover {
 	background-color: rgba(146, 93, 232, 0.18);
 }
 
@@ -761,7 +761,7 @@ textarea:focus {
 	box-shadow: none;
 }
 
-.input-bd-div {
+.inputBdDiv {
 	border: 1px solid #925DE8;
 	border-radius: 8px;
 	margin: auto;
@@ -788,7 +788,7 @@ textarea:focus {
 	border-radius: 10px;
 }
 
-.check-box { /* AI체크박스 */
+.checkBox { /* AI체크박스 */
 	width: 14px;
 	height: 14px;
 	cursor: pointer;
