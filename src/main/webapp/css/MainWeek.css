@@ -11,6 +11,7 @@ body {
 body>* {
 	margin: auto;
 }
+
 /* ***************헤더***************** */
 #header {
 	background-color: white;
@@ -23,24 +24,33 @@ body>* {
 }
 
 #header>div {
-	cursor: pointer;
 	margin: auto 15px;
 }
 
-#header>div:nth-child(1)>svg {
+#header>div:nth-child(1) {
+	display: flex;
+	justify-content: flex-start;
+}
+
+#header>div:nth-child(1) > div:nth-child(1) {
+	cursor: pointer;
+}
+
+#header>div:nth-child(1) > div > svg {
 	color: #925DE8;
 	height: 24px;
 }
 
-#header>div:nth-child(1)>a {
+#header>div:nth-child(1) > div > a {
 	color: #925DE8;
 	font-size: 24px;
 	font-weight: 500;
 }
 
-#header>div:nth-child(1)> span {
-	margin-left: 10px;
+#header>div:nth-child(1)> div:nth-child(2) {
 	cursor: text;
+	margin-left: 10px;
+	margin-top: 10px;
 }
 
 #header>div:nth-child(2) {
@@ -49,45 +59,44 @@ body>* {
 	justify-content: space-between;
 }
 
-#header>div:nth-child(2) > div:nth-child(1) {
+#header>div:nth-child(2) > div {
 	margin-right: 10px;
 	margin-top: 5px;
+}
+
+#header> div:nth-child(2) > div:nth-child(1) > div {
 	border: 1px solid #925DE8;
 	border-radius: 10px;
 	background-color: white;
 	padding: 8px 10px;
+	font-size: 16px;
+	font-weight: 500;
+	color: #925DE8;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 }
 
-#header>div:nth-child(2) > div:nth-child(1):hover {
+#header> div:nth-child(2) > div:nth-child(1) > div:hover {
 	background-color: #E3D4FF;
 }
 
-#header> div:nth-child(2) > div:nth-child(1)> svg {
-	margin-right: 4px;
-	height: 20px;
+#header> div:nth-child(2) > div:nth-child(1) > div > svg {
+	height: 18px;
 	color: #925DE8;
 }
 
-#header> div:nth-child(2) > div:nth-child(1)> a {
-	font-size: 16px;
-	font-weight: 500;
-	color: #925DE8;
-}
-
-#header>div:nth-child(2) > div:nth-child(2):hover {
-	background-color: #E3D4FF;
-}
-
-#header>div:nth-child(2) > div:nth-child(2) {
+#header> div:nth-child(2) > div:nth-child(2) > div {
 	border-radius: 28px;
 	background-color: #925DE8;
 	padding: 18px 3px;
 	font-size: 10px;
 	font-weight: 500;
 	color: white;
+}
+
+#header> div:nth-child(2) > div:nth-child(2) > div:hover {
+	opacity: 30%;
 }
 
 /* ***************메인********************** */
@@ -117,13 +126,13 @@ body>* {
 	width: 350px;
 }
 
-#main > div:nth-child(1) > div:nth-child(1) {
+#main > div:nth-child(1) > div:nth-child(1) > label {
 	display: flex;
 	align-items: center;
 	justify-content: center;
 }
 
-#main > div:nth-child(1) > div:nth-child(1) > svg { /* 돋보기 */
+#main > div:nth-child(1) > div:nth-child(1) > label > svg { /* 돋보기 */
 	margin-right: 10px;
 	height: 25px;
 	width: 25px;
@@ -225,7 +234,7 @@ body>* {
 	margin-left: 4px;
 }
 
-.changeView { /*일월주담고잏ㅅ는 큰 div*/
+.changeView { /*일월주 큰 div*/
 	margin-top: 12px;
 	margin-left: 30px;
 	width: 181px;
@@ -314,7 +323,7 @@ body>* {
 	height: 700px;
 }
 
-.popup-content {
+.popupContent {
 	background-color: white;
 	position: fixed;
 	margin: 5% 30%;
@@ -359,17 +368,27 @@ body>* {
 	padding: 0px 24px 10px 20px;
 }
 
-.popupPlace > div.placeTitle {
+.popupPlace > div:nth-child(1) {
 	padding: 5px 2px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 }
 
-.popupPlace > div.placeTitle > div:nth-child(1) > a {
+.popupPlace > div:nth-child(1) > div:nth-child(1) > a {
 	font-size: 24px;
+	font-weight: 500;
 	cursor: context-menu;
+}
+
+.popupPlace > div:nth-child(1) > div:nth-child(2) > svg { /* 팝업장소옆별 */
+	width: 30px;
+	cursor: pointer;
 }
 
 .popupPlace > div > svg {
 	width: 20px;
+	flex-shrink: 0;
 }
 
 .popupPlace > div:nth-child(2) > svg {	
@@ -792,6 +811,10 @@ textarea:focus {
 	width: 14px;
 	height: 14px;
 	cursor: pointer;
+}
+
+.fillStar {
+	fill: #925DE8;
 }
 
 .fl {
