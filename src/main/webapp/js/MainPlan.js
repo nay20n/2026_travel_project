@@ -37,6 +37,12 @@ $(function() {
 		location.href="MyPage.html";
 	});
 	// ************장소검색****************
+	// 검색 엔터로 돋보기 클릭
+	$("#main>div.bs>div.inputBdDiv>label>input").keypress(function(e) {
+		if(e.keyCode == 13){
+			$("#main > div:nth-child(1) > div:nth-child(1) > label > svg").trigger("click");
+		}
+	});
 	// 이름 클릭 시 정보창 팝업
 	$(".placeTitle>div:nth-child(1)>a").click(function(){
 		$(".popupContainer").removeClass("hide");
