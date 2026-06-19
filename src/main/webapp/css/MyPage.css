@@ -202,6 +202,13 @@ body > *:not(:first-child) {margin: 20px auto 0;}
 	width: 850px;
 	overflow-y: scroll;
 }
+.table svg {
+	width: 20px;
+}
+.fillHeart {
+	fill: #925DE8;
+	color: #925DE8;
+}
 .table table {
 	margin: auto;
 	width: 781px;
@@ -223,13 +230,13 @@ body > *:not(:first-child) {margin: 20px auto 0;}
 }
 .table th:first-child{ /*순서*/
 	width: 100px;
-	
+	font-size: 15px;
 }
-.table th:not(first-child) {/*나머지*/
+.table th:not(:first-child) {/*나머지*/
 	cursor:pointer;
-	height: 30px;
-	width: 170px;
 	font-weight: 500;
+	padding: 6px 6px;
+	font-size: 15px;
 }
 body > div:nth-child(5) {
 	margin-bottom: 60px;
@@ -272,6 +279,10 @@ body > div:nth-child(5) {
 	opacity: 0.5;
 	cursor: pointer;
 }
+
+#popupHeader > svg > path:hover {
+	stroke: #E3D4FF;
+}
 /*정보창 콘텐츠*/
 #popupContent {
 	padding: 26px 36px 0px;
@@ -297,10 +308,7 @@ body > div:nth-child(5) {
 #popupPw > div > input {
 	width: 343px;
 	height: 46px;
-	padding-bottom: 11px;
-	padding-left: 48px;
-	padding-right: 48px;
-	padding-top: 11px;
+	padding: 11px 10px 11px 48px;
 	border-radius: 4px;
 	border: 1px solid rgb(210, 210, 210);
 	margin-right: 12px;
@@ -370,7 +378,7 @@ body > div:nth-child(5) {
 }
 #popupVerify { /*인증버튼*/
 	position:absolute;
-	bottom: 18px;
+	bottom: 30px;
 	left: 35px;
 	width: 428px;
 	height: 54px;

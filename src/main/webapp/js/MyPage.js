@@ -16,9 +16,12 @@ $(function() {
 	
 	/***************** 테이블 ******************/
 	// 테이블 행 클릭시 게시글로 이동 
-	$(".table tr").click(function() {
+	$(".table th:not(:last-child)").click(function() {
 		//location.href="MyBoard.html";
 		location.href="Board.html";
+	});
+	$(".table svg").click(function() {
+		$(this).toggleClass("fillHeart");
 	});
 	
 	/***************** 정보수정 팝업창 ************/
@@ -40,9 +43,6 @@ $(function() {
 			$("#popupContent > div:nth-child(3)").hide();
 			location.href="EditInfo.html";
 		}
-		
-		
-		
 	});
 	// 비밀번호 재설정 링크 클릭 
 	$("#popupContent > div:nth-child(4) > a").click(function() {

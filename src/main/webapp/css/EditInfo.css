@@ -19,13 +19,11 @@
 	background-color: rgba(0, 0, 0, 0);
 	border-radius: 10px;
 }
-
 * {box-sizing: border-box;}
 body {
    font-family: Pretendard, "Apple SD Gothic Neo";
    background-color: #F8F5FD;
 }
-body > *:not(:first-child):not(:last-child){margin: 40px auto 0; width: 850px;}
 #header {
 	margin:auto;
 	background-color: white;
@@ -56,15 +54,18 @@ body > div:nth-child(n+3):not(:last-child) > div:nth-child(1) { /*기본정보, 
 	font-weight: 700;
 }
 body > div:nth-child(2) { /*계정관리*/
+	margin: 40px auto 0; 
+	width: 850px;
 	font-size: 25px;
 	font-weight: 700;
 	color: rgb(38, 55, 71);
 }
 /*******기본정보*******/ 
 #basicInfo {
-	margin-top: 20px;
 	background-color: white;
 	border-radius: 15px;
+	margin: 20px auto 0; 
+	width: 850px;
 }
 #basicInfo > div:nth-child(2) { /*기본정보 밑 부분 다 묶은 div*/
 	position: relative;
@@ -164,6 +165,8 @@ body > div:nth-child(2) { /*계정관리*/
 	background-color: white;
 	border-radius: 15px;
 	height: 144px;
+	margin: 40px auto 0; 
+	width: 850px;
 }
 #pw > div:nth-child(2) { /*content 감싸고 있는 div */
 	position: relative;
@@ -201,10 +204,11 @@ body > div:nth-child(2) { /*계정관리*/
 }
 /*****************계정연동****************/
 #connect {
-	margin-bottom: 100px;
 	background-color: white;
 	border-radius: 15px;
 	height: 217px;
+	margin: 40px auto 100px; 
+	width: 850px;
 }
 #connect > div:nth-child(2) {
 	padding: 0px 40px 24px;
