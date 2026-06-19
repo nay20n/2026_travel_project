@@ -10,11 +10,12 @@ $(function (){
 		
 		let email = $("#main > input").val();
 		
-		if(email=="kny1791@gmail.com"){  //이메일을 잘 입력했을 떄
+		if(email=="a"){  //이메일을 잘 입력했을 떄
 			$("#main > div:nth-child(7)").removeClass("show");
+			$("#main > input").removeClass("borderWraning");
 			alert("비밀번호 재설정 메일을 보냈습니다.");
 		}
-		else{ //이메일을 잘압력 못햇을 떄
+		else{ //이메일을 잘못 압력 못햇을 떄
 			$("#main > div:nth-child(7)").addClass("show");
 			$("#main > input").addClass("borderWraning");
 		}

@@ -4,11 +4,10 @@
 .bs{box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;}
 .fl{float:left;}
 .fr{float:right;}
-.hide {display: none !important; }
+.borderWraning { border-color: red !important;}
 ::-webkit-scrollbar {
 	width: 10px;
 }
-
 ::-webkit-scrollbar-thumb {
 	background-color: #E3D4FF;
 	border-radius: 10px;
@@ -104,24 +103,13 @@ body > div:nth-child(2) { /*계정관리*/
 	background-color: #fbfbfd;
 	border: #e6eef5 solid 2px;
 	border-radius: 5px;
+	font-size: 16px;
 }
 #basicInfo > div:nth-child(2) > div:nth-child(4) { /*이메일 입력 div*/
 	height: 166px;
 }
 #basicInfo > div:nth-child(2) > div:nth-child(4) > input { /*이메일 입력칸만*/
 	margin-bottom: 12px;
-}
-#basicInfo > div:nth-child(2) > div > span { /*인증완료*/
-	display: flex;
-	align-items: center;
-	font-size: 13px;
-	font-weight: 500;
-	line-height: 1.5;
-	color: #51b250;
-}
-#basicInfo > div:nth-child(2) > div:nth-child(4) > span > svg { /*인증완료 체크 이미지*/
-	width: 20px;
-	margin-right: 6px;
 }
 #basicInfo > div:nth-child(2) > div:nth-child(4) > button { /*이메일변경 버튼*/
 	cursor: pointer;
@@ -138,6 +126,7 @@ body > div:nth-child(2) { /*계정관리*/
 	background: #E3D4FF;
 }
 #basicInfo > div:nth-child(2) > div:nth-child(4) > div:nth-child(3) { /*기존이메일과동일하다느 ㄴ경고창*/
+	display:none;
 	font-size: 12px;
 	font-weight: 400;
 	line-height: 16.8px;
@@ -263,18 +252,14 @@ body > div:nth-child(2) { /*계정관리*/
 	color: #925DE8;
 	background-color: #EDE8F6;
 }
-#connect > div:nth-child(2) > div > button:hover {
-	background: #E3D4FF;
-}
+#connect > div:nth-child(2) > div > button:hover {background: #E3D4FF;}
 .connect { /*연결하기*/
 	
 	color: #4B4C56 !important;
 	background-color: #fbfbfd !important;
 	border: #e0e0e0 solid 1px !important;
 }
-.connect:hover {
-	background-color: #E3D4FF !important;
-}
+.connect:hover {background-color: #E3D4FF !important;}
 
 
 /* ****************************팝업********************************* */
@@ -290,7 +275,7 @@ body > div:nth-child(2) { /*계정관리*/
 .popupContent {
 	background-color: white;
 	width: 450px;
-	height: 600px;
+	height: 330px;
 	position: relative;
 	margin: 10% auto;
 	border: 1px solid rgba(0, 0, 0, .2);
@@ -314,94 +299,29 @@ body > div:nth-child(2) { /*계정관리*/
     justify-content: center;
     align-items: center;
 }
-/******이메일 입력 팝업******/
-.popupContainer > div:nth-child(1) { /*이메일 입력 창*/
-	height: 330px;
-	display: none;
-}
-.popupContainer > div:nth-child(1) > div:nth-child(2) > div {
+.popupContent > div:nth-child(2) > div {
 	margin: 8px auto;
 }
-.popupContainer > div:nth-child(1) > div:nth-child(2) > div:nth-child(3) { /*이메일입력div*/
-	margin-top: 40px;
-	width: 350px;
-	border: 1px solid #925DE8;
-	border-radius: 8px;
-}
-.popupContainer input { /*이메일 입력*/
-	width: 345px;
-	border-radius: 8px;
-	padding: 10px 12px;
-	font-size: 15px;
-	border: none;
-}
-.popupContainer input:focus {
-	outline: none;
-	box-shadow: none;
-}
-.popupContainer > div:nth-child(1) > div:nth-child(2) > div:nth-child(4) { /* 인증번호받기 */
-	background-color: #925DE8;
-	color: white;
-}
-.popupContainer > div:nth-child(1) > div:nth-child(2) > div:nth-child(4):hover {opacity:0.3;}
-.popupContainer > div:nth-child(2) > div:nth-child(2) > div:nth-child(6) {
-	position: relative;
-}
-.popupContainer > div:nth-child(1) > div:nth-child(2) > div:nth-child(6) > label > input {
-	position: absolute;
-	bottom: 47px;
-	left: 80px;
-}
-.popupContainer > div:nth-child(1) > div:nth-child(2) > div:nth-child(6) > label > span {
-	margin-left: 5px;
-}
-/*****인증번호 입력 창****/
-.popupContainer > div:nth-child(2) {
-	height: 330px;
-	display: none;
-}
-.popupContainer > div:nth-child(2) > div:nth-child(2) > div {
-	margin: 8px auto;
-}
-.popupContainer > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) > span:nth-child(1) {/* zxton@naver.com*/
+.popupContent > div:nth-child(2) > div:nth-child(2) > span:nth-child(1) {/* zxton@naver.com*/
 	color: black;
 	font-weight: 500;
 }
-.popupContainer > div:nth-child(2) > div:nth-child(2) > div:nth-child(2),
-.popupContainer > div:nth-child(2) > div:nth-child(2) > div:nth-child(3) {
+.popupContent > div:nth-child(2) > div:nth-child(2),
+.popupContent > div:nth-child(2) > div:nth-child(3) {
 	margin: 2px auto;
 }
-.popupContainer > div:nth-child(2) > div:nth-child(2) > div:nth-child(4) { /* 인증번호입력란 */
+.popupContent > div:nth-child(2) > div:nth-child(4) { /* 인증번호입력란 */
 	margin: 15px auto 8px;
 	color: red;
 }
-.popupContainer > div:nth-child(2) > div:nth-child(2) > div:nth-child(5) { /* 인증완료 */
+.popupContent > div:nth-child(2) > div:nth-child(5) { /* 인증완료 */
 	background-color: #925DE8;
 	color: white;
 	margin-bottom: 7px;
 }
-.popupContainer > div:nth-child(2) > div:nth-child(2) > div:nth-child(5):hover{opacity:0.3;}
-
-.popupContainer > div:nth-child(2) > div:nth-child(2) > div:nth-child(7) {
-	position: relative;
-}
-.popupContainer > div:nth-child(2) > div:nth-child(2) > div:nth-child(7) > label > input {
-	position: absolute;
-	bottom: -2px;
-}
-.popupContainer > div:nth-child(2) > div:nth-child(2) > div:nth-child(7) > label > span {
-	margin-left: 27px;
-}
-
-.checkBox { /* 약관체크박스 */
-	width: 17px !important;
-	height: 17px;
-	cursor: pointer;
-}
-.agree { /* 약관문구 */
-	font-size: 12px;
-	color: #4B4C56;
-	cursor: pointer;
+.popupContent > div:nth-child(2) > div:nth-child(5):hover{opacity:0.3;}
+.popupContent > div:nth-child(2) > div:nth-child(6):hover { /* 인증번호 재전송 */
+	background-color: #EDE8F6;
 }
 .popupBigTitle {
 	font-size: 20px;

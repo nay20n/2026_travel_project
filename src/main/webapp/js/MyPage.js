@@ -33,8 +33,9 @@ $(function() {
 	// 정보수정팝업 확인 버튼 클릭(정보수정창으로 이동)
 	$("#popupPw > div > span").click(function() {
 	
-		if($("#popupPw > div > input").val()==""){
+		if($("#popupPw > div > input").val()==""){ //비밀번호가 비어잇으면
 			$("#popupContent > div:nth-child(3)").show();
+			$("#popupPw > div > input").addClass("borderWraning");
 		}else {
 			$("#popupContent > div:nth-child(3)").hide();
 			location.href="EditInfo.html";

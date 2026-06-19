@@ -4,9 +4,7 @@
 .bs{box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;}
 .fl{float:left;}
 .fr{float:right;}
-.hide {
-	display: none !important;
-}
+.borderWraning { border-color: red !important;}
 ::-webkit-scrollbar {
 	width: 10px;
 }
