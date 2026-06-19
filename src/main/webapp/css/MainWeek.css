@@ -276,7 +276,7 @@ body>* {
 	height: 500px;
 }
 
-#main > div:nth-child(2)>button:nth-child(3) {
+#main > div:nth-child(2)>button:nth-child(3) { /* 일정 확정하기 */
 	cursor: pointer;
 	border-radius: 4px;
 	border: none;
