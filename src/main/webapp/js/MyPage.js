@@ -22,7 +22,7 @@ $(function() {
 	});
 	
 	/***************** 정보수정 팝업창 ************/
-	// 정보수정팝업 버튼 클릭
+	// 정보수정 버튼 클릭
 	$("#profile > div:nth-child(6)").click(function() { 
 		$("#popupEditInfo").show();
 	});
@@ -30,9 +30,18 @@ $(function() {
 	$("#popupHeader > svg").click(function() {
 		$("#popupEditInfo").hide();
 	});
-	// 정보수정팝업 확인 버튼 클릭 (비밀번호가 일치하지 않습니다.)
+	// 정보수정팝업 확인 버튼 클릭(정보수정창으로 이동)
 	$("#popupPw > div > span").click(function() {
-		$("#popupContent > div:nth-child(3)").toggle();
+	
+		if($("#popupPw > div > input").val()==""){
+			$("#popupContent > div:nth-child(3)").show();
+		}else {
+			$("#popupContent > div:nth-child(3)").hide();
+			location.href="EditInfo.html";
+		}
+		
+		
+		
 	});
 	// 비밀번호 재설정 링크 클릭 
 	$("#popupContent > div:nth-child(4) > a").click(function() {

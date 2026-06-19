@@ -26,7 +26,7 @@ body {
    font-family: Pretendard, "Apple SD Gothic Neo";
    background-color: #F8F5FD;
 }
-body > *:not(:first-child){margin: 40px auto 0; width: 850px;}
+body > *:not(:first-child):not(:last-child){margin: 40px auto 0; width: 850px;}
 #header {
 	margin:auto;
 	background-color: white;
@@ -51,7 +51,7 @@ body > *:not(:first-child){margin: 40px auto 0; width: 850px;}
 }
 
 /*****메인부분 시작*****/
-body > div:nth-child(n+3) > div:nth-child(1) { /*기본정보, 비밀번호, 계정연동 텍스트*/
+body > div:nth-child(n+3):not(:last-child) > div:nth-child(1) { /*기본정보, 비밀번호, 계정연동 텍스트*/
 	padding: 14px;
 	font-size: 14px;
 	font-weight: 700;
@@ -212,7 +212,7 @@ body > div:nth-child(2) { /*계정관리*/
 }
 /*****************계정연동****************/
 #connect {
-	margin-bottom: 60px;
+	margin-bottom: 100px;
 	background-color: white;
 	border-radius: 15px;
 	height: 217px;
@@ -248,7 +248,7 @@ body > div:nth-child(2) { /*계정관리*/
 	font-weight: 500;
 	color: #ababab;
 }
-#connect > div:nth-child(2) > div > button { /*연결해제, 연결하기 버튼들*/
+#connect > div:nth-child(2) > div > button { /*연결하기 버튼들*/
 	cursor: pointer;
 	position: absolute;
 	top: 8px;
@@ -260,19 +260,162 @@ body > div:nth-child(2) { /*계정관리*/
 	border: none;
 	font-size: 14px;
 	font-weight: 700;
-}
-#connect > div:nth-child(2) > div:nth-child(1) > button { /*연결해제 버튼*/
 	color: #925DE8;
 	background-color: #EDE8F6;
 }
-#connect > div:nth-child(2) > div:nth-child(1) > button:hover {
+#connect > div:nth-child(2) > div > button:hover {
 	background: #E3D4FF;
 }
-#connect > div:nth-child(2) > div:nth-child(3) > button { /*연결하기 버튼*/
-	color: #4B4C56;
-	background-color: #fbfbfd;
-	border: #e0e0e0 solid 1px;
+.connect { /*연결하기*/
+	
+	color: #4B4C56 !important;
+	background-color: #fbfbfd !important;
+	border: #e0e0e0 solid 1px !important;
 }
-#connect > div:nth-child(2) > div:nth-child(3) > button:hover {
-	background-color: #E3D4FF;
+.connect:hover {
+	background-color: #E3D4FF !important;
+}
+
+
+/* ****************************팝업********************************* */
+.popupContainer {
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	background-color: rgb(0, 0, 0, 0.5);
+	display: none;
+}
+.popupContent {
+	background-color: white;
+	width: 450px;
+	height: 600px;
+	position: relative;
+	margin: 10% auto;
+	border: 1px solid rgba(0, 0, 0, .2);
+	border-radius: 20px;
+}
+.popupContent > svg:nth-child(1) { /* 창닫기 */
+	position: absolute;
+	height: 30px;
+	right: 10px;
+	top: 10px;
+	color: #4B4C56;
+	cursor: pointer;
+}
+.popupContent > svg:nth-child(1):hover {color: #E3D4FF;}
+.popupContent > div:nth-child(2) { /*팝업들 메인 내용들*/
+	padding: 32px;
+}
+.popupContent > div:nth-child(2) > * { 
+	margin: 8px auto;
+	display: flex;
+    justify-content: center;
+    align-items: center;
+}
+/******이메일 입력 팝업******/
+.popupContainer > div:nth-child(1) { /*이메일 입력 창*/
+	height: 330px;
+	display: none;
+}
+.popupContainer > div:nth-child(1) > div:nth-child(2) > div {
+	margin: 8px auto;
+}
+.popupContainer > div:nth-child(1) > div:nth-child(2) > div:nth-child(3) { /*이메일입력div*/
+	margin-top: 40px;
+	width: 350px;
+	border: 1px solid #925DE8;
+	border-radius: 8px;
+}
+.popupContainer input { /*이메일 입력*/
+	width: 345px;
+	border-radius: 8px;
+	padding: 10px 12px;
+	font-size: 15px;
+	border: none;
+}
+.popupContainer input:focus {
+	outline: none;
+	box-shadow: none;
+}
+.popupContainer > div:nth-child(1) > div:nth-child(2) > div:nth-child(4) { /* 인증번호받기 */
+	background-color: #925DE8;
+	color: white;
+}
+.popupContainer > div:nth-child(1) > div:nth-child(2) > div:nth-child(4):hover {opacity:0.3;}
+.popupContainer > div:nth-child(2) > div:nth-child(2) > div:nth-child(6) {
+	position: relative;
+}
+.popupContainer > div:nth-child(1) > div:nth-child(2) > div:nth-child(6) > label > input {
+	position: absolute;
+	bottom: 47px;
+	left: 80px;
+}
+.popupContainer > div:nth-child(1) > div:nth-child(2) > div:nth-child(6) > label > span {
+	margin-left: 5px;
+}
+/*****인증번호 입력 창****/
+.popupContainer > div:nth-child(2) {
+	height: 330px;
+	display: none;
+}
+.popupContainer > div:nth-child(2) > div:nth-child(2) > div {
+	margin: 8px auto;
+}
+.popupContainer > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) > span:nth-child(1) {/* zxton@naver.com*/
+	color: black;
+	font-weight: 500;
+}
+.popupContainer > div:nth-child(2) > div:nth-child(2) > div:nth-child(2),
+.popupContainer > div:nth-child(2) > div:nth-child(2) > div:nth-child(3) {
+	margin: 2px auto;
+}
+.popupContainer > div:nth-child(2) > div:nth-child(2) > div:nth-child(4) { /* 인증번호입력란 */
+	margin: 15px auto 8px;
+	color: red;
+}
+.popupContainer > div:nth-child(2) > div:nth-child(2) > div:nth-child(5) { /* 인증완료 */
+	background-color: #925DE8;
+	color: white;
+	margin-bottom: 7px;
+}
+.popupContainer > div:nth-child(2) > div:nth-child(2) > div:nth-child(5):hover{opacity:0.3;}
+
+.popupContainer > div:nth-child(2) > div:nth-child(2) > div:nth-child(7) {
+	position: relative;
+}
+.popupContainer > div:nth-child(2) > div:nth-child(2) > div:nth-child(7) > label > input {
+	position: absolute;
+	bottom: -2px;
+}
+.popupContainer > div:nth-child(2) > div:nth-child(2) > div:nth-child(7) > label > span {
+	margin-left: 27px;
+}
+
+.checkBox { /* 약관체크박스 */
+	width: 17px !important;
+	height: 17px;
+	cursor: pointer;
+}
+.agree { /* 약관문구 */
+	font-size: 12px;
+	color: #4B4C56;
+	cursor: pointer;
+}
+.popupBigTitle {
+	font-size: 20px;
+	font-weight: 700;
+}
+.popupSmallTitle {
+	font-size: 14px;
+	color: #4B4C56;
+}
+.popupBtn {
+	width: 350px;
+	height: 44px;
+	border: 1px solid #925DE8;
+	border-radius: 8px;
+	margin-top: 6px;
+	cursor: pointer;
 }

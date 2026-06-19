@@ -2,6 +2,7 @@
 .bs{box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;}
 .fl{float:left;}
 .fr{float:right;}
+.borderWraning { border-color: red !important;}
 ::-webkit-scrollbar {
 	width: 10px;
 }
@@ -88,6 +89,10 @@ body > *:not(:first-child) {margin: 80px auto 0;}
 	font-size: 13px;
 	font-weight: 700;
 	color: rgb(0,0,0);
+}
+#pwInput > div > div:nth-child(1)::after { /* * */
+	color: red;
+	content: "*";
 }
 #pwInput > div:nth-child(1) > div:nth-child(3) { /*비밀번호 (영문자, 숫자 특수문자 포함 최소 8~20자)*/
 	margin-left: 4px;

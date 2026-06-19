@@ -13,10 +13,52 @@
 					location.href="MainPage.html";
 				});
 				
-				/************** 계정관리 ************/
+				/************** 기본정보 ************/
 				// 프로필 연필 수정 버튼 
 				$("#basicInfo > div:nth-child(2) > svg").click(function() {
 					alert("프로필 사진 수정");
+				});
+				
+				
+				/***********비밀번호**************/
+				//비밀번호 변경 버튼 클릭 
+				$("#pw > div:nth-child(2) > button").click(function(){
+					location.href="SetPw.html";
+				});
+				
+				/***********계정연동*************/
+				//연결해제 버튼 
+				$("#connect > div:nth-child(2) > div > button").click(function() {
+					$(this).addClass("connect");
+					$(this).text("연결해제");
+					
+				});
+				
+				
+				
+				
+				
+				
+				/****팝업**/
+				// 팝업창 닫기
+				$(".popupContent > svg:nth-child(1)").click(function() {
+					$(".popupContainer").hide();
+					$(".popupContent").hide();
+				});
+				//이메일 변경 버튼 클립 
+				$("#basicInfo > div:nth-child(2) > div:nth-child(4) > button").click(function(){
+					$(".popupContainer").show();
+					$(".popupContainer > div:nth-child(1)").show();
+				});
+				// 이메일로 가입하기-인증번호 받기 버튼 클릭
+				$(".popupContainer > div:nth-child(1) > div:nth-child(2) > div:nth-child(4)").click(function() {
+					if($(this).parent().find(".checkBox").is(":checked")) {
+						$(".popupContainer>div:nth-child(1)").hide();
+						$(".popupContainer>div:nth-child(2)").show();
+					}else {
+						alert("약관에 동의하지 않으면 가입할 수 없습니다.");
+						return;		
+					}
 				});
 			});
 		</script>
@@ -42,7 +84,7 @@
 				</div>
 				<div>
 					<div>이메일</div> 
-					<input class="bs" type="text"/>
+					<input class="bs" type="email"/>
 					<div class="hide">기존 이메일과 동일합니다. 새 이메일 주소를 입력하세요.</div>
 					<span class="fl hide">
 						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 20 20"><path fill="#51B250" fill-rule="evenodd" d="m6.933 13.81-.004.003 1.415 1.414 7.941-7.942-1.414-1.414-6.524 6.524-3.243-3.243-1.415 1.414zM0 10C0 4.477 4.476 0 10 0c5.523 0 10 4.476 10 10 0 5.523-4.476 10-10 10-5.523 0-10-4.476-10-10" clip-rule="evenodd"></path></svg>
@@ -70,14 +112,56 @@
 				<div>
 					<img class="RyPGm2iMntl88a2Z6XYZ" src="https://hera-client.grepp.co/02beb1329f49c1e1642a.png">
 					<span>Google</span>
-					<button class="fr bs">연결해제</button>
-					<span class="fr hide">연결됨</span>
+					<button class="fr bs">연결하기</button>
+					<span class="fr">연결됨</span>
 				</div>
 				<div></div>
 				<div>
 					<img class="RyPGm2iMntl88a2Z6XYZ" src="https://hera-client.grepp.co/a9bd352b867488cd2b2b.png"/>
 					<span class="fr">Kakao</span>
 					<button class="fr bs">연결하기</button>
+				</div>
+			</div>
+		</div>
+		<div class="popupContainer">
+			<div class="popupContent bs">
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+				</svg>
+				<div>
+					<div class="popupBigTitle">이메일 입력</div>
+					<div class="popupSmallTitle">인증번호를 받을 이메일을 입력해주세요</div>
+					<div><input type="email" placeholder="이메일"/></div>
+					<div class="popupBtn">인증번호 받기</div>
+					<div>
+						<label>
+							<input class="checkBox" type="checkbox" name="agreeCheck"/>
+							<span class="agree">(필수) 이용약관 및 개인정보처리방침에 동의합니다.</span>
+						</label>
+					</div>
+				</div>
+			</div>
+			<div class="popupContent bs">
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+				</svg>
+				<div>
+					<div class="popupBigTitle">인증번호 입력</div>
+					<div class="popupSmallTitle">
+						<span>zxton@naver.com</span><span>(으)로</span>
+					</div>
+					<div class="popupSmallTitle">
+						<span>전송된 4자리 숫자를 입력하세요.</span>
+					</div>
+					<div class="popupBtn">0000</div> <!-- 인증번호받는곳 -->
+					<div class="popupBtn">인증 완료</div>
+					<div class="popupBtn">인증번호 재전송</div>
+					<div>
+						<label>
+							<input class="checkBox" type="checkbox" name="agreeCheck" checked/>
+							<span class="agree">(필수) 이용약관 및 개인정보처리방침에 동의합니다.</span>
+						</label>
+					</div>
 				</div>
 			</div>
 		</div>

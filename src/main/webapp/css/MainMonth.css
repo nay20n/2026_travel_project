@@ -113,13 +113,13 @@ body > *:not(:first-child){margin: 20px auto 0;}
 	border: 1.3px solid rgba(58, 58, 58, 0.2);
 	display: flex;
 	justify-content: space-between;
+	align-items: center;
 }
 .changeView > span { /*일월주*/
 	cursor:pointer;
 	font-size : 16px;
 	font-weight: 600;
 	color: #925DE8;
-	height: 25px;
 	width: 57px;
 	margin: 3px;
 	padding: 6px 20px; 

@@ -2,6 +2,8 @@
 .bs{box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;}
 .fl{float:left;}
 .fr{float:right;}
+.show {visibility: visible !important;}
+.borderWraning { border-color: red !important;}
 ::-webkit-scrollbar {
 	width: 10px;
 }
@@ -112,12 +114,20 @@ body > *:not(:first-child) {margin: 80px auto 0;}
 	width: 18px;
 	height: 15px;
 }
+#main > div:nth-child(7) {
+	visibility: hidden;
+	margin-left: 192px;
+	margin-top: 8px;
+	font-size: 12px;
+	line-height: 12px;
+	color: rgb(255, 0, 0);
+}
 #main > button {
 	border: none;
 	display:block;
 	width: 300px;
 	height: 46px;
-	margin-top: 90px;
+	margin-top: 70px;
 	border-radius: 4px;
 	font-size: 16px;
 	font-weight: 700;
