@@ -6,6 +6,7 @@ $(function() {
 	});
 	// 로그인 팝업
 	$("#header> div:nth-child(2)>div:nth-child(1)>div").click(function() {
+		$(this).parent().find(".hide").addClass("hide");
 		$(".popupContainer").attr("style","display: block");
 		$(".loginpop").attr("style","display: block");
 	});
@@ -20,7 +21,7 @@ $(function() {
 	// ************ 메인 *******************
 	// 직접 여행 만들기 (로그인 되었을 경우)
 	$("#main>div:nth-child(5)").click(function() {
-		location.href="StartPlace.html";
+		location.href="ArrPlace.html";
 	});
 	// ************ 게시글 *******************
 	// 검색(돋보기 클릭) 시 옆 글자 바꾸기
