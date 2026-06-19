@@ -14,67 +14,76 @@ body > * {
 	background-color: white;
 	width: 1280px;
 	height: 72px;
+	overflow: hidden;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 }
 
-#header > div {
-	cursor: pointer;
+#header>div {
 	margin: auto 15px;
 }
 
-#header > div:nth-child(1) > svg {
+#header>div:nth-child(1) {
+	display: flex;
+	justify-content: flex-start;
+}
+
+#header>div:nth-child(1) > div:nth-child(1) {
+	cursor: pointer;
+}
+
+#header>div:nth-child(1) > div > svg {
 	color: #925DE8;
 	height: 24px;
 }
 
-#header > div:nth-child(1) > a {
+#header>div:nth-child(1) > div > a {
 	color: #925DE8;
 	font-size: 24px;
 	font-weight: 500;
 }
 
-#header > div:nth-child(1) > span {
-	margin-left: 10px;
+#header>div:nth-child(1)> div:nth-child(2) {
 	cursor: text;
+	margin-left: 10px;
+	margin-top: 10px;
 }
 
-#header > div:nth-child(2) {
+#header>div:nth-child(2) {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 }
 
-#header > div:nth-child(2) > div:nth-child(1) { /*공유버튼*/
+#header>div:nth-child(2) > div {
 	margin-right: 10px;
 	margin-top: 5px;
+}
+
+#header> div:nth-child(2) > div:nth-child(1) > div {
 	border: 1px solid #925DE8;
 	border-radius: 10px;
 	background-color: white;
 	padding: 8px 10px;
+	font-size: 16px;
+	font-weight: 500;
+	color: #925DE8;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 }
-#header > div:nth-child(2) > div:nth-child(1):hover {
+
+#header> div:nth-child(2) > div:nth-child(1) > div:hover {
 	background-color: #E3D4FF;
 }
 
-#header > div:nth-child(2) > div:nth-child(1) > svg { /*공유이모티콘*/
-	margin-right: 4px;
-	height: 20px;
+#header> div:nth-child(2) > div:nth-child(1) > div > svg {
+	height: 18px;
 	color: #925DE8;
 }
 
-#header > div:nth-child(2) > div:nth-child(1) > a {  /*공유텍스트*/
-	font-size: 16px;
-	font-weight: 500;
-	color: #925DE8;
-}
-
-#header > div:nth-child(2) > div:nth-child(2) > a { /*마이페이지*/
-	border: 1px solid #925DE8;
+#header> div:nth-child(2) > div:nth-child(2) > div {
 	border-radius: 28px;
 	background-color: #925DE8;
 	padding: 18px 3px;
@@ -82,9 +91,11 @@ body > * {
 	font-weight: 500;
 	color: white;
 }
-#header > div:nth-child(2) > div:nth-child(2) > a:hover {
-	opacity: 0.3;
+
+#header> div:nth-child(2) > div:nth-child(2) > div:hover {
+	opacity: 30%;
 }
+
 /* ***************메인********************** */
 #main {
 	width: 1280px;
@@ -112,13 +123,13 @@ body > * {
 	width: 350px;
 }
 
-#main > div:nth-child(1) > div:nth-child(1) {
+#main > div:nth-child(1) > div:nth-child(1) > label {
 	display: flex;
 	align-items: center;
 	justify-content: center;
 }
 
-#main > div:nth-child(1) > div:nth-child(1) > svg { /* 돋보기 */
+#main > div:nth-child(1) > div:nth-child(1) > label > svg { /* 돋보기 */
 	margin-right: 10px;
 	height: 25px;
 	width: 25px;
@@ -187,10 +198,11 @@ body > * {
 .placeInfo > div:nth-child(2) > svg {
 	margin: -2px 0px;
 	height: 15px;
+	color: #925DE8;
 }
 
 .placeInfo > div:nth-child(2) > span:nth-child(2){
-	color: #4B4C56;
+	color: #925DE8;
 	font-size: 15px;
 	font-weight: 600;
 	margin-right: 5px;
@@ -270,7 +282,7 @@ body > * {
 	padding:1px;
 	border-radius: 10px;
 }
-#main > div:nth-child(2)>button:nth-child(3) {
+#main > div:nth-child(2)>button:nth-child(4) {
 	cursor: pointer;
 	border-radius: 4px;
 	border: none;
@@ -284,9 +296,11 @@ body > * {
 	background-color: #925DE8;
 	color: white;
 }
-#main > div:nth-child(2)>button:nth-child(3):hover {
+
+#main > div:nth-child(2)>button:nth-child(4):hover { /* AI일정버튼 */
 	opacity:0.3;
 }
+
 .date {
 	font-size: 22px;
 }
@@ -313,6 +327,11 @@ body > * {
 	border-radius: 12px;
 }
 .changeView > span:hover {
+	background-color: #925DE8;
+	color: white;
+	opacity: 50%;
+}
+.changeView > span:nth-child(1) { /*일*/
 	background-color: #925DE8;
 	color: white;
 }
@@ -390,17 +409,27 @@ body > * {
 	padding: 0px 24px 10px 20px;
 }
 
-.popupPlace > div.placeTitle {
+.popupPlace > div:nth-child(1) {
 	padding: 5px 2px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 }
 
-.popupPlace > div.placeTitle > div:nth-child(1) > a {
+.popupPlace > div:nth-child(1) > div:nth-child(1) > a {
 	font-size: 24px;
+	font-weight: 500;
 	cursor: context-menu;
+}
+
+.popupPlace > div:nth-child(1) > div:nth-child(2) > svg { /* 팝업장소옆별 */
+	width: 30px;
+	cursor: pointer;
 }
 
 .popupPlace > div > svg {
 	width: 20px;
+	flex-shrink: 0;
 }
 
 .popupPlace > div:nth-child(2) > svg {	
@@ -496,9 +525,18 @@ body > * {
 	font-weight: 500;
 }
 
-.placeDetail > div:nth-child(5) > div:nth-child(2) > div:nth-child(2) > svg { /*별*/
-	width: 15px;
-	color: #925DE8;
+.placeDetail > div:nth-child(5) > div:nth-child(2) > div:nth-child(2) {
+	width: 75px;
+    height: 15px;
+	background-image: url("../img/별.png");
+	filter: invert(91%) sepia(5%) saturate(3454%) hue-rotate(193deg) brightness(110%) contrast(93%);
+}
+
+.placeDetail > div:nth-child(5) > div:nth-child(2) > div:nth-child(2) > div { /*별*/
+	width: 50%;
+    height: 15px;
+	background-image: url("../img/별.png");
+	filter: invert(67%) sepia(12%) hue-rotate(214deg) brightness(99%) contrast(100%);
 }
 
 .reviewInput {	
@@ -630,7 +668,7 @@ body > * {
 /* *********************일정 블록 팝업********************* */
 
 .popupContainer > div:nth-child(2) {
-	width: 300px;
+	width: 360px;
 	height: 200px;
 	position: fixed;
     top: 200px;
@@ -656,15 +694,34 @@ body > * {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	margin-right: 38px;
+	margin-right: 36px;
+	margin-top: -30px;
+}
+
+.popupContainer> div:nth-child(2) > div:nth-child(2) > div {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.popupContainer> div:nth-child(2) > div:nth-child(2) > div > svg {
+	width: 18px;
+	margin-right: 5px;
+	flex-shrink: 0;
 }
 
 .popupContainer> div:nth-child(2) > div:nth-child(2) > div > span {
 	font-size: 14px;
 	margin-right: 5px;
+	font-weight: 500;
 }
 
-.popupContainer> div:nth-child(2) > div:nth-child(2) > div:nth-child(1) > span:nth-child(2):hover {
+.popupContainer> div:nth-child(2) > div:nth-child(2) > div:nth-child(1) > span:nth-child(3) {
+	font-size: 12px;
+	margin-right: 5px;
+}
+
+.popupContainer> div:nth-child(2) > div:nth-child(2) > div:nth-child(1) > span:nth-child(3):hover {
 	opacity: 50%;
 }
 
@@ -675,30 +732,32 @@ body > * {
 .popupContainer> div:nth-child(2) > div:nth-child(3) { /* 장소정보 */
 	display: flex;
 	align-items: center;
-	justify-content: center;
+	justify-content: flex-start;
 	font-size: 12px;
-	margin-top: 11px;
+	margin-top: 10px;
 }
 
 .popupContainer> div:nth-child(2) > div:nth-child(3) > div:nth-child(1) { /* 좌표 */
-	background-color: red;
-	width: 240px;
+	background-color: peachpuff;
+	width: 145px;
     height: 135px;
     border: 1px solid #925DE8;
-	border-radius: 8px;
-	box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+	border-radius: 12px;
+	flex-shrink: 0;
 }
 
 .popupContainer> div:nth-child(2) > div:nth-child(3) > div:nth-child(2) {
-    text-align: center;
+	padding: 0px 8px;
 }
 
-.popupContainer> div:nth-child(2) > div:nth-child(3) > div:nth-child(2) > div {
-    margin-bottom: 1px;
+.popupContainer> div:nth-child(2) > div:nth-child(3) > div:nth-child(2) > div:nth-child(1) {
+    margin-bottom: 3px;
+    font-size: 15px;
+    font-weight: 500;
 }
 
 .popupContainer> div:nth-child(2) > div:nth-child(3) > div:nth-child(2) > div:nth-child(2) {
-    margin-bottom: 3px;
+    margin-bottom: 14px;
     font-size: 10px;
     color: #4B4C56;
 }
@@ -707,12 +766,12 @@ body > * {
 
 .popupContainer> div:nth-child(3) {	
 	position: fixed;
-    top: 164px;
+    top: 167px;
     left: 518px;
     padding: 5px;
 	border-radius: 8px;
-	width: 100px;
-    font-size: 14px;
+	width: 88px;
+    font-size: 12px;
     text-align: center;
     background-color: white;
 }
@@ -754,7 +813,6 @@ body > * {
 .popupContainer> div:nth-child(4) > span:hover {
 	background-color: rgba(146, 93, 232, 0.18);
 }
-
 /* **********************공통************************* */
 
 svg {
@@ -792,7 +850,7 @@ textarea:focus {
 	box-shadow: none;
 }
 
-.inputDdDiv {
+.inputBdDiv {
 	border: 1px solid #925DE8;
 	border-radius: 8px;
 	margin: auto;
@@ -818,10 +876,13 @@ textarea:focus {
 	background-color: rgba(0, 0, 0, 0);
 	border-radius: 10px;
 }
-.check-box { /* AI체크박스 */
+.checkBox { /* AI체크박스 */
 	width: 14px;
 	height: 14px;
 	cursor: pointer;
+}
+.fillStar {
+	fill: #925DE8;
 }
 .fl {
 	float: left;

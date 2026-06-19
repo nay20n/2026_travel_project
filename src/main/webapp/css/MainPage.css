@@ -332,6 +332,7 @@ input:focus {
 .popupContainer>div:nth-child(1)>div>* {
 	display: flex;
 	justify-content: center;
+	align-items: center;
 }
 
 .popupContainer>div:nth-child(1)>div:nth-child(2)>svg:nth-child(1) {
@@ -406,6 +407,10 @@ input:focus {
 	color: white;
 }
 
+.loginButton:hover {
+	filter: brightness(95%);	
+}
+
 .popupContainer>div:nth-child(1)>div:nth-child(4) {
 	margin-top: 20px;
 }
@@ -418,6 +423,11 @@ input:focus {
 .popupContainer>div:nth-child(1)>div:nth-child(4)>div:nth-child(2) {
 	/* 구글 */
 	background-image: url("../img/구글.png");
+}
+
+.popupContainer>div:nth-child(1)>div:nth-child(4)>div:nth-child(3):hover {
+	background-color: #EDE8F6;
+	opacity: 100%;
 }
 
 .popupContainer > div:nth-child(2) {
@@ -433,6 +443,7 @@ input:focus {
 	margin: 8px auto;
 	display: flex;
     justify-content: center;
+    align-items: center;
 }
 
 .popupContainer > div:nth-child(2) > div:nth-child(2) > div:nth-child(6) {
@@ -458,6 +469,10 @@ input:focus {
 	color: white;
 }
 
+.popupContainer > div:nth-child(2) > div:nth-child(2) > div:nth-child(5):hover {
+	background-color: #EDE8F6;	
+}
+
 .popupContainer > div:nth-child(3) {
 	height: 330px;
 	display: none;
@@ -471,6 +486,7 @@ input:focus {
 	margin: 8px auto;
 	display: flex;
     justify-content: center;
+    align-items: center;
 }
 
 .popupContainer > div:nth-child(3) > div:nth-child(2) > div:nth-child(2) > span:nth-child(1) {
@@ -494,6 +510,10 @@ input:focus {
 .popupContainer > div:nth-child(3) > div:nth-child(2) > div:nth-child(5) { /* 인증완료 */
 	background-color: #925DE8;
 	color: white;
+}
+
+.popupContainer > div:nth-child(3) > div:nth-child(2) > div:nth-child(6):hover {
+	background-color: #EDE8F6;
 }
 
 .popupContainer > div:nth-child(3) > div:nth-child(2) > div:nth-child(7) > label > input {

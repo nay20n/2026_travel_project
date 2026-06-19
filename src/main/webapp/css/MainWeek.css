@@ -201,10 +201,11 @@ body>* {
 .placeInfo > div:nth-child(2) > svg {
 	margin: -2px 0px;
 	height: 15px;
+	color: #925DE8;
 }
 
 .placeInfo > div:nth-child(2) > span:nth-child(2){
-	color: #4B4C56;
+	color: #925DE8;
 	font-size: 15px;
 	font-weight: 600;
 	margin-right: 5px;
@@ -257,6 +258,11 @@ body>* {
 	border-radius: 12px;
 }
 .changeView > span:hover {
+	background-color: #925DE8;
+	color: white;
+	opacity: 50%;
+}
+.changeView > span:nth-child(2) { /*주*/
 	background-color: #925DE8;
 	color: white;
 }
@@ -484,9 +490,18 @@ body>* {
 	font-weight: 500;
 }
 
-.placeDetail > div:nth-child(5) > div:nth-child(2) > div:nth-child(2) > svg { /*별*/
-	width: 15px;
-	color: #925DE8;
+.placeDetail > div:nth-child(5) > div:nth-child(2) > div:nth-child(2) {
+	width: 75px;
+    height: 15px;
+	background-image: url("../img/별.png");
+	filter: invert(91%) sepia(5%) saturate(3454%) hue-rotate(193deg) brightness(110%) contrast(93%);
+}
+
+.placeDetail > div:nth-child(5) > div:nth-child(2) > div:nth-child(2) > div { /*별*/
+	width: 50%;
+    height: 15px;
+	background-image: url("../img/별.png");
+	filter: invert(67%) sepia(12%) hue-rotate(214deg) brightness(99%) contrast(100%);
 }
 
 .reviewInput {	
@@ -618,7 +633,7 @@ body>* {
 /* *********************일정 블록 팝업********************* */
 
 .popupContainer > div:nth-child(2) {
-	width: 300px;
+	width: 360px;
 	height: 200px;
 	position: fixed;
     top: 200px;
@@ -644,15 +659,34 @@ body>* {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	margin-right: 38px;
+	margin-right: 36px;
+	margin-top: -30px;
+}
+
+.popupContainer> div:nth-child(2) > div:nth-child(2) > div {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.popupContainer> div:nth-child(2) > div:nth-child(2) > div > svg {
+	width: 18px;
+	margin-right: 5px;
+	flex-shrink: 0;
 }
 
 .popupContainer> div:nth-child(2) > div:nth-child(2) > div > span {
 	font-size: 14px;
 	margin-right: 5px;
+	font-weight: 500;
 }
 
-.popupContainer> div:nth-child(2) > div:nth-child(2) > div:nth-child(1) > span:nth-child(2):hover {
+.popupContainer> div:nth-child(2) > div:nth-child(2) > div:nth-child(1) > span:nth-child(3) {
+	font-size: 12px;
+	margin-right: 5px;
+}
+
+.popupContainer> div:nth-child(2) > div:nth-child(2) > div:nth-child(1) > span:nth-child(3):hover {
 	opacity: 50%;
 }
 
@@ -663,30 +697,32 @@ body>* {
 .popupContainer> div:nth-child(2) > div:nth-child(3) { /* 장소정보 */
 	display: flex;
 	align-items: center;
-	justify-content: center;
+	justify-content: flex-start;
 	font-size: 12px;
-	margin-top: 11px;
+	margin-top: 10px;
 }
 
 .popupContainer> div:nth-child(2) > div:nth-child(3) > div:nth-child(1) { /* 좌표 */
-	background-color: red;
-	width: 240px;
+	background-color: peachpuff;
+	width: 145px;
     height: 135px;
     border: 1px solid #925DE8;
-	border-radius: 8px;
-	box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+	border-radius: 12px;
+	flex-shrink: 0;
 }
 
 .popupContainer> div:nth-child(2) > div:nth-child(3) > div:nth-child(2) {
-    text-align: center;
+	padding: 0px 8px;
 }
 
-.popupContainer> div:nth-child(2) > div:nth-child(3) > div:nth-child(2) > div {
-    margin-bottom: 1px;
+.popupContainer> div:nth-child(2) > div:nth-child(3) > div:nth-child(2) > div:nth-child(1) {
+    margin-bottom: 3px;
+    font-size: 15px;
+    font-weight: 500;
 }
 
 .popupContainer> div:nth-child(2) > div:nth-child(3) > div:nth-child(2) > div:nth-child(2) {
-    margin-bottom: 3px;
+    margin-bottom: 14px;
     font-size: 10px;
     color: #4B4C56;
 }
@@ -695,12 +731,12 @@ body>* {
 
 .popupContainer> div:nth-child(3) {	
 	position: fixed;
-    top: 164px;
+    top: 167px;
     left: 518px;
     padding: 5px;
 	border-radius: 8px;
-	width: 100px;
-    font-size: 14px;
+	width: 88px;
+    font-size: 12px;
     text-align: center;
     background-color: white;
 }
