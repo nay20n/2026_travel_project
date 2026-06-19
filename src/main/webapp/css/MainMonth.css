@@ -24,8 +24,8 @@ body {
    background-color: #F8F5FD;
 }
 body > *:not(:first-child){margin: 20px auto 0;}
+/* ***************헤더***************** */
 #header {
-	margin: 0px auto;
 	background-color: white;
 	width: 1280px;
 	height: 72px;
@@ -33,63 +33,83 @@ body > *:not(:first-child){margin: 20px auto 0;}
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+	margin: auto;
 }
-#header > div {
-	cursor: pointer;
+
+#header>div {
 	margin: auto 15px;
 }
-#header > div:nth-child(1) > svg {
+
+#header>div:nth-child(1) {
+	display: flex;
+	justify-content: flex-start;
+}
+
+#header>div:nth-child(1) > div:nth-child(1) {
+	cursor: pointer;
+}
+
+#header>div:nth-child(1) > div > svg {
 	color: #925DE8;
 	height: 24px;
 }
-#header > div:nth-child(1) > a {
+
+#header>div:nth-child(1) > div > a {
 	color: #925DE8;
 	font-size: 24px;
 	font-weight: 500;
 }
-#header > div:nth-child(1) > span {
-	margin-left: 10px;
+
+#header>div:nth-child(1)> div:nth-child(2) {
 	cursor: text;
+	margin-left: 10px;
+	margin-top: 10px;
 }
-#header > div:nth-child(2) {
+
+#header>div:nth-child(2) {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 }
-#header > div:nth-child(2) > div:nth-child(1) { /*공유버튼*/
+
+#header>div:nth-child(2) > div {
 	margin-right: 10px;
-	argin-top: 5px;
+	margin-top: 5px;
+}
+
+#header> div:nth-child(2) > div:nth-child(1) > div {
 	border: 1px solid #925DE8;
 	border-radius: 10px;
 	background-color: white;
 	padding: 8px 10px;
+	font-size: 16px;
+	font-weight: 500;
+	color: #925DE8;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 }
-#header > div:nth-child(2) > div:nth-child(1):hover {
+
+#header> div:nth-child(2) > div:nth-child(1) > div:hover {
 	background-color: #E3D4FF;
 }
-#header > div:nth-child(2) > div:nth-child(1) > svg { /*공유이모티콘*/
-	margin-right: 4px;
-	height: 20px;
+
+#header> div:nth-child(2) > div:nth-child(1) > div > svg {
+	height: 18px;
 	color: #925DE8;
 }
-#header > div:nth-child(2) > div:nth-child(1) > a {  /*공유텍스트*/
-	font-size: 16px;
-	font-weight: 500;
-	color: #925DE8;
-}
-#header > div:nth-child(2) > div:nth-child(2) > a { /*마이페이지*/
-	border: 1px solid #925DE8;
+
+#header> div:nth-child(2) > div:nth-child(2) > div {
 	border-radius: 28px;
 	background-color: #925DE8;
 	padding: 18px 3px;
 	font-size: 10px;
+	font-weight: 500;
 	color: white;
 }
-#header > div:nth-child(2) > div:nth-child(2) > a:hover {
-	opacity: 0.3;
+
+#header> div:nth-child(2) > div:nth-child(2) > div:hover {
+	opacity: 30%;
 }
 /***********main****************/
 #main {
@@ -103,7 +123,7 @@ body > *:not(:first-child){margin: 20px auto 0;}
 .date { /*2026년 5월*/
    font-size: 22px;
 }
-.changeView { /*일월주담고잏ㅅ는 큰 div*/
+.changeView { /*일월주담고있는 큰 div*/
 	margin-top: 12px;
 	margin-left: 30px;
 	width: 181px;
@@ -126,6 +146,11 @@ body > *:not(:first-child){margin: 20px auto 0;}
 	border-radius: 12px;
 }
 .changeView > span:hover {
+	background-color: #925DE8;
+	color: white;
+	opacity: 50%;
+}
+.changeView > span:nth-child(3) { /*월*/
 	background-color: #925DE8;
 	color: white;
 }
