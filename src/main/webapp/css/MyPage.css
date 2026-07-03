@@ -203,7 +203,8 @@ body > *:not(:first-child) {margin: 20px auto 0;}
 	overflow-y: scroll;
 }
 .table svg {
-	width: 20px;
+	width: 15px;
+	margin-right: 3px;
 }
 .fillHeart {
 	fill: #925DE8;
@@ -225,10 +226,10 @@ body > *:not(:first-child) {margin: 20px auto 0;}
 .table tr {
 	border: 1px solid #EDE8F6;
 }
-.table tr:not(first-child):hover {
+.table tr:not(:first-child):hover {
 	background-color: rgba(227, 212, 255, 0.3);
 }
-.table th:first-child{ /*순서*/
+.table th { /*순서*/
 	width: 100px;
 	font-size: 15px;
 }
@@ -237,6 +238,21 @@ body > *:not(:first-child) {margin: 20px auto 0;}
 	font-weight: 500;
 	padding: 6px 6px;
 	font-size: 15px;
+}
+.table td {
+	font-weight: 400;
+	padding: 6px 6px;
+	font-size: 13px;
+	text-align: center;
+}
+.table tbody tr td:last-child {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.table tbody tr th {
+	font-weight: 700;
+	font-size: 13px;
 }
 body > div:nth-child(5) {
 	margin-bottom: 60px;
